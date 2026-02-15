@@ -88,9 +88,10 @@ digraph design_flow {
 
 Use brainstorming dialogue patterns: one question at a time, prefer multiple-choice.
 
-**Every question MUST include a "Write all options to design.md for team review" choice.** When selected, do NOT decide — instead write all researched options with their pros/cons/trade-offs into design.md for the team to evaluate and select during review.
-
-Present research findings as part of the options — each option should include evidence from the research (community practices, benchmarks, trade-offs).
+**Option presentation rules:**
+1. **Lead with your recommended option** — place it first, clearly marked as "(recommended)", with a brief justification based on research findings
+2. Present research findings as part of each option — include evidence (community practices, benchmarks, trade-offs)
+3. **Always include a "Write all options to design.md for team review" choice as the last option.** When selected, do NOT decide — instead write all researched options with their pros/cons/trade-offs into design.md for the team to evaluate and select during review
 
 Cover these technical dimensions:
 - API design (endpoints, contracts, versioning)
