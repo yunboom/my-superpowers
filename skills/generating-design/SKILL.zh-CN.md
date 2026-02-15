@@ -29,11 +29,12 @@ description: Use when you need to create a detailed technical design for a speci
 
 ### 步骤 2：加载上下文
 
-用户确认 specs 路径后：
-1. 对于每个上下文文件（`requirements.md`、`hld.md`）：
-   - 如果已在当前对话上下文中（例如，在同一会话中由前序步骤加载过） → 跳过文件读取
-   - 如果不在上下文中 → 从 `{specs_path}/` 读取（如果文件存在）
-2. 确认本次设计会话的目标微服务
+从确定的 specs 路径中精确读取以下文件，不得读取其他文件。
+
+1. `{specs_path}/requirements.md` —— 如果同一会话中前序步骤已加载过，可跳过
+2. `{specs_path}/hld.md` —— 如果同一会话中前序步骤已加载过可跳过，或文件不存在则跳过
+
+确认本次设计会话的目标微服务。
 
 ### 步骤 3：识别技术需求并调研
 

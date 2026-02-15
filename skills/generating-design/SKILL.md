@@ -29,11 +29,12 @@ Determine the target specs directory `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`:
 
 ### Step 2: Load Context
 
-After user confirms the specs path:
-1. For each context file (`requirements.md`, `hld.md`):
-   - If already in the current conversation context (e.g., loaded by a prior step in the same session) → skip file reading
-   - If not in context → read from `{specs_path}/` (if the file exists)
-2. Confirm the target microservice for this design session
+Read exactly these files from the resolved specs path. Do NOT read any other files.
+
+1. `{specs_path}/requirements.md` — skip if already loaded by a prior step in this session
+2. `{specs_path}/hld.md` — skip if already loaded by a prior step in this session, or if the file does not exist
+
+Confirm the target microservice for this design session.
 
 ### Step 2: Identify Technical Needs and Research
 
