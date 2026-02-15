@@ -17,15 +17,24 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 **计划保存到：** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`
 
-## 确定 Specs 路径并加载上下文
+## 步骤 0：确认 Specs 路径
 
-1. 确定 specs 目录路径 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`：
-   - 如果在同一会话中由 `/generate-design` 之后调用，路径已知
-   - 如果未知，扫描 `docs/specs/` 并选取日期最近的 `yyyy-MM-dd-REQ-*` 目录，展示给用户确认
-   - 如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"
-2. 对于每个上下文文件（`requirements.md`、`design.md`）：
-   - 如果已在当前对话上下文中（例如，在同一会话中由前序步骤加载过） → 跳过文件读取
-   - 如果不在上下文中 → 从 `{specs_path}/` 读取
+扫描 `docs/specs/` 并选取日期最近的 `yyyy-MM-dd-REQ-*/{topic}` 目录作为候选。如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"并停止。
+
+<HARD-GATE>
+必须将候选路径展示给用户并等待确认，在用户确认之前不得做任何其他操作。不得加载文件、不得开始编写计划、不得继续。
+
+必须说："找到 specs 目录：`{candidate_path}`。这是正确的目标目录吗？(Y/N)"
+
+然后停止并等待用户回复。只有用户确认后才能继续。
+</HARD-GATE>
+
+## 上下文加载
+
+用户确认 specs 路径后：
+- 对于每个上下文文件（`requirements.md`、`design.md`）：
+  - 如果已在当前对话上下文中（例如，在同一会话中由前序步骤加载过） → 跳过文件读取
+  - 如果不在上下文中 → 从 `{specs_path}/` 读取
 
 使用这些作为计划生成的主要输入。
 

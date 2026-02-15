@@ -15,14 +15,23 @@ description: Use when a complex requirement involves multiple microservices and 
 
 ## 流程
 
-### 步骤 1：确定 Specs 路径并加载上下文
-1. 确定 specs 目录路径 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`：
-   - 如果在同一会话中由 `/prd-clarify` 之后调用，路径已知
-   - 如果未知，扫描 `docs/specs/` 并选取日期最近的 `yyyy-MM-dd-REQ-*` 目录，展示给用户确认
-   - 如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"
-2. 加载 `requirements.md`：
-   - 如果已在当前对话上下文中（例如，在同一会话中由前序步骤加载过） → 跳过文件读取
-   - 如果不在上下文中 → 从 `{specs_path}/requirements.md` 读取
+### 步骤 1：确认 Specs 路径
+
+扫描 `docs/specs/` 并选取日期最近的 `yyyy-MM-dd-REQ-*/{topic}` 目录作为候选。如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"并停止。
+
+<HARD-GATE>
+必须将候选路径展示给用户并等待确认，在用户确认之前不得做任何其他操作。不得加载文件、不得开始架构发现、不得进入步骤 2。
+
+必须说："找到 specs 目录：`{candidate_path}`。这是正确的目标目录吗？(Y/N)"
+
+然后停止并等待用户回复。只有用户确认后才能继续。
+</HARD-GATE>
+
+### 步骤 2：加载上下文
+
+用户确认 specs 路径后：
+- 如果 `requirements.md` 已在当前对话上下文中（例如，在同一会话中由前序步骤加载过） → 跳过文件读取
+- 如果不在上下文中 → 从 `{specs_path}/requirements.md` 读取
 
 ### 步骤 2：发现当前架构
 - **必需子技能：** 使用 superpowers:system-design

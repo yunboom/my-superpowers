@@ -15,14 +15,23 @@ For complex multi-microservice requirements, generate a high-level design that d
 
 ## The Process
 
-### Step 1: Resolve Specs Path and Load Context
-1. Determine the specs directory path `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`:
-   - If invoked after `/prd-clarify` in the same session, the path is already known
-   - If not known, scan `docs/specs/` and select the most recent `yyyy-MM-dd-REQ-*` directory (by date), present it to the user for confirmation
-   - If no specs directories exist, prompt: "No specs directory found. Please run `/prd-clarify` first to create requirements."
-2. Load `requirements.md`:
-   - If already in the current conversation context (e.g., loaded by a prior step in the same session) → skip file reading
-   - If not in context → read `{specs_path}/requirements.md`
+### Step 1: Confirm Specs Path
+
+Scan `docs/specs/` and select the most recent `yyyy-MM-dd-REQ-*/{topic}` directory (by date) as the candidate. If no specs directories exist, prompt: "No specs directory found. Please run `/prd-clarify` first." and STOP.
+
+<HARD-GATE>
+You MUST present the candidate path to the user and WAIT for their confirmation before doing anything else. Do NOT load files, do NOT start architecture discovery, do NOT proceed to Step 2 until the user explicitly confirms.
+
+Say exactly: "I found specs directory: `{candidate_path}`. Is this the correct target? (Y/N)"
+
+Then STOP and wait for user response. Only proceed after user confirms.
+</HARD-GATE>
+
+### Step 2: Load Context
+
+After user confirms the specs path:
+- If `requirements.md` is already in the current conversation context (e.g., loaded by a prior step in the same session) → skip file reading
+- If not in context → read `{specs_path}/requirements.md`
 
 ### Step 2: Discover Current Architecture
 - **REQUIRED SUB-SKILL:** Use superpowers:system-design

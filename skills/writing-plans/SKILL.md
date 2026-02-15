@@ -17,15 +17,24 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Save plans to:** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`
 
-## Resolve Specs Path and Load Context
+## Step 0: Confirm Specs Path
 
-1. Determine the specs directory path `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`:
-   - If invoked after `/generate-design` in the same session, the path is already known
-   - If not known, scan `docs/specs/` and select the most recent `yyyy-MM-dd-REQ-*` directory (by date), present it to the user for confirmation
-   - If no specs directories exist, prompt: "No specs directory found. Please run `/prd-clarify` first to create requirements."
-2. For each context file (`requirements.md`, `design.md`):
-   - If already in the current conversation context (e.g., loaded by a prior step in the same session) → skip file reading
-   - If not in context → read from `{specs_path}/`
+Scan `docs/specs/` and select the most recent `yyyy-MM-dd-REQ-*/{topic}` directory (by date) as the candidate. If no specs directories exist, prompt: "No specs directory found. Please run `/prd-clarify` first." and STOP.
+
+<HARD-GATE>
+You MUST present the candidate path to the user and WAIT for their confirmation before doing anything else. Do NOT load files, do NOT start writing the plan, do NOT proceed until the user explicitly confirms.
+
+Say exactly: "I found specs directory: `{candidate_path}`. Is this the correct target? (Y/N)"
+
+Then STOP and wait for user response. Only proceed after user confirms.
+</HARD-GATE>
+
+## Context Loading
+
+After user confirms the specs path:
+- For each context file (`requirements.md`, `design.md`):
+  - If already in the current conversation context (e.g., loaded by a prior step in the same session) → skip file reading
+  - If not in context → read from `{specs_path}/`
 
 Use these as the primary input for plan generation.
 
