@@ -13,12 +13,7 @@ my-superpowers/
 ├── commands/                  # 命令定义（变更对象）
 ├── agents/                    # Agent 定义（变更对象）
 ├── docs/
-│   ├── plans/                 # 设计文档和实施计划
 │   └── specs/                 # 需求规格（按 REQ-id 隔离）
-├── .cursor/                   # Cursor IDE 集成（不手动变更）
-│   ├── skills/                # 自动同步自根 skills/
-│   ├── commands/              # 自动同步自根 commands/
-│   └── agents/                # 自动同步自根 agents/
 └── ...
 ```
 
