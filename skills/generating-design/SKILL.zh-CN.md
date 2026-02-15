@@ -47,6 +47,8 @@ description: Use when you need to create a detailed technical design for a speci
 
 使用头脑风暴对话模式：每次一个问题，优先多选题。
 
+**每个问题都必须包含"将所有方案写入 design.md 供团队评审选型"选项。** 用户选择该选项时，不做决策——将所有调研到的方案及其优缺点、权衡分析写入 design.md，由团队在评审时评估选择。
+
 覆盖以下技术维度：
 - API 设计（端点、契约、版本控制）
 - 数据模型（表、索引、迁移）

@@ -47,6 +47,8 @@ After user confirms the specs path:
 
 Use brainstorming dialogue patterns: one question at a time, prefer multiple-choice.
 
+**Every question MUST include a "Write all options to design.md for team review" choice.** When selected, do NOT decide — instead write all researched options with their pros/cons/trade-offs into design.md for the team to evaluate and select during review.
+
 Cover these technical dimensions:
 - API design (endpoints, contracts, versioning)
 - Data model (tables, indexes, migrations)
