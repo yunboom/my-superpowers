@@ -17,20 +17,13 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 **计划保存到：** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`
 
-## REQ-id 确认
+## 确定 Specs 路径并加载上下文
 
-1. 检查当前的 specs 目录上下文（如果是在 /generate-design 之后调用的，路径已知）
-2. 如果没有上下文，扫描 `docs/specs/` 查找最近的 `yyyy-MM-dd-REQ-{id}` 目录
-3. 向用户展示找到的 REQ-id 以确认
-4. 确定或确认主题名称
-
-## 上下文加载
-
-在编写计划之前，确保以下上下文可用：
-- `requirements.md` — 澄清后的需求
-- `design.md` — 详细技术设计
-
-**按需加载：** 如果某个文件的内容已在当前对话上下文中（例如，在同一会话中由之前的 `/prd-clarify` 或 `/generate-design` 步骤产出），则跳过文件读取，直接使用现有内容。仅在上下文中不存在该内容时才从规格目录读取文件。
+1. 确认规格路径：`docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
+2. 对于每个上下文文件（`requirements.md`、`design.md`）：
+   - 检查其内容是否已在当前对话上下文中（例如，在同一会话中由之前的 `/generate-design` 步骤产出）
+   - 如果已在上下文中 → 跳过文件读取，直接使用现有内容
+   - 如果不在上下文中 → 从规格目录读取
 
 使用这些作为计划生成的主要输入。
 

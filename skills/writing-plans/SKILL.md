@@ -17,20 +17,13 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Save plans to:** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`
 
-## REQ-id Resolution
+## Resolve Specs Path and Load Context
 
-1. Check the current specs directory context (if invoked after /generate-design, the path is known)
-2. If no context, scan `docs/specs/` for the most recent `yyyy-MM-dd-REQ-{id}` directory
-3. Present the found REQ-id to user for confirmation
-4. Determine or confirm the topic name
-
-## Context Loading
-
-Before writing the plan, ensure the following context is available:
-- `requirements.md` — clarified requirements
-- `design.md` — detailed technical design
-
-**Load on demand:** If a file's content is already available in the current conversation context (e.g., produced by prior `/prd-clarify` or `/generate-design` steps in the same session), skip file reading and use existing content directly. Only read from the specs directory when the content is not already in context.
+1. Confirm the specs path: `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
+2. For each context file (`requirements.md`, `design.md`):
+   - Check if its content is already available in the current conversation context (e.g., produced by prior `/generate-design` step in the same session)
+   - If already in context → skip file reading, use existing content directly
+   - If not in context → read from the specs directory
 
 Use these as the primary input for plan generation.
 
