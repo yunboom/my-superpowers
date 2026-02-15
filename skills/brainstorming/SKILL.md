@@ -27,7 +27,7 @@ You MUST create a task for each of these items and complete them in order:
 2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
 3. **Propose 2-3 approaches** — with trade-offs and your recommendation
 4. **Present design** — in sections scaled to their complexity, get user approval after each section
-5. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
+5. **Write design doc** — save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md` and commit
 6. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
 ## Process Flow
@@ -77,8 +77,14 @@ digraph brainstorming {
 
 ## After the Design
 
+**REQ-id Resolution:**
+- Check `docs/specs/` for the most recent `yyyy-MM-dd-REQ-{id}` directory
+- Present the found REQ-id to user for confirmation
+- If no existing REQ-id directory found, ask user to provide one
+- Determine a short English topic name for this design
+
 **Documentation:**
-- Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
+- Write the validated design to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
 - Use elements-of-style:writing-clearly-and-concisely skill if available
 - Commit the design document to git
 

@@ -13,9 +13,24 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
-**Context:** This should be run in a dedicated worktree (created by brainstorming skill).
+**Context:** This should be run in a dedicated worktree (created by brainstorming skill or set up manually before starting the PRD workflow).
 
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to:** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`
+
+## REQ-id Resolution
+
+1. Check the current specs directory context (if invoked after /generate-design, the path is known)
+2. If no context, scan `docs/specs/` for the most recent `yyyy-MM-dd-REQ-{id}` directory
+3. Present the found REQ-id to user for confirmation
+4. Determine or confirm the topic name
+
+## Context Loading
+
+Before writing the plan, read these files from the same specs directory (if they exist):
+- `requirements.md` — clarified requirements
+- `design.md` — detailed technical design
+
+Use these as the primary input for plan generation.
 
 ## Bite-Sized Task Granularity
 
@@ -34,6 +49,10 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 # [Feature Name] Implementation Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+
+**REQ:** REQ-{id}
+
+**Specs:** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
 
 **Goal:** [One sentence describing what this builds]
 
@@ -57,6 +76,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 **Step 1: Write the failing test**
 
 ```python
+# REQ-{id} test for specific behavior
 def test_specific_behavior():
     result = function(input)
     assert result == expected
@@ -70,6 +90,7 @@ Expected: FAIL with "function not defined"
 **Step 3: Write minimal implementation**
 
 ```python
+# REQ-{id} implement specific behavior
 def function(input):
     return expected
 ```
@@ -83,22 +104,72 @@ Expected: PASS
 
 ```bash
 git add tests/path/test.py src/path/file.py
-git commit -m "feat: add specific feature"
+git commit -m "REQ-{id} feat: add specific feature"
 ```
 ````
+
+## Code Comment Convention
+
+ALL code comments in the plan MUST carry `REQ-{id}`:
+- `// REQ-{id} validate order amount before submission`
+- `# REQ-{id} retry logic for external service calls`
+- `/* REQ-{id} migration: add column to orders table */`
+
+## Commit Message Convention
+
+ALL commit messages MUST be prefixed with `REQ-{id}`:
+- `REQ-{id} feat: add order validation endpoint`
+- `REQ-{id} test: add integration tests for order flow`
+- `REQ-{id} fix: handle null amount in validation`
+
+## Generate testing.md
+
+After generating `plan.md`, also generate `testing.md` in the same specs directory.
+
+**testing.md requirements:**
+- Detailed end-to-end test cases
+- Coverage: normal flows, exception flows, boundary conditions, concurrency scenarios
+- Each test case includes: preconditions, operation steps, expected results
+- Once generated, testing.md MUST NOT be modified in subsequent workflow steps
+
+**testing.md format:**
+
+```markdown
+# End-to-End Test Cases
+
+> REQ-{id} | Generated alongside plan.md
+> ⚠️ This file MUST NOT be modified during execution. If issues are found, stop and report to user.
+
+## TC-1: {Test Case Title}
+**Preconditions:**
+- {precondition 1}
+
+**Steps:**
+1. {step 1}
+2. {step 2}
+
+**Expected Result:**
+- {expected outcome}
+
+## TC-2: {Test Case Title}
+...
+```
 
 ## Remember
 - Exact file paths always
 - Complete code in plan (not "add validation")
 - Exact commands with expected output
+- ALL code comments carry REQ-{id}
+- ALL commit messages prefixed with REQ-{id}
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits
+- Generate testing.md alongside plan.md
 
 ## Execution Handoff
 
-After saving the plan, offer execution choice:
+After saving the plan and testing.md, offer execution choice:
 
-**"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
+**"Plan complete and saved to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`. testing.md also generated. Two execution options:**
 
 **1. Subagent-Driven (this session)** - I dispatch fresh subagent per task, review between tasks, fast iteration
 

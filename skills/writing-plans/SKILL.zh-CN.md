@@ -51,7 +51,9 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **REQ:** REQ-{id}
+
 **Specs:** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
+
 **Goal:** [One sentence describing what this builds]
 
 **Architecture:** [2-3 sentences about approach]
