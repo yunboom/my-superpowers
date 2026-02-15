@@ -70,39 +70,9 @@ For each dimension:
 
 ## Output: requirements.md
 
-Write to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`:
+Use `requirements-template.md` in this skill's directory for the output structure. Output content in Chinese, technical terms in English.
 
-```markdown
-# Requirements: {Title}
-
-> REQ-{id} | Source: {feishu_link_or_manual}
-
-## 1. Background
-{Summarized from PRD}
-
-## 2. Functional Requirements
-### 2.1 {Feature Group 1}
-- FR-1: {requirement}
-- FR-2: {requirement}
-
-### 2.2 {Feature Group 2}
-...
-
-## 3. Non-Functional Requirements
-- NFR-1: {performance/SLA/observability requirement}
-
-## 4. Out of Scope
-- {explicitly excluded items}
-
-## 5. Assumptions
-- {clarified assumptions from brainstorming}
-
-## 6. Acceptance Criteria
-- AC-1: {criterion}
-
-## 7. Open Questions
-- {any remaining items for later phases}
-```
+Write to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`.
 
 ## After Confirmation
 
