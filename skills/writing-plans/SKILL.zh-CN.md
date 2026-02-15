@@ -17,15 +17,20 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 **计划保存到：** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`
 
-## 确定 Specs 路径并加载上下文
+## REQ-id 确认
 
-1. 确定 specs 目录路径 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`：
-   - 如果在同一会话中由 `/generate-design` 之后调用，路径已知
-   - 如果未知，扫描 `docs/specs/` 并选取日期最近的 `yyyy-MM-dd-REQ-*` 目录，展示给用户确认
-   - 如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"
-2. 加载上下文文件（只有前序步骤**显式读取（Read）过文件**才算"已在上下文中"——**写入/生成（Write）文件不算**）：
-   - `requirements.md` —— 如果同一会话中前序步骤（如 `/generate-hld` 或 `/generate-design`）已**读取**过此文件，可跳过。否则**强制读取** `{specs_path}/requirements.md`。
-   - `design.md` —— 如果同一会话中前序步骤已**读取**过此文件，可跳过。否则**强制读取** `{specs_path}/design.md`。
+1. 检查当前的 specs 目录上下文（如果是在 /generate-design 之后调用的，路径已知）
+2. 如果没有上下文，扫描 `docs/specs/` 查找最近的 `yyyy-MM-dd-REQ-{id}` 目录
+3. 向用户展示找到的 REQ-id 以确认
+4. 确定或确认主题名称
+
+## 上下文加载
+
+在编写计划之前，确保以下上下文可用：
+- `requirements.md` — 澄清后的需求
+- `design.md` — 详细技术设计
+
+**按需加载：** 如果某个文件的内容已在当前对话上下文中（例如，在同一会话中由之前的 `/prd-clarify` 或 `/generate-design` 步骤产出），则跳过文件读取，直接使用现有内容。仅在上下文中不存在该内容时才从规格目录读取文件。
 
 使用这些作为计划生成的主要输入。
 

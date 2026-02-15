@@ -15,12 +15,11 @@ For complex multi-microservice requirements, generate a high-level design that d
 
 ## The Process
 
-### Step 1: Resolve Specs Path and Load Context
-1. Determine the specs directory path `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`:
-   - If invoked after `/prd-clarify` in the same session, the path is already known
-   - If not known, scan `docs/specs/` and select the most recent `yyyy-MM-dd-REQ-*` directory (by date), present it to the user for confirmation
-   - If no specs directories exist, prompt: "No specs directory found. Please run `/prd-clarify` first to create requirements."
-2. **MANDATORY:** Read `{specs_path}/requirements.md` (no exceptions, no other location)
+### Step 1: Load Context
+1. Confirm the specs path: `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
+2. Check if `requirements.md` content is already available in the current conversation context (e.g., produced by a prior `/prd-clarify` step in the same session)
+3. If already in context → skip file reading, use existing content directly
+4. If not in context → read `requirements.md` from the specs directory
 
 ### Step 2: Discover Current Architecture
 - **REQUIRED SUB-SKILL:** Use superpowers:system-design

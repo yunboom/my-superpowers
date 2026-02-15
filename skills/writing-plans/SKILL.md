@@ -17,15 +17,20 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Save plans to:** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`
 
-## Resolve Specs Path and Load Context
+## REQ-id Resolution
 
-1. Determine the specs directory path `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`:
-   - If invoked after `/generate-design` in the same session, the path is already known
-   - If not known, scan `docs/specs/` and select the most recent `yyyy-MM-dd-REQ-*` directory (by date), present it to the user for confirmation
-   - If no specs directories exist, prompt: "No specs directory found. Please run `/prd-clarify` first to create requirements."
-2. Load context files (only a prior step's **explicit file read** counts as "in context" — file **writes/generation** do NOT count):
-   - `requirements.md` — if a prior workflow step (e.g., `/generate-hld` or `/generate-design`) already **read** this file in the same session, skip. Otherwise, **MANDATORY** read `{specs_path}/requirements.md`.
-   - `design.md` — if a prior step already **read** this file in the same session, skip. Otherwise, **MANDATORY** read `{specs_path}/design.md`.
+1. Check the current specs directory context (if invoked after /generate-design, the path is known)
+2. If no context, scan `docs/specs/` for the most recent `yyyy-MM-dd-REQ-{id}` directory
+3. Present the found REQ-id to user for confirmation
+4. Determine or confirm the topic name
+
+## Context Loading
+
+Before writing the plan, ensure the following context is available:
+- `requirements.md` — clarified requirements
+- `design.md` — detailed technical design
+
+**Load on demand:** If a file's content is already available in the current conversation context (e.g., produced by prior `/prd-clarify` or `/generate-design` steps in the same session), skip file reading and use existing content directly. Only read from the specs directory when the content is not already in context.
 
 Use these as the primary input for plan generation.
 

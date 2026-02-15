@@ -17,14 +17,12 @@ description: Use when you need to create a detailed technical design for a speci
 
 ## 流程
 
-### 步骤 1：确定 Specs 路径并加载上下文
-1. 确定 specs 目录路径 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`：
-   - 如果在同一会话中由 `/generate-hld` 之后调用，路径已知
-   - 如果未知，扫描 `docs/specs/` 并选取日期最近的 `yyyy-MM-dd-REQ-*` 目录，展示给用户确认
-   - 如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"
-2. 加载上下文文件（只有前序步骤**显式读取（Read）过文件**才算"已在上下文中"——**写入/生成（Write）文件不算**）：
-   - `requirements.md` —— 如果同一会话中前序步骤（如 `/generate-hld`）已**读取**过此文件，可跳过。否则**强制读取** `{specs_path}/requirements.md`。
-   - `hld.md` —— 如果同一会话中前序步骤已**读取**过此文件，可跳过。否则从 `{specs_path}/hld.md` 读取（如果存在）。
+### 步骤 1：加载上下文
+1. 确认规格路径：`docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
+2. 对于每个上下文文件（`requirements.md`、`hld.md`）：
+   - 检查其内容是否已在当前对话上下文中（例如，在同一会话中由之前的 `/prd-clarify` 或 `/generate-hld` 步骤产出）
+   - 如果已在上下文中 → 跳过文件读取，直接使用现有内容
+   - 如果不在上下文中 → 从规格目录读取（如果文件存在）
 3. 确认本次设计会话的目标微服务
 
 ### 步骤 2：技术头脑风暴
