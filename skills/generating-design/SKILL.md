@@ -43,31 +43,17 @@ After user confirms the specs path:
    - If not in context → read from `{specs_path}/` (if the file exists)
 2. Confirm the target microservice for this design session
 
-### Step 2: Technical Brainstorming
+### Step 2: Identify Technical Needs and Research
 
-Use brainstorming dialogue patterns: one question at a time, prefer multiple-choice.
-
-**Every question MUST include a "Write all options to design.md for team review" choice.** When selected, do NOT decide — instead write all researched options with their pros/cons/trade-offs into design.md for the team to evaluate and select during review.
-
-Cover these technical dimensions:
-- API design (endpoints, contracts, versioning)
-- Data model (tables, indexes, migrations)
-- Core logic (algorithms, state machines, business rules)
-- Dependencies (external services, libraries, infrastructure)
-- Error handling (failure modes, retry strategies, circuit breakers)
-- Observability (metrics, logging, alerting)
-- Testing strategy (unit, integration, edge cases)
-- Rollout plan (feature flags, gradual rollout, rollback)
-
-**During brainstorming, actively uncover hidden technical needs from business scenarios:**
+**First, analyze requirements and uncover hidden technical needs from business scenarios:**
 - Identify middleware that could enable the feature (e.g., Redis for caching/locking, Elasticsearch for full-text search, Kafka for event-driven flows)
 - Identify architectural patterns needed (e.g., data consistency, distributed transactions, CQRS, eventual consistency)
 - Do NOT just accept the obvious approach — proactively explore whether introducing the right middleware or pattern could significantly improve the solution
 
-### Step 3: Mandatory Technical Research
+**Then, dispatch research sub-agents to gather information BEFORE brainstorming with the user.**
 
 <HARD-GATE>
-For ANY of the following technical decisions, you MUST dispatch research sub-agents via superpowers:deep-researching. Do NOT rely on existing knowledge alone — get the latest industry practices and community solutions.
+For ANY of the following technical decisions, you MUST dispatch research sub-agents via superpowers:deep-researching BEFORE presenting options to the user. Do NOT rely on existing knowledge alone — get the latest industry practices and community solutions.
 
 **Mandatory research triggers:**
 1. **Middleware selection** — choosing between or introducing middleware (Redis, Elasticsearch, Kafka, RabbitMQ, etc.)
@@ -79,29 +65,42 @@ You may NOT skip research by claiming "I already know the best practice." The pu
 </HARD-GATE>
 
 ```dot
-digraph research_trigger {
-    "Technical decision point" [shape=box];
+digraph design_flow {
+    "Analyze requirements" [shape=box];
+    "Identify technical needs" [shape=box];
     "Middleware / architecture / new tech / perf-critical?" [shape=diamond];
-    "Continue brainstorming" [shape=box];
-    "Formulate research questions" [shape=box];
-    "Multiple topics?" [shape=diamond];
-    "Dispatch 1 sub-agent" [shape=box];
-    "Dispatch N sub-agents in parallel" [shape=box];
-    "Integrate results into design" [shape=box];
+    "Dispatch research sub-agents" [shape=box];
+    "Integrate research results" [shape=box];
+    "Technical brainstorming with user" [shape=box];
 
-    "Technical decision point" -> "Middleware / architecture / new tech / perf-critical?";
-    "Middleware / architecture / new tech / perf-critical?" -> "Continue brainstorming" [label="no - simple CRUD"];
-    "Middleware / architecture / new tech / perf-critical?" -> "Formulate research questions" [label="yes - MUST research"];
-    "Formulate research questions" -> "Multiple topics?";
-    "Multiple topics?" -> "Dispatch 1 sub-agent" [label="no"];
-    "Multiple topics?" -> "Dispatch N sub-agents in parallel" [label="yes"];
-    "Dispatch 1 sub-agent" -> "Integrate results into design";
-    "Dispatch N sub-agents in parallel" -> "Integrate results into design";
-    "Integrate results into design" -> "Continue brainstorming";
+    "Analyze requirements" -> "Identify technical needs";
+    "Identify technical needs" -> "Middleware / architecture / new tech / perf-critical?";
+    "Middleware / architecture / new tech / perf-critical?" -> "Dispatch research sub-agents" [label="yes - MUST research first"];
+    "Middleware / architecture / new tech / perf-critical?" -> "Technical brainstorming with user" [label="no - simple CRUD"];
+    "Dispatch research sub-agents" -> "Integrate research results";
+    "Integrate research results" -> "Technical brainstorming with user";
 }
 ```
 
 **REQUIRED SUB-SKILL:** Use superpowers:deep-researching for all research dispatches.
+
+### Step 3: Technical Brainstorming
+
+Use brainstorming dialogue patterns: one question at a time, prefer multiple-choice.
+
+**Every question MUST include a "Write all options to design.md for team review" choice.** When selected, do NOT decide — instead write all researched options with their pros/cons/trade-offs into design.md for the team to evaluate and select during review.
+
+Present research findings as part of the options — each option should include evidence from the research (community practices, benchmarks, trade-offs).
+
+Cover these technical dimensions:
+- API design (endpoints, contracts, versioning)
+- Data model (tables, indexes, migrations)
+- Core logic (algorithms, state machines, business rules)
+- Dependencies (external services, libraries, infrastructure)
+- Error handling (failure modes, retry strategies, circuit breakers)
+- Observability (metrics, logging, alerting)
+- Testing strategy (unit, integration, edge cases)
+- Rollout plan (feature flags, gradual rollout, rollback)
 
 ### Step 4: Generate Design Document
 - Use `design-template.md` in this skill's directory

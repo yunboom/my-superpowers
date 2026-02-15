@@ -43,31 +43,17 @@ description: Use when you need to create a detailed technical design for a speci
    - 如果不在上下文中 → 从 `{specs_path}/` 读取（如果文件存在）
 2. 确认本次设计会话的目标微服务
 
-### 步骤 3：技术头脑风暴
+### 步骤 3：识别技术需求并调研
 
-使用头脑风暴对话模式：每次一个问题，优先多选题。
-
-**每个问题都必须包含"将所有方案写入 design.md 供团队评审选型"选项。** 用户选择该选项时，不做决策——将所有调研到的方案及其优缺点、权衡分析写入 design.md，由团队在评审时评估选择。
-
-覆盖以下技术维度：
-- API 设计（端点、契约、版本控制）
-- 数据模型（表、索引、迁移）
-- 核心逻辑（算法、状态机、业务规则）
-- 依赖项（外部服务、库、基础设施）
-- 错误处理（故障模式、重试策略、熔断器）
-- 可观测性（指标、日志、告警）
-- 测试策略（单元测试、集成测试、边界用例）
-- 发布计划（Feature Flag、灰度发布、回滚方案）
-
-**头脑风暴过程中，主动从业务场景中挖掘潜在技术需求：**
+**首先，分析需求并从业务场景中挖掘潜在技术需求：**
 - 识别能够支撑功能的中间件（如：Redis 用于缓存/分布式锁、Elasticsearch 用于全文搜索、Kafka 用于事件驱动流程）
 - 识别所需的架构模式（如：数据一致性、分布式事务、CQRS、最终一致性）
 - 不要仅接受显而易见的方案——主动探索引入合适的中间件或模式是否能显著改善解决方案
 
-### 步骤 4：强制技术调研
+**然后，在与用户进行头脑风暴之前，先派遣调研子代理收集信息。**
 
 <HARD-GATE>
-对于以下任何技术决策，必须通过 superpowers:deep-researching 派遣调研子代理。不得仅依赖已有知识——必须获取最新的行业实践和社区方案。
+对于以下任何技术决策，必须在向用户展示选项之前，通过 superpowers:deep-researching 派遣调研子代理。不得仅依赖已有知识——必须获取最新的行业实践和社区方案。
 
 **强制调研触发条件：**
 1. **中间件选型** —— 选择或引入中间件（Redis、Elasticsearch、Kafka、RabbitMQ 等）
@@ -79,29 +65,42 @@ description: Use when you need to create a detailed technical design for a speci
 </HARD-GATE>
 
 ```dot
-digraph research_trigger {
-    "Technical decision point" [shape=box];
+digraph design_flow {
+    "Analyze requirements" [shape=box];
+    "Identify technical needs" [shape=box];
     "Middleware / architecture / new tech / perf-critical?" [shape=diamond];
-    "Continue brainstorming" [shape=box];
-    "Formulate research questions" [shape=box];
-    "Multiple topics?" [shape=diamond];
-    "Dispatch 1 sub-agent" [shape=box];
-    "Dispatch N sub-agents in parallel" [shape=box];
-    "Integrate results into design" [shape=box];
+    "Dispatch research sub-agents" [shape=box];
+    "Integrate research results" [shape=box];
+    "Technical brainstorming with user" [shape=box];
 
-    "Technical decision point" -> "Middleware / architecture / new tech / perf-critical?";
-    "Middleware / architecture / new tech / perf-critical?" -> "Continue brainstorming" [label="no - simple CRUD"];
-    "Middleware / architecture / new tech / perf-critical?" -> "Formulate research questions" [label="yes - MUST research"];
-    "Formulate research questions" -> "Multiple topics?";
-    "Multiple topics?" -> "Dispatch 1 sub-agent" [label="no"];
-    "Multiple topics?" -> "Dispatch N sub-agents in parallel" [label="yes"];
-    "Dispatch 1 sub-agent" -> "Integrate results into design";
-    "Dispatch N sub-agents in parallel" -> "Integrate results into design";
-    "Integrate results into design" -> "Continue brainstorming";
+    "Analyze requirements" -> "Identify technical needs";
+    "Identify technical needs" -> "Middleware / architecture / new tech / perf-critical?";
+    "Middleware / architecture / new tech / perf-critical?" -> "Dispatch research sub-agents" [label="yes - MUST research first"];
+    "Middleware / architecture / new tech / perf-critical?" -> "Technical brainstorming with user" [label="no - simple CRUD"];
+    "Dispatch research sub-agents" -> "Integrate research results";
+    "Integrate research results" -> "Technical brainstorming with user";
 }
 ```
 
 **必需子技能：** 使用 superpowers:deep-researching 执行所有调研派发。
+
+### 步骤 4：技术头脑风暴
+
+使用头脑风暴对话模式：每次一个问题，优先多选题。
+
+**每个问题都必须包含"将所有方案写入 design.md 供团队评审选型"选项。** 用户选择该选项时，不做决策——将所有调研到的方案及其优缺点、权衡分析写入 design.md，由团队在评审时评估选择。
+
+将调研结果作为选项的一部分呈现——每个选项应包含调研获得的证据（社区实践、性能基准、权衡分析）。
+
+覆盖以下技术维度：
+- API 设计（端点、契约、版本控制）
+- 数据模型（表、索引、迁移）
+- 核心逻辑（算法、状态机、业务规则）
+- 依赖项（外部服务、库、基础设施）
+- 错误处理（故障模式、重试策略、熔断器）
+- 可观测性（指标、日志、告警）
+- 测试策略（单元测试、集成测试、边界用例）
+- 发布计划（Feature Flag、灰度发布、回滚方案）
 
 ### 步骤 4：生成设计文档
 - 使用本技能目录下的 `design-template.md`
