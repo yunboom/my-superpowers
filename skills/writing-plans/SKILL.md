@@ -29,12 +29,12 @@ Determine the target specs directory `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`:
 
 ## Context Loading
 
-After user confirms the specs path:
-- For each context file (`requirements.md`, `design.md`):
-  - If already in the current conversation context (e.g., loaded by a prior step in the same session) → skip file reading
-  - If not in context → read from `{specs_path}/`
+Read exactly these 2 files from the resolved specs path. Do NOT read any other files (e.g., do NOT read hld.md).
 
-Use these as the primary input for plan generation.
+1. `{specs_path}/requirements.md`
+2. `{specs_path}/design.md`
+
+If either file was already loaded by a prior step in the same session, skip reading that file. Use these 2 files as the primary input for plan generation.
 
 ## Bite-Sized Task Granularity
 

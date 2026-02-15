@@ -29,12 +29,12 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 ## 上下文加载
 
-用户确认 specs 路径后：
-- 对于每个上下文文件（`requirements.md`、`design.md`）：
-  - 如果已在当前对话上下文中（例如，在同一会话中由前序步骤加载过） → 跳过文件读取
-  - 如果不在上下文中 → 从 `{specs_path}/` 读取
+从确定的 specs 路径中精确读取以下 2 个文件，不得读取其他文件（如不得读取 hld.md）。
 
-使用这些作为计划生成的主要输入。
+1. `{specs_path}/requirements.md`
+2. `{specs_path}/design.md`
+
+如果某个文件在同一会话中已由前序步骤加载过，可跳过该文件的读取。使用这 2 个文件作为计划生成的主要输入。
 
 ## 小粒度任务拆分
 
