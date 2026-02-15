@@ -16,10 +16,8 @@ For complex multi-microservice requirements, generate a high-level design that d
 ## The Process
 
 ### Step 1: Load Context
-1. Confirm the specs path: `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
-2. Check if `requirements.md` content is already available in the current conversation context (e.g., produced by a prior `/prd-clarify` step in the same session)
-3. If already in context → skip file reading, use existing content directly
-4. If not in context → read `requirements.md` from the specs directory
+1. Read `requirements.md` from the same specs directory
+2. Confirm the specs path: `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
 
 ### Step 2: Discover Current Architecture
 - **REQUIRED SUB-SKILL:** Use superpowers:system-design
