@@ -17,19 +17,15 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 **计划保存到：** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`
 
-## REQ-id 确认
+## 确定 Specs 路径并加载上下文
 
-1. 检查当前的 specs 目录上下文（如果是在 /generate-design 之后调用的，路径已知）
-2. 如果没有上下文，扫描 `docs/specs/` 查找最近的 `yyyy-MM-dd-REQ-{id}` 目录
-3. 向用户展示找到的 REQ-id 以确认
-4. 确定或确认主题名称
-
-## 上下文加载
-
-**强制要求：编写计划前必须从 specs 目录读取以下文件，无任何例外。**
-- 读取 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`
-- 读取 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
-- 不得从其他位置读取，只从该 specs 目录读取。
+1. 确定 specs 目录路径 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`：
+   - 如果在同一会话中由 `/generate-design` 之后调用，路径已知
+   - 如果未知，扫描 `docs/specs/` 下已有的 `yyyy-MM-dd-REQ-*` 目录，询问用户确认使用哪个 REQ-id 和 topic
+   - 如果不存在 specs 目录，询问用户提供 REQ-id 和 topic 名称
+2. **强制要求：** 从确定的 specs 目录读取以下文件（无例外，不从其他位置读取）：
+   - `{specs_path}/requirements.md`
+   - `{specs_path}/design.md`
 
 使用这些作为计划生成的主要输入。
 

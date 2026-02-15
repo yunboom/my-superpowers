@@ -15,10 +15,12 @@ description: Use when a complex requirement involves multiple microservices and 
 
 ## 流程
 
-### 步骤 1：加载上下文
-1. 确认规格路径：`docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
-2. **强制要求：读取 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`，无任何例外。**
-   - 不得从其他位置读取，只从该 specs 目录读取。
+### 步骤 1：确定 Specs 路径并加载上下文
+1. 确定 specs 目录路径 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`：
+   - 如果在同一会话中由 `/prd-clarify` 之后调用，路径已知
+   - 如果未知，扫描 `docs/specs/` 下已有的 `yyyy-MM-dd-REQ-*` 目录，询问用户确认使用哪个 REQ-id 和 topic
+   - 如果不存在 specs 目录，询问用户提供 REQ-id 和 topic 名称
+2. **强制要求：** 读取 `{specs_path}/requirements.md`（无例外，不从其他位置读取）
 
 ### 步骤 2：发现当前架构
 - **必需子技能：** 使用 superpowers:system-design

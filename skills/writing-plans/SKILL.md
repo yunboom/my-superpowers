@@ -17,19 +17,15 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Save plans to:** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`
 
-## REQ-id Resolution
+## Resolve Specs Path and Load Context
 
-1. Check the current specs directory context (if invoked after /generate-design, the path is known)
-2. If no context, scan `docs/specs/` for the most recent `yyyy-MM-dd-REQ-{id}` directory
-3. Present the found REQ-id to user for confirmation
-4. Determine or confirm the topic name
-
-## Context Loading
-
-**MANDATORY: Read the following files from the specs directory before writing the plan. No exceptions.**
-- Read `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`
-- Read `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
-- Do NOT read from any other location. Only read from this specific specs directory.
+1. Determine the specs directory path `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`:
+   - If invoked after `/generate-design` in the same session, the path is already known
+   - If not known, scan `docs/specs/` for existing `yyyy-MM-dd-REQ-*` directories and ask the user to confirm which REQ-id and topic to use
+   - If no specs directories exist, ask the user to provide the REQ-id and topic name
+2. **MANDATORY:** Read these files from the resolved specs directory (no exceptions, no other location):
+   - `{specs_path}/requirements.md`
+   - `{specs_path}/design.md`
 
 Use these as the primary input for plan generation.
 

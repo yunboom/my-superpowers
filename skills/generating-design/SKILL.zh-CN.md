@@ -17,12 +17,14 @@ description: Use when you need to create a detailed technical design for a speci
 
 ## 流程
 
-### 步骤 1：加载上下文
-1. 确认规格路径：`docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
-2. **强制要求：从 specs 目录读取以下文件，无任何例外。**
-   - 读取 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`
-   - 读取 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/hld.md`（如果存在）
-   - 不得从其他位置读取，只从该 specs 目录读取。
+### 步骤 1：确定 Specs 路径并加载上下文
+1. 确定 specs 目录路径 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`：
+   - 如果在同一会话中由 `/generate-hld` 之后调用，路径已知
+   - 如果未知，扫描 `docs/specs/` 下已有的 `yyyy-MM-dd-REQ-*` 目录，询问用户确认使用哪个 REQ-id 和 topic
+   - 如果不存在 specs 目录，询问用户提供 REQ-id 和 topic 名称
+2. **强制要求：** 从确定的 specs 目录读取以下文件（无例外，不从其他位置读取）：
+   - `{specs_path}/requirements.md`
+   - `{specs_path}/hld.md`（如果存在）
 3. 确认本次设计会话的目标微服务
 
 ### 步骤 2：技术头脑风暴
