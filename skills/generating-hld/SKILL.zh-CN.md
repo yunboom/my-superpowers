@@ -18,8 +18,8 @@ description: Use when a complex requirement involves multiple microservices and 
 ### 步骤 1：确定 Specs 路径并加载上下文
 1. 确定 specs 目录路径 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`：
    - 如果在同一会话中由 `/prd-clarify` 之后调用，路径已知
-   - 如果未知，扫描 `docs/specs/` 下已有的 `yyyy-MM-dd-REQ-*` 目录，询问用户确认使用哪个 REQ-id 和 topic
-   - 如果不存在 specs 目录，询问用户提供 REQ-id 和 topic 名称
+   - 如果未知，扫描 `docs/specs/` 并选取日期最近的 `yyyy-MM-dd-REQ-*` 目录，展示给用户确认
+   - 如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"
 2. **强制要求：** 读取 `{specs_path}/requirements.md`（无例外，不从其他位置读取）
 
 ### 步骤 2：发现当前架构
