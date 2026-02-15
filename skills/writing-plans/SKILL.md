@@ -110,6 +110,27 @@ git commit -m "REQ-{id} feat: add specific feature"
 ```
 ````
 
+**The LAST task in every plan MUST be: "Run all testing.md integration test cases".**
+
+````markdown
+### Task N (Final): Run testing.md Integration Tests
+
+**Step 1: Execute all test cases from testing.md**
+
+Run each test case from `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/testing.md` one by one.
+Record PASS/FAIL for each case.
+
+**Step 2: Fix any failures**
+
+If a test case fails due to code issues, fix and re-run.
+If a test case itself appears to be wrong, STOP and report to user.
+Do NOT modify testing.md.
+
+**Step 3: Confirm all PASS**
+
+All test cases must pass before marking the plan as complete.
+````
+
 ## Code Comment Convention
 
 ALL code comments in the plan MUST carry `REQ-{id}`:
@@ -132,6 +153,9 @@ After generating `plan.md`, also generate `testing.md` in the same specs directo
 - Detailed end-to-end test cases
 - Coverage: normal flows, exception flows, boundary conditions, concurrency scenarios
 - Each test case includes: preconditions, operation steps, expected results
+- **API test cases MUST include complete curl commands** (with URL, method, headers, request body) that can be directly copied and executed
+- **Script-based verification MUST include complete scripts** (with full code, execution commands, and expected output)
+- All test steps must be directly executable — no placeholders like "call the API" or "verify the result"
 - Once generated, testing.md MUST NOT be modified in subsequent workflow steps
 
 **testing.md format:**
@@ -147,11 +171,29 @@ After generating `plan.md`, also generate `testing.md` in the same specs directo
 - {precondition 1}
 
 **Steps:**
-1. {step 1}
-2. {step 2}
+
+1. Call API:
+\`\`\`bash
+curl -X POST http://localhost:8080/api/v1/orders \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {token}" \
+  -d '{
+    "customer_id": "123",
+    "amount": 100.00
+  }'
+\`\`\`
+
+2. Verify response:
+- HTTP Status: 200
+- Response body contains `"order_id"`
+
+3. Verify database (if needed):
+\`\`\`bash
+mysql -u root -p -e "SELECT * FROM orders WHERE customer_id='123';"
+\`\`\`
 
 **Expected Result:**
-- {expected outcome}
+- {expected outcome with specific values}
 
 ## TC-2: {Test Case Title}
 ...

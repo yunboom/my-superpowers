@@ -110,6 +110,27 @@ git commit -m "REQ-{id} feat: add specific feature"
 ```
 ````
 
+**每个计划的最后一个任务必须是："运行 testing.md 中的所有集成测试用例"。**
+
+````markdown
+### Task N（最终）：运行 testing.md 集成测试
+
+**步骤 1：逐一执行 testing.md 中的所有测试用例**
+
+运行 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/testing.md` 中的每个测试用例。
+记录每个用例的 PASS/FAIL 结果。
+
+**步骤 2：修复失败项**
+
+如果测试用例因代码问题失败，修复并重新运行。
+如果测试用例本身有问题，停止并向用户反馈。
+不得修改 testing.md。
+
+**步骤 3：确认全部通过**
+
+所有测试用例必须通过后才能标记计划完成。
+````
+
 ## 代码注释规范
 
 计划中的所有代码注释必须携带 `REQ-{id}`：
@@ -132,6 +153,9 @@ git commit -m "REQ-{id} feat: add specific feature"
 - 详细的端到端测试用例
 - 覆盖：正常流程、异常流程、边界条件、并发场景
 - 每个测试用例包含：前置条件、操作步骤、预期结果
+- **API 测试用例必须包含完整的 curl 命令**（含 URL、方法、请求头、请求体），可直接复制执行
+- **脚本验证必须包含完整脚本**（含完整代码、执行命令、预期输出）
+- 所有测试步骤必须可直接执行——不允许"调用接口"或"验证结果"等占位描述
 - 一旦生成，testing.md 在后续工作流步骤中不得修改
 
 **testing.md 格式：**
@@ -147,11 +171,29 @@ git commit -m "REQ-{id} feat: add specific feature"
 - {precondition 1}
 
 **Steps:**
-1. {step 1}
-2. {step 2}
+
+1. 调用 API：
+\`\`\`bash
+curl -X POST http://localhost:8080/api/v1/orders \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {token}" \
+  -d '{
+    "customer_id": "123",
+    "amount": 100.00
+  }'
+\`\`\`
+
+2. 验证响应：
+- HTTP Status: 200
+- 响应体包含 `"order_id"`
+
+3. 验证数据库（如需要）：
+\`\`\`bash
+mysql -u root -p -e "SELECT * FROM orders WHERE customer_id='123';"
+\`\`\`
 
 **Expected Result:**
-- {expected outcome}
+- {包含具体数值的预期结果}
 
 ## TC-2: {Test Case Title}
 ...
