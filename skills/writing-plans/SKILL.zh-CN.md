@@ -19,11 +19,13 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 ## 确定 Specs 路径并加载上下文
 
-1. 确认规格路径：`docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
+1. 确定 specs 目录路径 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`：
+   - 如果在同一会话中由 `/generate-design` 之后调用，路径已知
+   - 如果未知，扫描 `docs/specs/` 并选取日期最近的 `yyyy-MM-dd-REQ-*` 目录，展示给用户确认
+   - 如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"
 2. 对于每个上下文文件（`requirements.md`、`design.md`）：
-   - 检查其内容是否已在当前对话上下文中（例如，在同一会话中由之前的 `/generate-design` 步骤产出）
-   - 如果已在上下文中 → 跳过文件读取，直接使用现有内容
-   - 如果不在上下文中 → 从规格目录读取
+   - 如果已在当前对话上下文中（例如，在同一会话中由前序步骤加载过） → 跳过文件读取
+   - 如果不在上下文中 → 从 `{specs_path}/` 读取
 
 使用这些作为计划生成的主要输入。
 

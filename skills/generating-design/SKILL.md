@@ -17,12 +17,14 @@ Conduct detailed technical design for a specified microservice. Deeply uncover p
 
 ## The Process
 
-### Step 1: Load Context
-1. Confirm the specs path: `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
+### Step 1: Resolve Specs Path and Load Context
+1. Determine the specs directory path `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`:
+   - If invoked after `/generate-hld` in the same session, the path is already known
+   - If not known, scan `docs/specs/` and select the most recent `yyyy-MM-dd-REQ-*` directory (by date), present it to the user for confirmation
+   - If no specs directories exist, prompt: "No specs directory found. Please run `/prd-clarify` first to create requirements."
 2. For each context file (`requirements.md`, `hld.md`):
-   - Check if its content is already available in the current conversation context (e.g., produced by prior `/prd-clarify` or `/generate-hld` steps in the same session)
-   - If already in context → skip file reading, use existing content directly
-   - If not in context → read from the specs directory (if the file exists)
+   - If already in the current conversation context (e.g., loaded by a prior step in the same session) → skip file reading
+   - If not in context → read from `{specs_path}/` (if the file exists)
 3. Confirm the target microservice for this design session
 
 ### Step 2: Technical Brainstorming

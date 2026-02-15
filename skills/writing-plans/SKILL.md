@@ -19,11 +19,13 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 ## Resolve Specs Path and Load Context
 
-1. Confirm the specs path: `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
+1. Determine the specs directory path `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`:
+   - If invoked after `/generate-design` in the same session, the path is already known
+   - If not known, scan `docs/specs/` and select the most recent `yyyy-MM-dd-REQ-*` directory (by date), present it to the user for confirmation
+   - If no specs directories exist, prompt: "No specs directory found. Please run `/prd-clarify` first to create requirements."
 2. For each context file (`requirements.md`, `design.md`):
-   - Check if its content is already available in the current conversation context (e.g., produced by prior `/generate-design` step in the same session)
-   - If already in context → skip file reading, use existing content directly
-   - If not in context → read from the specs directory
+   - If already in the current conversation context (e.g., loaded by a prior step in the same session) → skip file reading
+   - If not in context → read from `{specs_path}/`
 
 Use these as the primary input for plan generation.
 
