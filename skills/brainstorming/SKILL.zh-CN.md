@@ -25,10 +25,11 @@ description: "You MUST use this before any creative work - creating features, bu
 
 1. **探索项目上下文** — 检查文件、文档、最近的提交
 2. **提出澄清问题** — 一次一个，理解目的/约束/成功标准
-3. **提出 2-3 种方案** — 包含权衡分析和你的推荐
-4. **展示设计方案** — 各部分按其复杂度进行展开，每个部分完成后获得用户批准
-5. **编写设计文档** — 保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md` 并提交
-6. **过渡到实现** — 调用 writing-plans skill 创建实现计划
+3. **深度调研** — 针对需要最新行业实践的技术决策，派遣调研子代理
+4. **提出 2-3 种方案** — 包含权衡分析和你的推荐，以调研证据为支撑
+5. **展示设计方案** — 各部分按其复杂度进行展开，每个部分完成后获得用户批准
+6. **编写设计文档** — 保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md` 并提交
+7. **过渡到实现** — 调用 writing-plans skill 创建实现计划
 
 ## 流程图
 
@@ -36,6 +37,7 @@ description: "You MUST use this before any creative work - creating features, bu
 digraph brainstorming {
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
+    "Deep research (if needed)" [shape=box];
     "Propose 2-3 approaches" [shape=box];
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
@@ -43,7 +45,8 @@ digraph brainstorming {
     "Invoke writing-plans skill" [shape=doublecircle];
 
     "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
+    "Ask clarifying questions" -> "Deep research (if needed)";
+    "Deep research (if needed)" -> "Propose 2-3 approaches";
     "Propose 2-3 approaches" -> "Present design sections";
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
@@ -63,10 +66,17 @@ digraph brainstorming {
 - 每条消息只提一个问题——如果某个主题需要更多探讨，就拆分成多个问题
 - 重点理解：目的、约束、成功标准
 
+**深度调研（在提出方案之前）：**
+- 澄清问题结束后，识别需要调研的技术决策（中间件选型、架构模式、引入新技术、性能关键设计）
+- 对每个此类决策，通过 superpowers:deep-researching 派遣调研子代理获取最新行业实践和社区方案
+- 多个主题可并行调研
+- 在提出方案之前整合调研结果
+
 **探索方案：**
 - 提出 2-3 种不同的方案及其权衡
 - 以对话方式呈现选项，附上你的推荐和理由
 - 先展示你推荐的方案并解释原因
+- 以调研证据（社区实践、性能基准、权衡分析）为各选项的支撑
 
 **展示设计：**
 - 一旦你认为自己理解了要构建的内容，就展示设计方案

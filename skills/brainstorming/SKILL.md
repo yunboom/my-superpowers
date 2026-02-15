@@ -25,10 +25,11 @@ You MUST create a task for each of these items and complete them in order:
 
 1. **Explore project context** — check files, docs, recent commits
 2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-3. **Propose 2-3 approaches** — with trade-offs and your recommendation
-4. **Present design** — in sections scaled to their complexity, get user approval after each section
-5. **Write design doc** — save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md` and commit
-6. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+3. **Deep research** — dispatch research sub-agents for technical decisions that need latest industry practices
+4. **Propose 2-3 approaches** — with trade-offs and your recommendation, backed by research evidence
+5. **Present design** — in sections scaled to their complexity, get user approval after each section
+6. **Write design doc** — save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md` and commit
+7. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
 ## Process Flow
 
@@ -36,6 +37,7 @@ You MUST create a task for each of these items and complete them in order:
 digraph brainstorming {
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
+    "Deep research (if needed)" [shape=box];
     "Propose 2-3 approaches" [shape=box];
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
@@ -43,7 +45,8 @@ digraph brainstorming {
     "Invoke writing-plans skill" [shape=doublecircle];
 
     "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
+    "Ask clarifying questions" -> "Deep research (if needed)";
+    "Deep research (if needed)" -> "Propose 2-3 approaches";
     "Propose 2-3 approaches" -> "Present design sections";
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
@@ -63,10 +66,17 @@ digraph brainstorming {
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
 - Focus on understanding: purpose, constraints, success criteria
 
+**Deep research (before proposing approaches):**
+- After clarifying questions, identify technical decisions that need research (middleware selection, architecture patterns, new technology introduction, performance-critical design)
+- For each such decision, dispatch research sub-agents via superpowers:deep-researching to get the latest industry practices and community solutions
+- Multiple topics can be researched in parallel
+- Integrate research findings before proposing approaches
+
 **Exploring approaches:**
 - Propose 2-3 different approaches with trade-offs
 - Present options conversationally with your recommendation and reasoning
 - Lead with your recommended option and explain why
+- Back options with evidence from research (community practices, benchmarks, trade-offs)
 
 **Presenting the design:**
 - Once you believe you understand what you're building, present the design
