@@ -70,39 +70,9 @@ description: Use when receiving a PRD (Product Requirements Document) to conduct
 
 ## 输出：requirements.md
 
-写入 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`：
+使用本技能目录下的 `requirements-template.md` 作为输出结构。内容用中文输出，技术术语用英文。
 
-```markdown
-# Requirements: {Title}
-
-> REQ-{id} | Source: {feishu_link_or_manual}
-
-## 1. Background
-{Summarized from PRD}
-
-## 2. Functional Requirements
-### 2.1 {Feature Group 1}
-- FR-1: {requirement}
-- FR-2: {requirement}
-
-### 2.2 {Feature Group 2}
-...
-
-## 3. Non-Functional Requirements
-- NFR-1: {performance/SLA/observability requirement}
-
-## 4. Out of Scope
-- {explicitly excluded items}
-
-## 5. Assumptions
-- {clarified assumptions from brainstorming}
-
-## 6. Acceptance Criteria
-- AC-1: {criterion}
-
-## 7. Open Questions
-- {any remaining items for later phases}
-```
+写入 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`。
 
 ## 确认后
 
