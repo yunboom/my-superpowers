@@ -29,8 +29,7 @@ You MUST create a task for each of these items and complete them in order:
 4. **Create specs directory** — `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
 5. **Requirements brainstorming** — one question at a time through checklist
 6. **Generate requirements.md** — structured output
-7. **User confirms** — get explicit approval
-8. **Prompt next step** — /generate-hld or /generate-design
+7. **Prompt next step** — /generate-hld or /generate-design
 
 ## PRD Input
 
@@ -57,9 +56,7 @@ Use brainstorming dialogue patterns: **one question at a time, prefer multiple-c
 | **Data boundary** | Data volume, historical migration, lifecycle, retention? |
 | **Permissions & security** | Who can operate? Role-based access? Audit trail? |
 | **Compatibility** | Impact on existing features? Backward compatibility? Grayscale? |
-| **Non-functional requirements** | Performance targets, SLA, observability, monitoring? |
 | **Implicit assumptions** | Unstated assumptions that implementation must resolve? |
-| **Priority** | MVP-required vs. deferrable? Phase breakdown? |
 | **Acceptance criteria** | How to determine the requirement is complete? |
 
 For each dimension:

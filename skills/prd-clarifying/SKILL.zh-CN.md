@@ -29,7 +29,6 @@ description: Use when receiving a PRD (Product Requirements Document) to conduct
 4. **创建规格目录** —— `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
 5. **需求头脑风暴** —— 按检查清单逐一提问
 6. **生成 requirements.md** —— 结构化输出
-7. **用户确认** —— 获得明确批准
 8. **提示下一步** —— /generate-hld 或 /generate-design
 
 ## PRD 输入
@@ -57,9 +56,7 @@ description: Use when receiving a PRD (Product Requirements Document) to conduct
 | **数据边界** | 数据量、历史迁移、生命周期、保留策略？ |
 | **权限与安全** | 谁可以操作？基于角色的访问控制？审计追踪？ |
 | **兼容性** | 对现有功能的影响？向后兼容？灰度发布？ |
-| **非功能性需求** | 性能目标、SLA、可观测性、监控？ |
 | **隐含假设** | 实现中需要解决的未明确假设？ |
-| **优先级** | MVP 必需 vs. 可延迟？阶段划分？ |
 | **验收标准** | 如何判定需求已完成？ |
 
 对于每个维度：
