@@ -57,34 +57,47 @@ Cover these technical dimensions:
 - Testing strategy (unit, integration, edge cases)
 - Rollout plan (feature flags, gradual rollout, rollback)
 
-### Step 3: Auto-Research When Needed
+**During brainstorming, actively uncover hidden technical needs from business scenarios:**
+- Identify middleware that could enable the feature (e.g., Redis for caching/locking, Elasticsearch for full-text search, Kafka for event-driven flows)
+- Identify architectural patterns needed (e.g., data consistency, distributed transactions, CQRS, eventual consistency)
+- Do NOT just accept the obvious approach — proactively explore whether introducing the right middleware or pattern could significantly improve the solution
+
+### Step 3: Mandatory Technical Research
+
+<HARD-GATE>
+For ANY of the following technical decisions, you MUST dispatch research sub-agents via superpowers:deep-researching. Do NOT rely on existing knowledge alone — get the latest industry practices and community solutions.
+
+**Mandatory research triggers:**
+1. **Middleware selection** — choosing between or introducing middleware (Redis, Elasticsearch, Kafka, RabbitMQ, etc.)
+2. **Architecture pattern decisions** — distributed transactions, data consistency, CQRS, event sourcing, saga pattern, etc.
+3. **New technology introduction** — any middleware, framework, protocol, or library not currently used in the project
+4. **Performance-critical design** — when the solution involves high-throughput, low-latency, or large-scale data processing
+
+You may NOT skip research by claiming "I already know the best practice." The purpose is to get the LATEST community solutions, not to rely on training data.
+</HARD-GATE>
 
 ```dot
 digraph research_trigger {
-    "Technical question arises" [shape=box];
-    "Uncertainty or new tech?" [shape=diamond];
+    "Technical decision point" [shape=box];
+    "Middleware / architecture / new tech / perf-critical?" [shape=diamond];
     "Continue brainstorming" [shape=box];
     "Formulate research questions" [shape=box];
     "Multiple topics?" [shape=diamond];
     "Dispatch 1 sub-agent" [shape=box];
     "Dispatch N sub-agents in parallel" [shape=box];
-    "Integrate results" [shape=box];
+    "Integrate results into design" [shape=box];
 
-    "Technical question arises" -> "Uncertainty or new tech?";
-    "Uncertainty or new tech?" -> "Continue brainstorming" [label="no - known"];
-    "Uncertainty or new tech?" -> "Formulate research questions" [label="yes"];
+    "Technical decision point" -> "Middleware / architecture / new tech / perf-critical?";
+    "Middleware / architecture / new tech / perf-critical?" -> "Continue brainstorming" [label="no - simple CRUD"];
+    "Middleware / architecture / new tech / perf-critical?" -> "Formulate research questions" [label="yes - MUST research"];
     "Formulate research questions" -> "Multiple topics?";
     "Multiple topics?" -> "Dispatch 1 sub-agent" [label="no"];
     "Multiple topics?" -> "Dispatch N sub-agents in parallel" [label="yes"];
-    "Dispatch 1 sub-agent" -> "Integrate results";
-    "Dispatch N sub-agents in parallel" -> "Integrate results";
-    "Integrate results" -> "Continue brainstorming";
+    "Dispatch 1 sub-agent" -> "Integrate results into design";
+    "Dispatch N sub-agents in parallel" -> "Integrate results into design";
+    "Integrate results into design" -> "Continue brainstorming";
 }
 ```
-
-**Trigger conditions for research dispatch:**
-1. **Technical uncertainty** — unknown performance limits, compatibility constraints, undocumented behavior
-2. **New technology not in the project** — unfamiliar middleware, frameworks, protocols, libraries
 
 **REQUIRED SUB-SKILL:** Use superpowers:deep-researching for all research dispatches.
 

@@ -57,34 +57,47 @@ description: Use when you need to create a detailed technical design for a speci
 - 测试策略（单元测试、集成测试、边界用例）
 - 发布计划（Feature Flag、灰度发布、回滚方案）
 
-### 步骤 3：按需自动调研
+**头脑风暴过程中，主动从业务场景中挖掘潜在技术需求：**
+- 识别能够支撑功能的中间件（如：Redis 用于缓存/分布式锁、Elasticsearch 用于全文搜索、Kafka 用于事件驱动流程）
+- 识别所需的架构模式（如：数据一致性、分布式事务、CQRS、最终一致性）
+- 不要仅接受显而易见的方案——主动探索引入合适的中间件或模式是否能显著改善解决方案
+
+### 步骤 4：强制技术调研
+
+<HARD-GATE>
+对于以下任何技术决策，必须通过 superpowers:deep-researching 派遣调研子代理。不得仅依赖已有知识——必须获取最新的行业实践和社区方案。
+
+**强制调研触发条件：**
+1. **中间件选型** —— 选择或引入中间件（Redis、Elasticsearch、Kafka、RabbitMQ 等）
+2. **架构模式决策** —— 分布式事务、数据一致性、CQRS、Event Sourcing、Saga 模式等
+3. **引入新技术** —— 项目中当前未使用的任何中间件、框架、协议或库
+4. **性能关键设计** —— 涉及高吞吐、低延迟或大规模数据处理的方案
+
+不得以"我已知道最佳实践"为由跳过调研。目的是获取最新的社区方案，而非依赖训练数据。
+</HARD-GATE>
 
 ```dot
 digraph research_trigger {
-    "Technical question arises" [shape=box];
-    "Uncertainty or new tech?" [shape=diamond];
+    "Technical decision point" [shape=box];
+    "Middleware / architecture / new tech / perf-critical?" [shape=diamond];
     "Continue brainstorming" [shape=box];
     "Formulate research questions" [shape=box];
     "Multiple topics?" [shape=diamond];
     "Dispatch 1 sub-agent" [shape=box];
     "Dispatch N sub-agents in parallel" [shape=box];
-    "Integrate results" [shape=box];
+    "Integrate results into design" [shape=box];
 
-    "Technical question arises" -> "Uncertainty or new tech?";
-    "Uncertainty or new tech?" -> "Continue brainstorming" [label="no - known"];
-    "Uncertainty or new tech?" -> "Formulate research questions" [label="yes"];
+    "Technical decision point" -> "Middleware / architecture / new tech / perf-critical?";
+    "Middleware / architecture / new tech / perf-critical?" -> "Continue brainstorming" [label="no - simple CRUD"];
+    "Middleware / architecture / new tech / perf-critical?" -> "Formulate research questions" [label="yes - MUST research"];
     "Formulate research questions" -> "Multiple topics?";
     "Multiple topics?" -> "Dispatch 1 sub-agent" [label="no"];
     "Multiple topics?" -> "Dispatch N sub-agents in parallel" [label="yes"];
-    "Dispatch 1 sub-agent" -> "Integrate results";
-    "Dispatch N sub-agents in parallel" -> "Integrate results";
-    "Integrate results" -> "Continue brainstorming";
+    "Dispatch 1 sub-agent" -> "Integrate results into design";
+    "Dispatch N sub-agents in parallel" -> "Integrate results into design";
+    "Integrate results into design" -> "Continue brainstorming";
 }
 ```
-
-**触发调研派发的条件：**
-1. **技术不确定性** —— 未知的性能上限、兼容性约束、未文档化的行为
-2. **项目中不存在的新技术** —— 不熟悉的中间件、框架、协议、库
 
 **必需子技能：** 使用 superpowers:deep-researching 执行所有调研派发。
 
