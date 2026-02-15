@@ -71,7 +71,7 @@ digraph research_trigger {
 **REQUIRED SUB-SKILL:** Use superpowers:deep-researching for all research dispatches.
 
 ### Step 4: Generate Design Document
-- Use `template.md` in this skill's directory
+- Use `design-template.md` in this skill's directory
 - Output content in Chinese, technical terms in English
 - Save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
 
