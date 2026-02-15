@@ -17,23 +17,15 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Save plans to:** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`
 
-## Step 0: Confirm Specs Path
+## Step 0: Resolve Specs Path
 
-Scan `docs/specs/` for all `yyyy-MM-dd-REQ-*/{topic}` directories, sorted by date (most recent first). If none exist, prompt: "No specs directory found. Please run `/prd-clarify` first." and STOP.
+Determine the target specs directory `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`:
 
-<HARD-GATE>
-You MUST present ALL found directories as numbered options and WAIT for the user to choose before doing anything else. Do NOT load files, do NOT start writing the plan, do NOT proceed until the user selects.
-
-Say exactly:
-"Found the following specs directories:
-1. `{most_recent_path}` (recommended)
-2. `{older_path}`
-3. ...
-
-Which one to use? (enter number)"
-
-Then STOP and wait for user response. Only proceed after user selects.
-</HARD-GATE>
+1. **If the path is already known from the current conversation** (e.g., a prior `/generate-design` step in this session used a specific specs directory) → use it directly, no confirmation needed.
+2. **If the path is NOT known**, scan `docs/specs/` for all `yyyy-MM-dd-REQ-*/{topic}` directories:
+   - If none exist → prompt: "No specs directory found. Please run `/prd-clarify` first." and STOP.
+   - If exactly one exists → use it directly, no confirmation needed.
+   - If multiple exist → present ALL as numbered options, WAIT for user to choose before proceeding.
 
 ## Context Loading
 

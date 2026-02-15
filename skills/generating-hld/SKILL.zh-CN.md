@@ -15,23 +15,15 @@ description: Use when a complex requirement involves multiple microservices and 
 
 ## 流程
 
-### 步骤 1：确认 Specs 路径
+### 步骤 1：确定 Specs 路径
 
-扫描 `docs/specs/` 下所有 `yyyy-MM-dd-REQ-*/{topic}` 目录，按日期倒序排列。如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"并停止。
+确定目标 specs 目录 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`：
 
-<HARD-GATE>
-必须将所有找到的目录以编号列表形式展示给用户，等待用户选择后才能继续。不得加载文件、不得开始架构发现、不得进入步骤 2。
-
-必须说：
-"找到以下 specs 目录：
-1. `{最近的路径}` （推荐）
-2. `{较早的路径}`
-3. ...
-
-请选择使用哪个？（输入编号）"
-
-然后停止并等待用户回复。只有用户选择后才能继续。
-</HARD-GATE>
+1. **如果当前对话中已明确知道路径**（例如，同一会话中前序的 `/prd-clarify` 步骤使用或创建了特定的 specs 目录） → 直接使用，无需确认。
+2. **如果路径未知**，扫描 `docs/specs/` 下所有 `yyyy-MM-dd-REQ-*/{topic}` 目录：
+   - 如果不存在 → 提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"并停止。
+   - 如果只有一个 → 直接使用，无需确认。
+   - 如果有多个 → 以编号列表形式展示所有目录，等待用户选择后才能继续。
 
 ### 步骤 2：加载上下文
 
