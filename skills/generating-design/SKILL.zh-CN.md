@@ -71,7 +71,7 @@ digraph research_trigger {
 **必需子技能：** 使用 superpowers:deep-researching 执行所有调研派发。
 
 ### 步骤 4：生成设计文档
-- 使用本技能目录下的 `template.md`
+- 使用本技能目录下的 `design-template.md`
 - 内容用中文输出，技术术语用英文
 - 保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
 
