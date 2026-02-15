@@ -19,10 +19,10 @@ Conduct detailed technical design for a specified microservice. Deeply uncover p
 
 ### Step 1: Load Context
 1. Confirm the specs path: `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
-2. **ALWAYS read context files from disk.** For each file (`requirements.md`, `hld.md`):
-   - Read the file from the specs directory (if it exists)
-   - The ONLY exception to skip file reading is when the COMPLETE file content was literally generated and written by you in this same session (i.e., you just wrote the file moments ago and still have the full text)
-   - "I discussed it earlier" or "I have a general understanding" is NOT sufficient — you MUST read the file
+2. **MANDATORY: Read ALL context files from disk. No exceptions.**
+   - Read `requirements.md` from the specs directory
+   - Read `hld.md` from the specs directory (if it exists)
+   - Even if you generated these files earlier in this session, you MUST re-read them to ensure completeness
 3. Confirm the target microservice for this design session
 
 ### Step 2: Technical Brainstorming

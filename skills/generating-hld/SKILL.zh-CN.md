@@ -17,9 +17,8 @@ description: Use when a complex requirement involves multiple microservices and 
 
 ### 步骤 1：加载上下文
 1. 确认规格路径：`docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
-2. **始终从磁盘读取 `requirements.md`。**
-   - 唯一允许跳过读取的情况是：该文件是你在本次会话中刚刚亲自生成并写入的（即你刚写完文件，手里还有完整文本）
-   - "之前讨论过"或"我大致了解内容"不算——必须读取文件
+2. **强制要求：从磁盘读取 `requirements.md`，无任何例外。**
+   - 即使你在本次会话中生成了该文件，也必须重新读取以确保完整性
 
 ### 步骤 2：发现当前架构
 - **必需子技能：** 使用 superpowers:system-design

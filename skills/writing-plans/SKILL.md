@@ -30,7 +30,7 @@ Before writing the plan, ensure the following context is available:
 - `requirements.md` — clarified requirements
 - `design.md` — detailed technical design
 
-**ALWAYS read these files from disk.** The ONLY exception to skip file reading is when you literally generated and wrote the file yourself in this same session (i.e., you just wrote the file moments ago and still have the full text). "I discussed it earlier" or "I have a general understanding" is NOT sufficient — you MUST read the file.
+**MANDATORY: Read ALL context files from disk before writing the plan. No exceptions.** Even if you generated these files earlier in this session, you MUST re-read them to ensure completeness.
 
 Use these as the primary input for plan generation.
 
