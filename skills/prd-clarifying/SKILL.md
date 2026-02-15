@@ -9,7 +9,7 @@ description: Use when receiving a PRD (Product Requirements Document) to conduct
 
 Entry point of the product-engineering workflow. Receive PRD input, conduct requirements-level brainstorming to deeply uncover issues in the PRD, and clarify with the user one by one. Produce a structured `requirements.md`.
 
-**Core principle:** Requirements-level brainstorming — systematically probe every dimension of a PRD before any design work begins.
+**Core principle:** Business-level brainstorming — focus ONLY on business requirements, user scenarios, and product logic. All technical concerns (architecture, storage, protocols, error handling strategies, performance optimization) belong to the `/generate-design` phase.
 
 **Announce at start:** "I'm using the prd-clarifying skill to analyze and clarify this PRD."
 
@@ -49,21 +49,45 @@ Auto-detect: if the input looks like a file path (contains `/` or `\` and ends w
 
 Use brainstorming dialogue patterns: **one question at a time, prefer multiple-choice, wait for answer before next question.**
 
+<HARD-GATE>
+This phase is STRICTLY business-level. Do NOT ask about:
+- Implementation approach (e.g., "should we use ES or DB?", "sync or async?")
+- Error handling strategy (e.g., "what if the service call fails?")
+- Performance/capacity design (e.g., "what QPS do we need?")
+- Data storage choices (e.g., "MySQL or MongoDB?")
+- Cross-service call patterns (e.g., "query by ID list or join?")
+- Any question that a product manager cannot answer
+
+If you catch yourself asking a technical question, STOP — defer it to `/generate-design`.
+</HARD-GATE>
+
 | Dimension | What to Probe |
 |-----------|---------------|
-| **Functional boundary** | Scope clarity? What is explicitly out of scope? |
-| **Exception flows** | Failure, timeout, concurrency conflict handling? |
-| **Data boundary** | Data volume, historical migration, lifecycle, retention? |
-| **Permissions & security** | Who can operate? Role-based access? Audit trail? |
-| **Compatibility** | Impact on existing features? Backward compatibility? Grayscale? |
-| **Implicit assumptions** | Unstated assumptions that implementation must resolve? |
-| **Acceptance criteria** | How to determine the requirement is complete? |
+| **Functional boundary** | What features are in scope? What is explicitly out of scope? |
+| **User scenarios** | Who are the users? What are the key user journeys? |
+| **Business rules** | What business logic governs this feature? Edge cases in business flow? |
+| **Business exception flows** | What happens from the USER's perspective when something goes wrong? (NOT technical failure handling) |
+| **Permissions & roles** | Which user roles can access this feature? Any restrictions? |
+| **Data scope** | What business data is involved? Any historical data to consider? |
+| **Compatibility** | Impact on existing user-facing features? Migration for existing users? |
+| **Implicit assumptions** | Unstated business assumptions in the PRD? |
+| **Acceptance criteria** | How does the product owner verify this is done? |
 
 For each dimension:
 1. Analyze the PRD for existing coverage
 2. If covered adequately, skip (don't ask unnecessary questions)
 3. If gaps exist, formulate a specific question
 4. Present as multiple-choice when possible
+
+**Examples of GOOD questions (business-level):**
+- "The PRD mentions searching by customer name — should this be exact match or fuzzy match from the user's perspective?"
+- "When a trade order is searched by customer name but the customer is deleted, should the order still appear in results?"
+- "Which user roles have access to the watermark search feature?"
+
+**Examples of BAD questions (technical — defer to /generate-design):**
+- "Should we use Elasticsearch or database LIKE query for fuzzy search?"
+- "When the customer service is unavailable, should we return an error or fall back to cached data?"
+- "What's the maximum number of IDs to pass in a cross-service query?"
 
 ## Output: requirements.md
 
