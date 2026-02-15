@@ -19,14 +19,20 @@ description: Use when you need to create a detailed technical design for a speci
 
 ### 步骤 1：确认 Specs 路径
 
-扫描 `docs/specs/` 并选取日期最近的 `yyyy-MM-dd-REQ-*/{topic}` 目录作为候选。如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"并停止。
+扫描 `docs/specs/` 下所有 `yyyy-MM-dd-REQ-*/{topic}` 目录，按日期倒序排列。如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"并停止。
 
 <HARD-GATE>
-必须将候选路径展示给用户并等待确认，在用户确认之前不得做任何其他操作。不得加载文件、不得开始头脑风暴、不得进入步骤 2。
+必须将所有找到的目录以编号列表形式展示给用户，等待用户选择后才能继续。不得加载文件、不得开始头脑风暴、不得进入步骤 2。
 
-必须说："找到 specs 目录：`{candidate_path}`。这是正确的目标目录吗？(Y/N)"
+必须说：
+"找到以下 specs 目录：
+1. `{最近的路径}` （推荐）
+2. `{较早的路径}`
+3. ...
 
-然后停止并等待用户回复。只有用户确认后才能继续。
+请选择使用哪个？（输入编号）"
+
+然后停止并等待用户回复。只有用户选择后才能继续。
 </HARD-GATE>
 
 ### 步骤 2：加载上下文

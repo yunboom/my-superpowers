@@ -19,14 +19,20 @@ Conduct detailed technical design for a specified microservice. Deeply uncover p
 
 ### Step 1: Confirm Specs Path
 
-Scan `docs/specs/` and select the most recent `yyyy-MM-dd-REQ-*/{topic}` directory (by date) as the candidate. If no specs directories exist, prompt: "No specs directory found. Please run `/prd-clarify` first." and STOP.
+Scan `docs/specs/` for all `yyyy-MM-dd-REQ-*/{topic}` directories, sorted by date (most recent first). If none exist, prompt: "No specs directory found. Please run `/prd-clarify` first." and STOP.
 
 <HARD-GATE>
-You MUST present the candidate path to the user and WAIT for their confirmation before doing anything else. Do NOT load files, do NOT start brainstorming, do NOT proceed to Step 2 until the user explicitly confirms.
+You MUST present ALL found directories as numbered options and WAIT for the user to choose before doing anything else. Do NOT load files, do NOT start brainstorming, do NOT proceed to Step 2 until the user selects.
 
-Say exactly: "I found specs directory: `{candidate_path}`. Is this the correct target? (Y/N)"
+Say exactly:
+"Found the following specs directories:
+1. `{most_recent_path}` (recommended)
+2. `{older_path}`
+3. ...
 
-Then STOP and wait for user response. Only proceed after user confirms.
+Which one to use? (enter number)"
+
+Then STOP and wait for user response. Only proceed after user selects.
 </HARD-GATE>
 
 ### Step 2: Load Context
