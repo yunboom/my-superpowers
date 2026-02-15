@@ -22,9 +22,9 @@ Conduct detailed technical design for a specified microservice. Deeply uncover p
    - If invoked after `/generate-hld` in the same session, the path is already known
    - If not known, scan `docs/specs/` and select the most recent `yyyy-MM-dd-REQ-*` directory (by date), present it to the user for confirmation
    - If no specs directories exist, prompt: "No specs directory found. Please run `/prd-clarify` first to create requirements."
-2. **MANDATORY:** Read these files from the resolved specs directory (no exceptions, no other location):
-   - `{specs_path}/requirements.md`
-   - `{specs_path}/hld.md` (if it exists)
+2. Load context files:
+   - `requirements.md` — if a prior workflow step (e.g., `/generate-hld`) already loaded this file in the same session, it is already in context and does NOT need to be re-read. Otherwise, **MANDATORY** read `{specs_path}/requirements.md`.
+   - `hld.md` — if `/generate-hld` already produced this file in the same session, it is already in context. Otherwise, read `{specs_path}/hld.md` if it exists.
 3. Confirm the target microservice for this design session
 
 ### Step 2: Technical Brainstorming

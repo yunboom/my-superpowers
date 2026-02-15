@@ -22,9 +22,9 @@ description: Use when you need to create a detailed technical design for a speci
    - 如果在同一会话中由 `/generate-hld` 之后调用，路径已知
    - 如果未知，扫描 `docs/specs/` 并选取日期最近的 `yyyy-MM-dd-REQ-*` 目录，展示给用户确认
    - 如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"
-2. **强制要求：** 从确定的 specs 目录读取以下文件（无例外，不从其他位置读取）：
-   - `{specs_path}/requirements.md`
-   - `{specs_path}/hld.md`（如果存在）
+2. 加载上下文文件：
+   - `requirements.md` —— 如果同一会话中前序步骤（如 `/generate-hld`）已经加载过此文件，则已在上下文中，无需重新读取。否则**强制读取** `{specs_path}/requirements.md`。
+   - `hld.md` —— 如果同一会话中 `/generate-hld` 已产出此文件，则已在上下文中。否则从 `{specs_path}/hld.md` 读取（如果存在）。
 3. 确认本次设计会话的目标微服务
 
 ### 步骤 2：技术头脑风暴
