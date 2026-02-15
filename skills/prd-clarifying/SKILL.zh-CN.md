@@ -78,6 +78,7 @@ description: Use when receiving a PRD (Product Requirements Document) to conduct
 2. 如果已充分覆盖，跳过（不提不必要的问题）
 3. 如果存在缺口，拟定具体问题
 4. 尽可能以多选题形式呈现
+5. **始终提供"暂不确定"选项** —— 如果用户当前无法回答，记录为待办项，追加到 requirements.md 末尾
 
 **好问题示例（业务层面）：**
 - "PRD 提到按客户姓名搜索——从用户角度看，这应该是精确匹配还是模糊匹配？"

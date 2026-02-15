@@ -78,6 +78,7 @@ For each dimension:
 2. If covered adequately, skip (don't ask unnecessary questions)
 3. If gaps exist, formulate a specific question
 4. Present as multiple-choice when possible
+5. **Always include a "defer to later" option** — if the user cannot answer now, record it as a TODO item and append to the end of requirements.md
 
 **Examples of GOOD questions (business-level):**
 - "The PRD mentions searching by customer name — should this be exact match or fuzzy match from the user's perspective?"
