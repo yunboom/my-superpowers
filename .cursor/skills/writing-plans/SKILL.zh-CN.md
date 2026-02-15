@@ -26,9 +26,11 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 ## 上下文加载
 
-在编写计划之前，从同一 specs 目录读取以下文件（如果存在）：
+在编写计划之前，确保以下上下文可用：
 - `requirements.md` — 澄清后的需求
 - `design.md` — 详细技术设计
+
+**按需加载：** 如果某个文件的内容已在当前对话上下文中（例如，在同一会话中由之前的 `/prd-clarify` 或 `/generate-design` 步骤产出），则跳过文件读取，直接使用现有内容。仅在上下文中不存在该内容时才从规格目录读取文件。
 
 使用这些作为计划生成的主要输入。
 
