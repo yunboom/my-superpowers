@@ -26,11 +26,10 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 ## Context Loading
 
-Before writing the plan, ensure the following context is available:
-- `requirements.md` — clarified requirements
-- `design.md` — detailed technical design
-
-**MANDATORY: Read ALL context files from disk before writing the plan. No exceptions.** Even if you generated these files earlier in this session, you MUST re-read them to ensure completeness.
+**MANDATORY: Read the following files from the specs directory before writing the plan. No exceptions.**
+- Read `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`
+- Read `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
+- Do NOT read from any other location. Only read from this specific specs directory.
 
 Use these as the primary input for plan generation.
 

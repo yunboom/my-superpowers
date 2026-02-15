@@ -17,8 +17,8 @@ For complex multi-microservice requirements, generate a high-level design that d
 
 ### Step 1: Load Context
 1. Confirm the specs path: `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
-2. **MANDATORY: Read `requirements.md` from the specs directory. No exceptions.**
-   - Even if you generated this file earlier in this session, you MUST re-read it to ensure completeness
+2. **MANDATORY: Read `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`. No exceptions.**
+   - Do NOT read from any other location. Only read from this specific specs directory.
 
 ### Step 2: Discover Current Architecture
 - **REQUIRED SUB-SKILL:** Use superpowers:system-design

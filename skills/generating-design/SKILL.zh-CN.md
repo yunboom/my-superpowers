@@ -19,10 +19,10 @@ description: Use when you need to create a detailed technical design for a speci
 
 ### 步骤 1：加载上下文
 1. 确认规格路径：`docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
-2. **强制要求：从磁盘读取所有上下文文件，无任何例外。**
-   - 从规格目录读取 `requirements.md`
-   - 从规格目录读取 `hld.md`（如果存在）
-   - 即使你在本次会话中生成了这些文件，也必须重新读取以确保完整性
+2. **强制要求：从 specs 目录读取以下文件，无任何例外。**
+   - 读取 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`
+   - 读取 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/hld.md`（如果存在）
+   - 不得从其他位置读取，只从该 specs 目录读取。
 3. 确认本次设计会话的目标微服务
 
 ### 步骤 2：技术头脑风暴

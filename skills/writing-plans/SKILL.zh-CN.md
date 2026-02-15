@@ -26,11 +26,10 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 ## 上下文加载
 
-在编写计划之前，确保以下上下文可用：
-- `requirements.md` — 澄清后的需求
-- `design.md` — 详细技术设计
-
-**强制要求：编写计划前必须从磁盘读取所有上下文文件，无任何例外。** 即使你在本次会话中生成了这些文件，也必须重新读取以确保完整性。
+**强制要求：编写计划前必须从 specs 目录读取以下文件，无任何例外。**
+- 读取 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`
+- 读取 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
+- 不得从其他位置读取，只从该 specs 目录读取。
 
 使用这些作为计划生成的主要输入。
 
