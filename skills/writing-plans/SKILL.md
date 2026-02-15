@@ -23,9 +23,9 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
    - If invoked after `/generate-design` in the same session, the path is already known
    - If not known, scan `docs/specs/` and select the most recent `yyyy-MM-dd-REQ-*` directory (by date), present it to the user for confirmation
    - If no specs directories exist, prompt: "No specs directory found. Please run `/prd-clarify` first to create requirements."
-2. Load context files:
-   - `requirements.md` — if a prior workflow step (e.g., `/generate-hld` or `/generate-design`) already loaded this file in the same session, it is already in context and does NOT need to be re-read. Otherwise, **MANDATORY** read `{specs_path}/requirements.md`.
-   - `design.md` — if `/generate-design` already produced this file in the same session, it is already in context. Otherwise, **MANDATORY** read `{specs_path}/design.md`.
+2. Load context files (only a prior step's **explicit file read** counts as "in context" — file **writes/generation** do NOT count):
+   - `requirements.md` — if a prior workflow step (e.g., `/generate-hld` or `/generate-design`) already **read** this file in the same session, skip. Otherwise, **MANDATORY** read `{specs_path}/requirements.md`.
+   - `design.md` — if a prior step already **read** this file in the same session, skip. Otherwise, **MANDATORY** read `{specs_path}/design.md`.
 
 Use these as the primary input for plan generation.
 

@@ -23,9 +23,9 @@ description: Use when you have a spec or requirements for a multi-step task, bef
    - 如果在同一会话中由 `/generate-design` 之后调用，路径已知
    - 如果未知，扫描 `docs/specs/` 并选取日期最近的 `yyyy-MM-dd-REQ-*` 目录，展示给用户确认
    - 如果不存在 specs 目录，提示："未找到 specs 目录，请先执行 `/prd-clarify` 创建需求文档。"
-2. 加载上下文文件：
-   - `requirements.md` —— 如果同一会话中前序步骤（如 `/generate-hld` 或 `/generate-design`）已经加载过此文件，则已在上下文中，无需重新读取。否则**强制读取** `{specs_path}/requirements.md`。
-   - `design.md` —— 如果同一会话中 `/generate-design` 已产出此文件，则已在上下文中。否则**强制读取** `{specs_path}/design.md`。
+2. 加载上下文文件（只有前序步骤**显式读取（Read）过文件**才算"已在上下文中"——**写入/生成（Write）文件不算**）：
+   - `requirements.md` —— 如果同一会话中前序步骤（如 `/generate-hld` 或 `/generate-design`）已**读取**过此文件，可跳过。否则**强制读取** `{specs_path}/requirements.md`。
+   - `design.md` —— 如果同一会话中前序步骤已**读取**过此文件，可跳过。否则**强制读取** `{specs_path}/design.md`。
 
 使用这些作为计划生成的主要输入。
 
