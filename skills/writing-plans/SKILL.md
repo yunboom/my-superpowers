@@ -30,7 +30,7 @@ Before writing the plan, ensure the following context is available:
 - `requirements.md` — clarified requirements
 - `design.md` — detailed technical design
 
-**Load on demand:** If a file's content is already available in the current conversation context (e.g., produced by prior `/prd-clarify` or `/generate-design` steps in the same session), skip file reading and use existing content directly. Only read from the specs directory when the content is not already in context.
+**ALWAYS read these files from disk.** The ONLY exception to skip file reading is when you literally generated and wrote the file yourself in this same session (i.e., you just wrote the file moments ago and still have the full text). "I discussed it earlier" or "I have a general understanding" is NOT sufficient — you MUST read the file.
 
 Use these as the primary input for plan generation.
 

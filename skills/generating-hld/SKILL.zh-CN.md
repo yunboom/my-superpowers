@@ -17,9 +17,9 @@ description: Use when a complex requirement involves multiple microservices and 
 
 ### 步骤 1：加载上下文
 1. 确认规格路径：`docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
-2. 检查 `requirements.md` 的内容是否已在当前对话上下文中（例如，在同一会话中由之前的 `/prd-clarify` 步骤产出）
-3. 如果已在上下文中 → 跳过文件读取，直接使用现有内容
-4. 如果不在上下文中 → 从规格目录读取 `requirements.md`
+2. **始终从磁盘读取 `requirements.md`。**
+   - 唯一允许跳过读取的情况是：该文件是你在本次会话中刚刚亲自生成并写入的（即你刚写完文件，手里还有完整文本）
+   - "之前讨论过"或"我大致了解内容"不算——必须读取文件
 
 ### 步骤 2：发现当前架构
 - **必需子技能：** 使用 superpowers:system-design

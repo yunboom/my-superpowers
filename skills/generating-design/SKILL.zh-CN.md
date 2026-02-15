@@ -19,10 +19,10 @@ description: Use when you need to create a detailed technical design for a speci
 
 ### 步骤 1：加载上下文
 1. 确认规格路径：`docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
-2. 对于每个上下文文件（`requirements.md`、`hld.md`）：
-   - 检查其内容是否已在当前对话上下文中（例如，在同一会话中由之前的 `/prd-clarify` 或 `/generate-hld` 步骤产出）
-   - 如果已在上下文中 → 跳过文件读取，直接使用现有内容
-   - 如果不在上下文中 → 从规格目录读取（如果文件存在）
+2. **始终从磁盘读取上下文文件。** 对于每个文件（`requirements.md`、`hld.md`）：
+   - 从规格目录读取文件（如果存在）
+   - 唯一允许跳过读取的情况是：该文件是你在本次会话中刚刚亲自生成并写入的（即你刚写完文件，手里还有完整文本）
+   - "之前讨论过"或"我大致了解内容"不算——必须读取文件
 3. 确认本次设计会话的目标微服务
 
 ### 步骤 2：技术头脑风暴
