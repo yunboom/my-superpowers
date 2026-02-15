@@ -26,9 +26,11 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 ## Context Loading
 
-Before writing the plan, read these files from the same specs directory (if they exist):
+Before writing the plan, ensure the following context is available:
 - `requirements.md` — clarified requirements
 - `design.md` — detailed technical design
+
+**Load on demand:** If a file's content is already available in the current conversation context (e.g., produced by prior `/prd-clarify` or `/generate-design` steps in the same session), skip file reading and use existing content directly. Only read from the specs directory when the content is not already in context.
 
 Use these as the primary input for plan generation.
 
@@ -51,9 +53,7 @@ Use these as the primary input for plan generation.
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **REQ:** REQ-{id}
-
 **Specs:** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
-
 **Goal:** [One sentence describing what this builds]
 
 **Architecture:** [2-3 sentences about approach]
