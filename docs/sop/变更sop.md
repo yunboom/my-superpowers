@@ -15,3 +15,4 @@
 ## 变更历史
 
 - 2026-02-15: 初始创建产研流程扩展（5 新 skill + 3 修改 skill + 3 command + 6 agent 文件 + 19 中文翻译）
+- 2026-02-26: system-design 新增 extension 钩子 + 示例 system-design-extension skill
