@@ -13,8 +13,16 @@ description: Use when you need to understand the current project's microservice 
 
 ## 流程
 
+### 步骤 0：加载扩展（可选）
+通过 Skill tool 尝试调用 `superpowers:system-design-extension`：
+- **如果该 skill 存在：** 解析其内容中的两个可选部分：
+  - `## Scope` — 服务/仓库名列表。如果存在，后续步骤**仅扫描这些目录**。
+  - `## Context` — `- {service-name}: {描述}` 格式列表。如果存在，将描述**附加到架构摘要中对应服务的描述**。
+- **如果该 skill 不存在：** 跳过此步骤，继续全量扫描工作区（默认行为）。
+
 ### 步骤 1：探索项目结构
 扫描工作区中的架构指标：
+如果步骤 0 加载了 Scope，仅扫描列出的服务目录。否则扫描整个工作区。
 - 仓库结构（mono-repo vs. multi-repo）
 - 服务目录及其内容
 - 构建文件（go.mod、pom.xml、package.json、Cargo.toml 等）
@@ -47,6 +55,8 @@ description: Use when you need to understand the current project's microservice 
 
 ### 步骤 5：输出架构摘要
 
+如果步骤 0 加载了 Context 条目，将其合并到下方 Services 部分中对应服务的描述。
+
 以以下格式输出结构化文本：
 
 ## Services
@@ -72,3 +82,4 @@ description: Use when you need to understand the current project's microservice 
 ## 集成关系
 
 **被调用方：** `superpowers:generating-hld` 作为必需子技能调用
+**可选扩展：** superpowers:system-design-extension（范围约束和额外上下文）
