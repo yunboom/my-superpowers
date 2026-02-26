@@ -17,3 +17,4 @@
 - 2026-02-15: 初始创建产研流程扩展（5 新 skill + 3 修改 skill + 3 command + 6 agent 文件 + 19 中文翻译）
 - 2026-02-26: system-design 新增 extension 钩子 + 示例 system-design-extension skill
 - 2026-02-26: 设计方案和 coding 阶段 skill 新增 std 规范 skill 扫描加载机制 + testing.md 集成测试新增 Docker 中间件环境提示
+- 2026-02-26: using-xspec skill 增加双工作流路由逻辑，同时描述工作流 A（自由想法）和工作流 B（PRD 驱动），含路由规则表和更新后的决策流程图
