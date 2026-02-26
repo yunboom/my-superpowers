@@ -14,15 +14,12 @@ Discover and document the current project's microservice architecture and domain
 ## The Process
 
 ### Step 0: Load Extension (Optional)
-Attempt to invoke the `superpowers:system-design-extension` skill using the Skill tool:
-- **If the skill exists:** Parse its content for two optional sections:
-  - `## Scope` — A list of service/repository names. If present, **only scan these directories** in subsequent steps.
-  - `## Context` — A list of `- {service-name}: {description}` entries. If present, **append these descriptions** to the corresponding services in the architecture summary output.
-- **If the skill does not exist:** Skip this step and proceed with full workspace scanning (default behavior).
+**OPTIONAL EXTENSION:** Use `superpowers:system-design-extension`
+- **If the extension exists:** Follow its instructions to constrain or augment the architecture discovery process.
+- **If the extension does not exist:** Skip this step and proceed with full workspace scanning (default behavior).
 
 ### Step 1: Explore Project Structure
 Scan the workspace for architecture indicators:
-If a Scope was loaded in Step 0, only scan the listed service directories. Otherwise, scan the entire workspace.
 - Repository structure (mono-repo vs. multi-repo)
 - Service directories and their contents
 - Build files (go.mod, pom.xml, package.json, Cargo.toml, etc.)
@@ -54,8 +51,6 @@ Discover inter-service dependencies:
 - External service integrations
 
 ### Step 5: Output Architecture Summary
-
-If Context entries were loaded in Step 0, merge them into the corresponding service descriptions in the Services section below.
 
 Output structured text in the following format:
 
