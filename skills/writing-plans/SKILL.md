@@ -36,6 +36,10 @@ Read exactly these 2 files from the resolved specs path. Do NOT read any other f
 
 If either file was already loaded by a prior step in the same session, skip reading that file. Use these 2 files as the primary input for plan generation.
 
+## Load Standard Skills (std)
+
+Scan available skills for names containing `std` (e.g., `code-std`, `db-std`, `error-handling-std`). These are standard/specification skills covering coding conventions, database standards, error handling patterns, etc. Load any that match the current task context, and ensure the generated plan follows those standards.
+
 ## Bite-Sized Task Granularity
 
 **Each step is one action (2-5 minutes):**
@@ -156,6 +160,7 @@ After generating `plan.md`, also generate `testing.md` in the same specs directo
 - **API test cases MUST include complete curl commands** (with URL, method, headers, request body) that can be directly copied and executed
 - **Script-based verification MUST include complete scripts** (with full code, execution commands, and expected output)
 - All test steps must be directly executable — no placeholders like "call the API" or "verify the result"
+- **Middleware environment:** MySQL, Elasticsearch, Redis and other middleware should preferably run in Docker containers. Test cases should include Docker-based data cleanup and preloading commands (e.g., `docker exec` for database cleanup scripts, Docker volume mounts for initialization SQL)
 - Once generated, testing.md MUST NOT be modified in subsequent workflow steps
 
 **testing.md format:**

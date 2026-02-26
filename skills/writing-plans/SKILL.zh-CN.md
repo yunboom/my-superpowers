@@ -36,6 +36,10 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 如果某个文件在同一会话中已由前序步骤加载过，可跳过该文件的读取。使用这 2 个文件作为计划生成的主要输入。
 
+## 加载规范 Skills（std）
+
+扫描可用的 skills 列表，查找名称中包含 `std` 的 skill（如 `code-std`、`db-std`、`error-handling-std`）。这些是各类规范/标准 skill，涵盖代码编写规范、数据库规范、错误处理规范等。根据当前任务上下文选择性加载，确保生成的计划遵循相应规范。
+
 ## 小粒度任务拆分
 
 **每一步是一个动作（2-5 分钟）：**
@@ -156,6 +160,7 @@ git commit -m "REQ-{id} feat: add specific feature"
 - **API 测试用例必须包含完整的 curl 命令**（含 URL、方法、请求头、请求体），可直接复制执行
 - **脚本验证必须包含完整脚本**（含完整代码、执行命令、预期输出）
 - 所有测试步骤必须可直接执行——不允许"调用接口"或"验证结果"等占位描述
+- **中间件环境：** MySQL、Elasticsearch、Redis 等中间件优先安装在 Docker 中。测试用例应包含基于 Docker 的数据清理和预加载命令（如 `docker exec` 执行清库脚本、Docker 挂载初始化 SQL）
 - 一旦生成，testing.md 在后续工作流步骤中不得修改
 
 **testing.md 格式：**

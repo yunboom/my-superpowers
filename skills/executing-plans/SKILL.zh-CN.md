@@ -29,6 +29,10 @@ description: Use when you have a written implementation plan to execute in a sep
 4. 如果有顾虑：在开始之前向你的人类伙伴提出
 5. 如果没有顾虑：创建 TodoWrite 并继续
 
+### 步骤 1.5：加载规范 Skills（std）
+
+扫描可用的 skills 列表，查找名称中包含 `std` 的 skill（如 `code-std`、`db-std`、`error-handling-std`）。这些是各类规范/标准 skill，涵盖代码编写规范、数据库规范、错误处理规范等。根据计划中的任务内容选择性加载，确保所有实现遵循相应规范。
+
 ### 步骤 2：安全检查 — 外部依赖
 
 <HARD-GATE>
@@ -84,6 +88,8 @@ description: Use when you have a written implementation plan to execute in a sep
 <HARD-GATE>
 在所有任务完成后，你必须执行 testing.md 验证，然后才能进入步骤 7。不要跳过此步骤。
 </HARD-GATE>
+
+**中间件环境：** MySQL、Elasticsearch、Redis 等中间件优先安装在 Docker 中。可使用 Docker 相关能力进行数据清理（如 `docker exec` 执行清库脚本）和数据预加载（如通过 Docker 挂载初始化 SQL），在运行测试用例前做好环境准备。
 
 1. 从同一 specs 目录读取 `testing.md`
 2. 逐一执行端到端测试用例

@@ -36,6 +36,10 @@ Read exactly these files from the resolved specs path. Do NOT read any other fil
 
 Confirm the target microservice for this design session.
 
+### Load Standard Skills (std)
+
+Scan available skills for names containing `std` (e.g., `db-std`, `api-std`, `error-handling-std`). These are standard/specification skills covering design conventions such as database design standards, API design standards, or error handling standards. Load and follow any that match the current design scenario.
+
 ### Step 2: Identify Technical Needs and Research
 
 **First, analyze requirements and uncover hidden technical needs from business scenarios:**

@@ -237,6 +237,7 @@ Done!
 
 **Sub-agent 应使用：**
 - **superpowers:test-driven-development** - Sub-agent 对每个任务遵循 TDD
+- **规范 Skills（std）** - 在分派实现者 sub-agent 之前，扫描可用的 skills 列表，查找名称中包含 `std` 的 skill（如 `code-std`、`db-std`、`error-handling-std`）。这些是各类规范/标准 skill，涵盖代码编写规范、数据库规范、错误处理规范等。将相关 std skill 的指令纳入实现者 sub-agent 的 prompt 中，确保实现遵循相应规范。
 
 **替代工作流：**
 - **superpowers:executing-plans** - 用于并行会话而非同会话执行

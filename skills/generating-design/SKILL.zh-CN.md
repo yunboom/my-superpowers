@@ -36,6 +36,10 @@ description: Use when you need to create a detailed technical design for a speci
 
 确认本次设计会话的目标微服务。
 
+### 加载规范 Skills（std）
+
+扫描可用的 skills 列表，查找名称中包含 `std` 的 skill（如 `db-std`、`api-std`、`error-handling-std`）。这些是各类规范/标准 skill，涵盖数据库设计规范、API 设计规范、错误处理规范等。根据当前设计场景选择性加载并遵循相应规范。
+
 ### 步骤 3：识别技术需求并调研
 
 **首先，分析需求并从业务场景中挖掘潜在技术需求：**

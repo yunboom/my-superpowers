@@ -29,6 +29,10 @@ Throughout execution, enforce these conventions:
 4. If concerns: Raise them with your human partner before starting
 5. If no concerns: Create TodoWrite and proceed
 
+### Step 1.5: Load Standard Skills (std)
+
+Scan available skills for names containing `std` (e.g., `code-std`, `db-std`, `error-handling-std`). These are standard/specification skills covering coding conventions, database standards, error handling patterns, etc. Load any that match the tasks in the plan, and ensure all implementation follows those standards.
+
 ### Step 2: Safety Check — External Dependencies
 
 <HARD-GATE>
@@ -84,6 +88,8 @@ Based on feedback:
 <HARD-GATE>
 After ALL tasks are complete, you MUST execute the testing.md verification before proceeding to Step 7. Do NOT skip this step.
 </HARD-GATE>
+
+**Middleware Environment:** MySQL, Elasticsearch, Redis and other middleware should preferably run in Docker. Use Docker capabilities for data cleanup (e.g., `docker exec` to run cleanup scripts) and data preloading (e.g., mount initialization SQL via Docker) before running test cases.
 
 1. Read `testing.md` from the same specs directory
 2. Execute end-to-end test cases one by one
