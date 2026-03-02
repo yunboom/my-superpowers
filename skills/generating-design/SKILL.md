@@ -34,7 +34,7 @@ Read exactly these files from the resolved specs path. Do NOT read any other fil
 1. `{specs_path}/requirements.md` — skip if already loaded by a prior step in this session
 2. `{specs_path}/hld.md` — skip if already loaded by a prior step in this session, or if the file does not exist
 
-Confirm the target microservice for this design session.
+Confirm the target service for this design session.
 
 ### Step 3: Detect Project Type
 
