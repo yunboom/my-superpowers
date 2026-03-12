@@ -7,7 +7,7 @@ description: "You MUST use this before any creative work - creating features, bu
 
 ## 概述
 
-通过自然的协作对话，帮助将想法转化为完整的设计和规格说明。
+通过自然的协作对话，帮助将想法转化为完整的设计方案。
 
 首先了解当前项目的上下文，然后逐一提问以完善想法。一旦你理解了要构建什么，就展示设计方案并获得用户批准。
 
@@ -30,8 +30,8 @@ description: "You MUST use this before any creative work - creating features, bu
 5. **提出 2-3 种方案** — 包含权衡分析和你的推荐，以调研证据为支撑
 6. **展示设计方案** — 各部分按其复杂度进行展开，每个部分完成后获得用户批准
 7. **编写设计文档** — 保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md` 并提交
-8. **Spec review loop** — 派遣 spec-document-reviewer subagent，提供精确构建的审查上下文（绝不使用你的会话历史）；修复问题并重新派遣，直到通过审查（最多 5 次迭代，之后交由人工处理）
-9. **用户审查已编写的 spec** — 在继续之前请用户审查 spec 文件
+8. **Design review loop** — 派遣 spec-document-reviewer subagent，提供精确构建的审查上下文（绝不使用你的会话历史）；修复问题并重新派遣，直到通过审查（最多 5 次迭代，之后交由人工处理）
+9. **用户审查已编写的设计文档** — 在继续之前请用户审查设计文档
 10. **过渡到实现** — 调用 writing-plans skill 创建实现计划
 
 ## 流程图
@@ -47,9 +47,9 @@ digraph brainstorming {
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
     "Write design doc" [shape=box];
-    "Spec review loop" [shape=box];
-    "Spec review passed?" [shape=diamond];
-    "User reviews spec?" [shape=diamond];
+    "Design review loop" [shape=box];
+    "Design review passed?" [shape=diamond];
+    "User reviews design?" [shape=diamond];
     "Invoke writing-plans skill" [shape=doublecircle];
 
     "Explore project context" -> "Visual questions ahead?";
@@ -62,12 +62,12 @@ digraph brainstorming {
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
     "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Spec review loop";
-    "Spec review loop" -> "Spec review passed?";
-    "Spec review passed?" -> "Spec review loop" [label="issues found,\nfix and re-dispatch"];
-    "Spec review passed?" -> "User reviews spec?" [label="approved"];
-    "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
+    "Write design doc" -> "Design review loop";
+    "Design review loop" -> "Design review passed?";
+    "Design review passed?" -> "Design review loop" [label="issues found,\nfix and re-dispatch"];
+    "Design review passed?" -> "User reviews design?" [label="approved"];
+    "User reviews design?" -> "Write design doc" [label="changes requested"];
+    "User reviews design?" -> "Invoke writing-plans skill" [label="approved"];
 }
 ```
 
@@ -79,7 +79,7 @@ digraph brainstorming {
 
 - 首先查看当前项目状态（文件、文档、最近的提交）
 - 在提出详细问题之前，先评估项目规模：如果需求描述了多个独立子系统（例如"构建一个包含聊天、文件存储、计费和分析的平台"），应立即指出这一点。不要花费问题去细化一个需要先被拆解的项目。
-- 如果项目对于单个 spec 来说过于庞大，帮助用户拆解为子项目：独立的部分有哪些，它们之间有什么关系，应该按什么顺序构建？然后按照正常的设计流程对第一个子项目进行头脑风暴。每个子项目都有自己的 spec → plan → implementation 循环。
+- 如果项目对于单个设计来说过于庞大，帮助用户拆解为子项目：独立的部分有哪些，它们之间有什么关系，应该按什么顺序构建？然后按照正常的设计流程对第一个子项目进行头脑风暴。每个子项目都有自己的 design → plan → implementation 循环。
 - 对于规模适当的项目，逐一提问以完善想法
 - 尽可能使用选择题，开放式问题也可以
 - 每条消息只提一个问题——如果某个主题需要更多探讨，就拆分成多个问题
@@ -131,24 +131,24 @@ digraph brainstorming {
 
 **文档编写：**
 
-- 将验证通过的设计（spec）写入 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
-  - （用户对 spec 存放位置的偏好优先于此默认路径）
+- 将验证通过的设计写入 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
+  - （用户对设计文档存放位置的偏好优先于此默认路径）
 - 如果可用，使用 elements-of-style:writing-clearly-and-concisely skill
 - 将设计文档提交到 git
 
-**Spec Review Loop：**
-编写完 spec 文档后：
+**Design Review Loop：**
+编写完设计文档后：
 
 1. 派遣 spec-document-reviewer subagent（参见 spec-document-reviewer-prompt.md）
 2. 如果发现问题：修复，重新派遣，重复直到通过审查
 3. 如果循环超过 5 次迭代，交由人工指导
 
 **User Review Gate：**
-Spec review loop 通过后，在继续之前请用户审查已编写的 spec：
+Design review loop 通过后，在继续之前请用户审查已编写的设计文档：
 
-> "Spec 已编写并提交到 `<path>`。请审查并告知是否需要在我们开始编写实现计划之前做任何修改。"
+> "设计文档已编写并提交到 `<path>`。请审查并告知是否需要在我们开始编写实现计划之前做任何修改。"
 
-等待用户回复。如果用户要求修改，完成修改后重新运行 spec review loop。只有在用户批准后才能继续。
+等待用户回复。如果用户要求修改，完成修改后重新运行 design review loop。只有在用户批准后才能继续。
 
 **实现：**
 
