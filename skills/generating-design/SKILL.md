@@ -148,12 +148,51 @@ Use brainstorming dialogue patterns: one question at a time, prefer multiple-cho
 - Output content in Chinese, technical terms in English
 - Save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
 
-### Step 7: User Confirmation
+### Step 7: Design Review Loop
+
+Generate design.md 后，dispatch spec-document-reviewer subagent 对文档进行自动审查。
+
+1. **Dispatch reviewer subagent** — 使用 `skills/brainstorming/spec-document-reviewer-prompt.md` 模板，将 `[SPEC_FILE_PATH]` 替换为 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`，通过 Task tool 派遣审查子代理。
+2. **处理审查结果：**
+   - **Status: ✅ Approved** → 进入 Step 8（User Review Gate）。
+   - **Status: ❌ Issues Found** → 根据 Issues 列表自动修复 design.md，修复完成后重新派遣 reviewer subagent 审查。
+3. **循环上限：** 修复循环最多 **5 轮**。若 5 轮后仍有未解决的 Issues，停止自动修复，将剩余问题汇总上报给用户，由用户决定是否继续或手动调整。
+
+```dot
+digraph review_loop {
+    "Generate design.md" [shape=box];
+    "Dispatch reviewer subagent" [shape=box];
+    "Review passed?" [shape=diamond];
+    "Auto-fix issues" [shape=box];
+    "Round < 5?" [shape=diamond];
+    "Escalate to user" [shape=box];
+    "User Review Gate" [shape=box];
+
+    "Generate design.md" -> "Dispatch reviewer subagent";
+    "Dispatch reviewer subagent" -> "Review passed?";
+    "Review passed?" -> "User Review Gate" [label="✅ Approved"];
+    "Review passed?" -> "Round < 5?" [label="❌ Issues Found"];
+    "Round < 5?" -> "Auto-fix issues" [label="yes"];
+    "Auto-fix issues" -> "Dispatch reviewer subagent";
+    "Round < 5?" -> "Escalate to user" [label="no — 5 rounds reached"];
+    "Escalate to user" -> "User Review Gate";
+}
+```
+
+### Step 8: User Review Gate
+
+审查通过（或用户确认剩余问题可接受）后，提示用户对 design.md 进行最终人工 review。
+
+1. 告知用户：design.md 已通过自动审查（或列出已上报的剩余问题），请 review 文档内容。
+2. **等待用户明确确认**（如 "确认" / "approved" / "LGTM"）后才可进入下一步。
+3. 如果用户提出修改意见，执行修改后重新提交用户确认，直到获得明确批准。
+
+### Step 9: User Confirmation
 - Present complete design for review
 - Revise if needed
 - Get explicit approval
 
-### Step 8: Prompt Next Step
+### Step 10: Prompt Next Step
 - "Design complete. Run `/write-plan` to create the implementation plan."
 
 ## Integration
