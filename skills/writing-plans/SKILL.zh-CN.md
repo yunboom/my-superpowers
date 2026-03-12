@@ -13,7 +13,7 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 **开始时宣布：** "I'm using the writing-plans skill to create the implementation plan."
 
-**上下文：** 这应该在专用的 worktree 中运行（由 brainstorming skill 创建）。
+**上下文：** 这应该在专用的 worktree 中运行（由 brainstorming skill 创建，或在启动 PRD 工作流之前手动设置）。
 
 **计划保存到：** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`
 
@@ -40,6 +40,21 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 扫描可用的 skills 列表，查找名称中包含 `std` 的 skill（如 `code-std`、`db-std`、`error-handling-std`）。这些是各类规范/标准 skill，涵盖代码编写规范、数据库规范、错误处理规范等。根据当前任务上下文选择性加载，确保生成的计划遵循相应规范。
 
+## 范围检查
+
+如果需求规格涵盖了多个独立子系统，应该在 brainstorming 阶段就将其拆分为子项目规格。如果当时未拆分，建议拆分为独立的计划——每个子系统一个计划。每个计划应能独立产出可工作、可测试的软件。
+
+## 文件结构
+
+在定义任务之前，先梳理出需要创建或修改的文件及其各自的职责。分解决策在这一步锁定。
+
+- 设计具有清晰边界和明确接口的单元。每个文件应有一个清晰的职责。
+- 你在能一次性放入上下文的代码上推理效果最好，文件越聚焦编辑就越可靠。优先选择小而聚焦的文件，而非过大且职责混杂的文件。
+- 一起变更的文件应放在一起。按职责拆分，而非按技术层级拆分。
+- 在已有代码库中，遵循已有的模式。如果代码库惯用大文件，不要单方面重构——但如果你正在修改的文件确实臃肿，在计划中包含拆分是合理的。
+
+此文件结构将指导任务分解。每个任务应产出独立且有意义的自包含变更。
+
 ## 小粒度任务拆分
 
 **每一步是一个动作（2-5 分钟）：**
@@ -56,7 +71,7 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **REQ:** REQ-{id}
 **Specs:** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
@@ -79,7 +94,7 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 - Modify: `exact/path/to/existing.py:123-145`
 - Test: `tests/exact/path/to/test.py`
 
-**Step 1: Write the failing test**
+- [ ] **Step 1: Write the failing test**
 
 ```python
 # REQ-{id} test for specific behavior
@@ -88,12 +103,12 @@ def test_specific_behavior():
     assert result == expected
 ```
 
-**Step 2: Run test to verify it fails**
+- [ ] **Step 2: Run test to verify it fails**
 
 Run: `pytest tests/path/test.py::test_name -v`
 Expected: FAIL with "function not defined"
 
-**Step 3: Write minimal implementation**
+- [ ] **Step 3: Write minimal implementation**
 
 ```python
 # REQ-{id} implement specific behavior
@@ -101,12 +116,12 @@ def function(input):
     return expected
 ```
 
-**Step 4: Run test to verify it passes**
+- [ ] **Step 4: Run test to verify it passes**
 
 Run: `pytest tests/path/test.py::test_name -v`
 Expected: PASS
 
-**Step 5: Commit**
+- [ ] **Step 5: Commit**
 
 ```bash
 git add tests/path/test.py src/path/file.py
@@ -119,18 +134,18 @@ git commit -m "REQ-{id} feat: add specific feature"
 ````markdown
 ### Task N（最终）：运行 testing.md 集成测试
 
-**步骤 1：逐一执行 testing.md 中的所有测试用例**
+- [ ] **步骤 1：逐一执行 testing.md 中的所有测试用例**
 
 运行 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/testing.md` 中的每个测试用例。
 记录每个用例的 PASS/FAIL 结果。
 
-**步骤 2：修复失败项**
+- [ ] **步骤 2：修复失败项**
 
 如果测试用例因代码问题失败，修复并重新运行。
 如果测试用例本身有问题，停止并向用户反馈。
 不得修改 testing.md。
 
-**步骤 3：确认全部通过**
+- [ ] **步骤 3：确认全部通过**
 
 所有测试用例必须通过后才能标记计划完成。
 ````
@@ -214,23 +229,38 @@ mysql -u root -p -e "SELECT * FROM orders WHERE customer_id='123';"
 - DRY、YAGNI、TDD、频繁提交
 - 与 plan.md 一起生成 testing.md
 
+## 计划审查循环
+
+完成计划的每个分块后：
+
+1. 分派 plan-document-reviewer subagent（参见 plan-document-reviewer-prompt.md），提供精心构造的审查上下文——绝不传递你的会话历史。这样可以让审查者专注于计划本身，而非你的思考过程。
+   - 提供：分块内容、spec 文档路径
+2. 如果 ❌ 发现问题：
+   - 修复该分块中的问题
+   - 重新分派审查者审查该分块
+   - 重复直到 ✅ 审核通过
+3. 如果 ✅ 审核通过：继续下一个分块（如果是最后一个分块则进入执行交接）
+
+**分块边界：** 使用 `## Chunk N: <name>` 标题来界定分块。每个分块应不超过 1000 行且逻辑上自包含。
+
+**审查循环指引：**
+- 编写计划的同一 agent 负责修复（保持上下文连续性）
+- 如果循环超过 5 次迭代，升级给人工介入
+- 审查者是顾问角色——如果你认为反馈不正确，可以解释你的不同意见
+
 ## 执行交接
 
-保存计划和 testing.md 后，提供执行选择：
+保存计划和 testing.md 后：
 
-**"计划已完成并保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`。testing.md 也已生成。两种执行选项：**
+**"计划已完成并保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`。testing.md 也已生成。准备好执行了吗？"**
 
-**1. Sub-agent 驱动（当前会话）** - 我为每个任务分派新的 sub-agent，任务之间进行审查，快速迭代
+**执行路径取决于运行环境的能力：**
 
-**2. 并行会话（单独开启）** - 在新会话中使用 executing-plans，带检查点的批量执行
+**如果运行环境支持 subagent（Claude Code 等）：**
+- **必需：** 使用 superpowers:subagent-driven-development
+- 不提供选择——subagent 驱动是标准方式
+- 每个任务分派新的 subagent + 两阶段审查
 
-**选择哪种方式？"**
-
-**如果选择 Sub-agent 驱动：**
-- **必需子技能：** 使用 superpowers:subagent-driven-development
-- 留在当前会话
-- 每个任务启动新的 sub-agent + 代码审查
-
-**如果选择并行会话：**
-- 引导他们在 worktree 中打开新会话
-- **必需子技能：** 新会话使用 superpowers:executing-plans
+**如果运行环境不支持 subagent：**
+- 在当前会话中使用 superpowers:executing-plans 执行计划
+- 带检查点的批量执行

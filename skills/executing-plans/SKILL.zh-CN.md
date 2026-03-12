@@ -7,11 +7,11 @@ description: Use when you have a written implementation plan to execute in a sep
 
 ## 概述
 
-加载计划，批判性审查，分批执行任务，在批次之间汇报以供审查。所有任务完成后验证 testing.md。
-
-**核心原则：** 分批执行并设置检查点供架构师审查，随后进行端到端测试验证。
+加载计划，批判性审查，执行所有任务，完成后汇报。所有任务完成后验证 testing.md。
 
 **开始时宣布：** "I'm using the executing-plans skill to implement this plan."
+
+**注意：** 请告知你的人类伙伴，Superpowers 在有 subagent 支持时效果更好。如果在支持 subagent 的平台（如 Claude Code 或 Codex）上运行，工作质量会显著提升。如果 subagent 可用，请使用 superpowers:subagent-driven-development 代替此 skill。
 
 ## REQ 规范
 
@@ -60,8 +60,7 @@ description: Use when you have a written implementation plan to execute in a sep
    ```
    仅在用户明确确认后才继续。
 
-### 步骤 3：执行批次
-**默认：前 3 个任务**
+### 步骤 3：执行任务
 
 对于每个任务：
 1. 标记为 in_progress
@@ -71,22 +70,10 @@ description: Use when you have a written implementation plan to execute in a sep
 5. 按规定运行验证
 6. 标记为 completed
 
-### 步骤 4：汇报
-当批次完成时：
-- 展示已实现的内容
-- 展示验证输出
-- 说："Ready for feedback."
-
-### 步骤 5：继续
-根据反馈：
-- 如有需要则应用修改
-- 执行下一批次
-- 重复直到所有任务完成
-
-### 步骤 6：测试验证
+### 步骤 4：测试验证
 
 <HARD-GATE>
-在所有任务完成后，你必须执行 testing.md 验证，然后才能进入步骤 7。不要跳过此步骤。
+在所有任务完成后，你必须执行 testing.md 验证，然后才能进入步骤 5。不要跳过此步骤。
 </HARD-GATE>
 
 **中间件环境：** MySQL、Elasticsearch、Redis 等中间件优先安装在 Docker 中。可使用 Docker 相关能力进行数据清理（如 `docker exec` 执行清库脚本）和数据预加载（如通过 Docker 挂载初始化 SQL），在运行测试用例前做好环境准备。
@@ -94,7 +81,7 @@ description: Use when you have a written implementation plan to execute in a sep
 1. 从同一 specs 目录读取 `testing.md`
 2. 逐一执行端到端测试用例
 3. 记录每个用例的结果（PASS / FAIL）
-4. **全部 PASS** → 进入步骤 7
+4. **全部 PASS** → 进入步骤 5
 5. **任何 FAIL：**
    a. 分析失败原因
    b. 如果是代码问题 → 修复代码，重新运行失败的测试用例
@@ -110,7 +97,7 @@ description: Use when you have a written implementation plan to execute in a sep
 
 **绝对禁止修改 testing.md。** 如果你认为测试用例有误，你必须停下来向用户报告。永远不要编辑、删除或更改 testing.md 的内容。
 
-### 步骤 7：完成开发
+### 步骤 5：完成开发
 
 在所有任务完成且 testing.md 验证通过后：
 - 宣布："I'm using the finishing-a-development-branch skill to complete this work."
@@ -120,12 +107,12 @@ description: Use when you have a written implementation plan to execute in a sep
 ## 何时停下来寻求帮助
 
 **在以下情况立即停止执行：**
-- 批次执行中遇到阻碍（缺少依赖、测试失败、指令不清楚）
+- 遇到阻碍（缺少依赖、测试失败、指令不清楚）
 - 计划有严重缺陷导致无法开始
 - 你不理解某条指令
 - 验证反复失败
 - 检测到非 localhost 的外部依赖（见步骤 2）
-- testing.md 用例似乎有问题（见步骤 6）
+- testing.md 用例似乎有问题（见步骤 4）
 
 **宁可寻求澄清，也不要猜测。**
 
@@ -144,7 +131,6 @@ description: Use when you have a written implementation plan to execute in a sep
 - 严格按照计划步骤执行
 - 不要跳过验证
 - 当计划要求时引用相关 skill
-- 批次之间：只汇报并等待
 - 遇到阻碍时停下来，不要猜测
 - 所有任务完成后执行 testing.md，永远不要修改它
 - 未经用户明确同意，不要在 main/master 分支上开始实现
