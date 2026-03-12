@@ -69,11 +69,26 @@ git diff <上次同步commit>..upstream/main --name-status | grep -v node_module
 **Layer 4：扩展新能力到自定义 Skill**
 - 将上游的新模式（如 review loop）扩展到自定义 skill
 
-### 5. zh-CN 同步
+### 5. 术语对齐
+
+上游使用 "spec" 指代设计文档，本仓库统一使用 "design"。同步时需要将上游引入的 "spec" 术语替换为 "design"：
+
+| 上游术语 | 本仓库术语 | 说明 |
+|---------|-----------|------|
+| spec / specification | design / 设计文档 | 概念名称 |
+| spec review loop | design review loop | 审查循环 |
+| spec-document-reviewer | design-document-reviewer | 审查器名称 |
+| spec-document-reviewer-prompt.md | design-document-reviewer-prompt.md | 审查模板文件名 |
+| `[SPEC_FILE_PATH]` | `[DESIGN_FILE_PATH]` | 模板变量 |
+| "User reviews written spec" | "User reviews written design" | 检查清单条目 |
+
+**注意：** 目录路径 `docs/specs/` 保持不变（仅为存储目录，不影响概念语义）。
+
+### 6. zh-CN 同步
 
 更新所有受影响的中文版本，保持与英文版一致。
 
-### 6. 测试验证
+### 7. 测试验证
 
 ```bash
 # 验证 hooks.json 格式正确
@@ -89,15 +104,15 @@ ls skills/writing-plans/plan-document-reviewer-prompt.md
 ls skills/prd-clarifying/requirements-document-reviewer-prompt.md
 ```
 
-### 7. 更新同步记录
+### 8. 更新同步记录
 
 在本文档底部的同步记录表中添加新条目。
 
-### 8. 更新变更 SOP
+### 9. 更新变更 SOP
 
 在 `docs/sop/变更sop.md` 的变更历史中追加记录。
 
-### 9. 提交
+### 10. 提交
 
 ```bash
 git commit -m "sync(upstream): vX.Y.Z → vA.B.C"
@@ -119,6 +134,7 @@ git commit -m "sync(upstream): vX.Y.Z → vA.B.C"
 | 中文双语 | 所有 skill 的 .zh-CN.md | 中文版本 |
 | 自定义 commands | commands/ | prd-clarify、generate-hld、generate-design |
 | 前后端模板分离 | generating-design | design-template-backend/frontend |
+| 术语对齐 spec→design | brainstorming、generating-design、generating-hld 等 | 上游 "spec" 概念统一为 "design" |
 
 ## 不同步的文件
 
