@@ -150,9 +150,9 @@ digraph design_flow {
 
 ### 步骤 7：Design Review Loop
 
-生成 design.md 后，dispatch design-document-reviewer subagent 对文档进行自动审查。
+生成 design.md 后，dispatch detailed-design-document-reviewer subagent 对文档进行自动审查。
 
-1. **Dispatch reviewer subagent** —— 使用 `skills/brainstorming/design-document-reviewer-prompt.md` 模板，将 `[DESIGN_FILE_PATH]` 替换为 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`，通过 Task tool 派遣审查子代理。
+1. **Dispatch reviewer subagent** —— 使用 `skills/generating-design/design-document-reviewer-prompt.md` 模板，将 `[DESIGN_FILE_PATH]` 替换为 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`，将 `[REQUIREMENTS_FILE_PATH]` 替换为同目录下的 `requirements.md`，通过 Task tool 派遣审查子代理。
 2. **处理审查结果：**
    - **Status: ✅ Approved** → 进入步骤 8（User Review Gate）。
    - **Status: ❌ Issues Found** → 根据 Issues 列表自动修复 design.md，修复完成后重新派遣 reviewer subagent 审查。
