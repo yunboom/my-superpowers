@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: Use when you have a design or requirements for a multi-step task, before touching code
 ---
 
 # 编写计划
@@ -42,7 +42,7 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 ## 范围检查
 
-如果需求规格涵盖了多个独立子系统，应该在 brainstorming 阶段就将其拆分为子项目规格。如果当时未拆分，建议拆分为独立的计划——每个子系统一个计划。每个计划应能独立产出可工作、可测试的软件。
+如果设计涵盖了多个独立子系统，应该在 brainstorming 阶段就将其拆分为子项目设计。如果当时未拆分，建议拆分为独立的计划——每个子系统一个计划。每个计划应能独立产出可工作、可测试的软件。
 
 ## 文件结构
 
@@ -168,17 +168,37 @@ git commit -m "REQ-{id} feat: add specific feature"
 
 生成 `plan.md` 后，还需在同一 specs 目录中生成 `testing.md`。
 
-**testing.md 要求：**
+**根据 design.md 中的技术栈判断项目类型**，使用对应的模式生成 testing.md：
+
+### 通用要求（所有项目类型）
+
 - 详细的端到端测试用例
 - 覆盖：正常流程、异常流程、边界条件、并发场景
-- 每个测试用例包含：前置条件、操作步骤、预期结果
-- **API 测试用例必须包含完整的 curl 命令**（含 URL、方法、请求头、请求体），可直接复制执行
-- **脚本验证必须包含完整脚本**（含完整代码、执行命令、预期输出）
+- 每个测试用例包含：类型、前置条件、操作步骤、清理步骤、预期结果
 - 所有测试步骤必须可直接执行——不允许"调用接口"或"验证结果"等占位描述
-- **中间件环境：** MySQL、Elasticsearch、Redis 等中间件优先安装在 Docker 中。测试用例应包含基于 Docker 的数据清理和预加载命令（如 `docker exec` 执行清库脚本、Docker 挂载初始化 SQL）
 - 一旦生成，testing.md 在后续工作流步骤中不得修改
 
-**testing.md 格式：**
+### 后端项目
+
+- **API 测试用例必须包含完整的 curl 命令**（含 URL、方法、请求头、请求体），可直接复制执行
+- **脚本验证必须包含完整脚本**（含完整代码、执行命令、预期输出）
+- **环境准备：** 中间件启动命令（Docker Compose、本地安装或云端点）、healthcheck 就绪确认、数据初始化脚本
+- **数据管理：** 每个测试用例包含清理/还原步骤；用例间数据相互隔离
+
+### 前端项目
+
+- **浏览器测试用例使用 Playwright 测试脚本**，采用 Page Object Model（POM）模式和 `data-testid` 定位器
+- **稳定性：** 使用条件等待（`waitForResponse`、`waitForSelector`、元素可见性）——绝不使用固定等待（`waitForTimeout`、`sleep`）
+- **环境准备：** dev server 启动命令、mock API / 数据 stub 配置、浏览器环境要求
+- **视觉验证：** 关键 UI 状态的截图断言（如适用）
+
+### 全栈/集成项目
+
+- 结合后端 API 测试和前端浏览器测试
+- **环境准备：** 完整的服务依赖链及启动顺序和 healthcheck 就绪确认（如 DB → API → 前端 → E2E runner）
+- **集成流程：** 浏览器操作 → 验证 API 响应 → 验证 DB 状态
+
+### testing.md 格式
 
 ```markdown
 # End-to-End Test Cases
@@ -186,34 +206,42 @@ git commit -m "REQ-{id} feat: add specific feature"
 > REQ-{id} | Generated alongside plan.md
 > ⚠️ This file MUST NOT be modified during execution. If issues are found, stop and report to user.
 
+## Test Environment Setup
+
+### Prerequisites
+- {运行时依赖：Node.js、Docker、数据库客户端等}
+
+### Start Services
+\`\`\`bash
+{适合项目类型的启动命令}
+\`\`\`
+
+### Verify Readiness
+\`\`\`bash
+{healthcheck 或可访问性验证命令}
+\`\`\`
+
+### Test Data Initialization
+\`\`\`bash
+{种子脚本、SQL 导入、mock 数据配置等}
+\`\`\`
+
 ## TC-1: {Test Case Title}
+**Type:** API | Browser | Integration
 **Preconditions:**
 - {precondition 1}
 
 **Steps:**
 
-1. 调用 API：
-\`\`\`bash
-curl -X POST http://localhost:8080/api/v1/orders \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer {token}" \
-  -d '{
-    "customer_id": "123",
-    "amount": 100.00
-  }'
-\`\`\`
+{与 Type 匹配的步骤格式——API 用 curl，Browser 用 Playwright，Integration 混合使用}
 
-2. 验证响应：
-- HTTP Status: 200
-- 响应体包含 `"order_id"`
-
-3. 验证数据库（如需要）：
+**Teardown:**
 \`\`\`bash
-mysql -u root -p -e "SELECT * FROM orders WHERE customer_id='123';"
+{该测试用例的数据清理命令}
 \`\`\`
 
 **Expected Result:**
-- {包含具体数值的预期结果}
+- {包含具体可验证数值的预期结果}
 
 ## TC-2: {Test Case Title}
 ...
@@ -234,7 +262,7 @@ mysql -u root -p -e "SELECT * FROM orders WHERE customer_id='123';"
 完成计划的每个分块后：
 
 1. 分派 plan-document-reviewer subagent（参见 plan-document-reviewer-prompt.md），提供精心构造的审查上下文——绝不传递你的会话历史。这样可以让审查者专注于计划本身，而非你的思考过程。
-   - 提供：分块内容、spec 文档路径
+   - 提供：分块内容、设计文档路径
 2. 如果 ❌ 发现问题：
    - 修复该分块中的问题
    - 重新分派审查者审查该分块
@@ -248,9 +276,26 @@ mysql -u root -p -e "SELECT * FROM orders WHERE customer_id='123';"
 - 如果循环超过 5 次迭代，升级给人工介入
 - 审查者是顾问角色——如果你认为反馈不正确，可以解释你的不同意见
 
+## 测试审查循环
+
+生成 testing.md 后：
+
+1. 分派 testing-document-reviewer subagent（参见 testing-document-reviewer-prompt.md），提供精心构造的审查上下文——绝不传递你的会话历史。
+   - 提供：testing.md 内容、设计文档路径
+2. 如果 ❌ 发现问题：
+   - 修复 testing.md 中的问题
+   - 重新分派审查者
+   - 重复直到 ✅ 审核通过
+3. 如果 ✅ 审核通过：进入执行交接
+
+**审查循环指引：**
+- 编写 testing.md 的同一 agent 负责修复（保持上下文连续性）
+- 如果循环超过 5 次迭代，升级给人工介入
+- 审查者是顾问角色——如果你认为反馈不正确，可以解释你的不同意见
+
 ## 执行交接
 
-保存计划和 testing.md 后：
+保存计划和 testing.md 后（两个审查循环均已通过）：
 
 **"计划已完成并保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`。testing.md 也已生成。准备好执行了吗？"**
 

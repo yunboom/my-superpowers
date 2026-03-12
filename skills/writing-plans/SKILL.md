@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: Use when you have a design or requirements for a multi-step task, before touching code
 ---
 
 # Writing Plans
@@ -42,7 +42,7 @@ Scan available skills for names containing `std` (e.g., `code-std`, `db-std`, `e
 
 ## Scope Check
 
-If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
+If the design covers multiple independent subsystems, it should have been broken into sub-project designs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
 
 ## File Structure
 
@@ -168,17 +168,37 @@ ALL commit messages MUST be prefixed with `REQ-{id}`:
 
 After generating `plan.md`, also generate `testing.md` in the same specs directory.
 
-**testing.md requirements:**
+**Determine project type from design.md tech stack**, then generate testing.md using the appropriate patterns:
+
+### Core Requirements (all project types)
+
 - Detailed end-to-end test cases
 - Coverage: normal flows, exception flows, boundary conditions, concurrency scenarios
-- Each test case includes: preconditions, operation steps, expected results
-- **API test cases MUST include complete curl commands** (with URL, method, headers, request body) that can be directly copied and executed
-- **Script-based verification MUST include complete scripts** (with full code, execution commands, and expected output)
+- Each test case includes: type, preconditions, operation steps, teardown, expected results
 - All test steps must be directly executable — no placeholders like "call the API" or "verify the result"
-- **Middleware environment:** MySQL, Elasticsearch, Redis and other middleware should preferably run in Docker containers. Test cases should include Docker-based data cleanup and preloading commands (e.g., `docker exec` for database cleanup scripts, Docker volume mounts for initialization SQL)
 - Once generated, testing.md MUST NOT be modified in subsequent workflow steps
 
-**testing.md format:**
+### Backend Projects
+
+- **API test cases MUST include complete curl commands** (with URL, method, headers, request body) that can be directly copied and executed
+- **Script-based verification MUST include complete scripts** (with full code, execution commands, and expected output)
+- **Environment setup:** middleware startup commands (Docker Compose, local install, or cloud endpoints), healthcheck readiness confirmation, data initialization scripts
+- **Data management:** each test case includes teardown/cleanup steps; test data isolated between cases
+
+### Frontend Projects
+
+- **Browser test cases use Playwright test scripts** with Page Object Model (POM) pattern and `data-testid` locators
+- **Stability:** use condition-based waits (`waitForResponse`, `waitForSelector`, element visibility) — never fixed waits (`waitForTimeout`, `sleep`)
+- **Environment setup:** dev server startup command, mock API / data stubs configuration, browser requirements
+- **Visual verification:** screenshot assertions for key UI states where applicable
+
+### Fullstack / Integration Projects
+
+- Combine backend API tests and frontend browser tests
+- **Environment setup:** full service dependency chain with startup order and healthcheck readiness (e.g., DB → API → Frontend → E2E runner)
+- **Integration flow:** browser action → verify API response → verify DB state
+
+### testing.md format
 
 ```markdown
 # End-to-End Test Cases
@@ -186,34 +206,42 @@ After generating `plan.md`, also generate `testing.md` in the same specs directo
 > REQ-{id} | Generated alongside plan.md
 > ⚠️ This file MUST NOT be modified during execution. If issues are found, stop and report to user.
 
+## Test Environment Setup
+
+### Prerequisites
+- {runtime dependencies: Node.js, Docker, database client, etc.}
+
+### Start Services
+\`\`\`bash
+{startup commands appropriate for project type}
+\`\`\`
+
+### Verify Readiness
+\`\`\`bash
+{healthcheck or accessibility verification commands}
+\`\`\`
+
+### Test Data Initialization
+\`\`\`bash
+{seed scripts, SQL imports, mock data setup, etc.}
+\`\`\`
+
 ## TC-1: {Test Case Title}
+**Type:** API | Browser | Integration
 **Preconditions:**
 - {precondition 1}
 
 **Steps:**
 
-1. Call API:
-\`\`\`bash
-curl -X POST http://localhost:8080/api/v1/orders \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer {token}" \
-  -d '{
-    "customer_id": "123",
-    "amount": 100.00
-  }'
-\`\`\`
+{steps in format matching the Type — curl for API, Playwright for Browser, mixed for Integration}
 
-2. Verify response:
-- HTTP Status: 200
-- Response body contains `"order_id"`
-
-3. Verify database (if needed):
+**Teardown:**
 \`\`\`bash
-mysql -u root -p -e "SELECT * FROM orders WHERE customer_id='123';"
+{data cleanup commands for this test case}
 \`\`\`
 
 **Expected Result:**
-- {expected outcome with specific values}
+- {expected outcome with specific verifiable values}
 
 ## TC-2: {Test Case Title}
 ...
@@ -234,7 +262,7 @@ mysql -u root -p -e "SELECT * FROM orders WHERE customer_id='123';"
 After completing each chunk of the plan:
 
 1. Dispatch plan-document-reviewer subagent (see plan-document-reviewer-prompt.md) with precisely crafted review context — never your session history. This keeps the reviewer focused on the plan, not your thought process.
-   - Provide: chunk content, path to spec document
+   - Provide: chunk content, path to design document
 2. If ❌ Issues Found:
    - Fix the issues in the chunk
    - Re-dispatch reviewer for that chunk
@@ -248,9 +276,26 @@ After completing each chunk of the plan:
 - If loop exceeds 5 iterations, surface to human for guidance
 - Reviewers are advisory - explain disagreements if you believe feedback is incorrect
 
+## Testing Review Loop
+
+After generating testing.md:
+
+1. Dispatch testing-document-reviewer subagent (see testing-document-reviewer-prompt.md) with precisely crafted review context — never your session history.
+   - Provide: testing.md content, path to design document
+2. If ❌ Issues Found:
+   - Fix the issues in testing.md
+   - Re-dispatch reviewer
+   - Repeat until ✅ Approved
+3. If ✅ Approved: proceed to execution handoff
+
+**Review loop guidance:**
+- Same agent that wrote testing.md fixes it (preserves context)
+- If loop exceeds 5 iterations, surface to human for guidance
+- Reviewers are advisory - explain disagreements if you believe feedback is incorrect
+
 ## Execution Handoff
 
-After saving the plan and testing.md:
+After saving the plan and testing.md (both review loops passed):
 
 **"Plan complete and saved to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`. testing.md also generated. Ready to execute?"**
 
