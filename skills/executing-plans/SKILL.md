@@ -7,11 +7,11 @@ description: Use when you have a written implementation plan to execute in a sep
 
 ## Overview
 
-Load plan, review critically, execute tasks in batches, report for review between batches. Verify testing.md after all tasks complete.
-
-**Core principle:** Batch execution with checkpoints for architect review, followed by end-to-end test verification.
+Load plan, review critically, execute all tasks, report when complete. Verify testing.md after all tasks complete.
 
 **Announce at start:** "I'm using the executing-plans skill to implement this plan."
+
+**Note:** Tell your human partner that Superpowers works much better with access to subagents. The quality of its work will be significantly higher if run on a platform with subagent support (such as Claude Code or Codex). If subagents are available, use superpowers:subagent-driven-development instead of this skill.
 
 ## REQ Conventions
 
@@ -60,8 +60,7 @@ Before running ANY test (unit or integration), scan project configuration files 
    ```
    Proceed ONLY after explicit user confirmation.
 
-### Step 3: Execute Batch
-**Default: First 3 tasks**
+### Step 3: Execute Tasks
 
 For each task:
 1. Mark as in_progress
@@ -71,22 +70,10 @@ For each task:
 5. Run verifications as specified
 6. Mark as completed
 
-### Step 4: Report
-When batch complete:
-- Show what was implemented
-- Show verification output
-- Say: "Ready for feedback."
-
-### Step 5: Continue
-Based on feedback:
-- Apply changes if needed
-- Execute next batch
-- Repeat until all tasks complete
-
-### Step 6: Testing Verification
+### Step 4: Testing Verification
 
 <HARD-GATE>
-After ALL tasks are complete, you MUST execute the testing.md verification before proceeding to Step 7. Do NOT skip this step.
+After ALL tasks are complete, you MUST execute the testing.md verification before proceeding to Step 5. Do NOT skip this step.
 </HARD-GATE>
 
 **Middleware Environment:** MySQL, Elasticsearch, Redis and other middleware should preferably run in Docker. Use Docker capabilities for data cleanup (e.g., `docker exec` to run cleanup scripts) and data preloading (e.g., mount initialization SQL via Docker) before running test cases.
@@ -94,7 +81,7 @@ After ALL tasks are complete, you MUST execute the testing.md verification befor
 1. Read `testing.md` from the same specs directory
 2. Execute end-to-end test cases one by one
 3. Record result for each case (PASS / FAIL)
-4. **All PASS** → Proceed to Step 7
+4. **All PASS** → Proceed to Step 5
 5. **Any FAIL:**
    a. Analyze failure cause
    b. If code issue → Fix code, re-run the failing test case
@@ -110,7 +97,7 @@ After ALL tasks are complete, you MUST execute the testing.md verification befor
 
 **ABSOLUTELY FORBIDDEN to modify testing.md.** If you believe a test case is wrong, you MUST stop and report to the user. Never edit, delete, or alter testing.md content.
 
-### Step 7: Complete Development
+### Step 5: Complete Development
 
 After all tasks complete and testing.md verification passes:
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
@@ -120,12 +107,12 @@ After all tasks complete and testing.md verification passes:
 ## When to Stop and Ask for Help
 
 **STOP executing immediately when:**
-- Hit a blocker mid-batch (missing dependency, test fails, instruction unclear)
+- Hit a blocker (missing dependency, test fails, instruction unclear)
 - Plan has critical gaps preventing starting
 - You don't understand an instruction
 - Verification fails repeatedly
 - Non-localhost external dependency detected (see Step 2)
-- testing.md case appears to have issues (see Step 6)
+- testing.md case appears to have issues (see Step 4)
 
 **Ask for clarification rather than guessing.**
 
@@ -144,7 +131,6 @@ After all tasks complete and testing.md verification passes:
 - Follow plan steps exactly
 - Don't skip verifications
 - Reference skills when plan says to
-- Between batches: just report and wait
 - Stop when blocked, don't guess
 - Execute testing.md after all tasks, NEVER modify it
 - Never start implementation on main/master branch without explicit user consent
