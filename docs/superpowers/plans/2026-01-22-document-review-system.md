@@ -12,21 +12,21 @@
 
 ---
 
-## Chunk 1: Spec Document Reviewer
+## Chunk 1: Design Document Reviewer
 
-This chunk adds the spec document reviewer to the brainstorming skill.
+This chunk adds the design document reviewer to the brainstorming skill.
 
-### Task 1: Create Spec Document Reviewer Prompt Template
+### Task 1: Create Design Document Reviewer Prompt Template
 
 **Files:**
-- Create: `skills/brainstorming/spec-document-reviewer-prompt.md`
+- Create: `skills/brainstorming/design-document-reviewer-prompt.md`
 
 - [ ] **Step 1:** Create the reviewer prompt template file
 
 ```markdown
-# Spec Document Reviewer Prompt Template
+# Design Document Reviewer Prompt Template
 
-Use this template when dispatching a spec document reviewer subagent.
+Use this template when dispatching a design document reviewer subagent.
 
 **Purpose:** Verify the spec is complete, consistent, and ready for implementation planning.
 
@@ -36,7 +36,7 @@ Use this template when dispatching a spec document reviewer subagent.
 Task tool (general-purpose):
   description: "Review spec document"
   prompt: |
-    You are a spec document reviewer. Verify this spec is complete and ready for planning.
+    You are a design document reviewer. Verify this spec is complete and ready for planning.
 
     **Spec to review:** [SPEC_FILE_PATH]
 
@@ -75,14 +75,14 @@ Task tool (general-purpose):
 
 - [ ] **Step 2:** Verify the file was created correctly
 
-Run: `cat skills/brainstorming/spec-document-reviewer-prompt.md | head -20`
+Run: `cat skills/brainstorming/design-document-reviewer-prompt.md | head -20`
 Expected: Shows the header and purpose section
 
 - [ ] **Step 3:** Commit
 
 ```bash
-git add skills/brainstorming/spec-document-reviewer-prompt.md
-git commit -m "feat: add spec document reviewer prompt template"
+git add skills/brainstorming/design-document-reviewer-prompt.md
+git commit -m "feat: add design document reviewer prompt template"
 ```
 
 ---
@@ -103,7 +103,7 @@ Find the "After the Design" section and add a new "Spec Review Loop" section aft
 ```markdown
 **Spec Review Loop:**
 After writing the spec document:
-1. Dispatch spec-document-reviewer subagent (see spec-document-reviewer-prompt.md)
+1. Dispatch design-document-reviewer subagent (see design-document-reviewer-prompt.md)
 2. If ❌ Issues Found:
    - Fix the issues in the spec document
    - Re-dispatch reviewer

@@ -54,8 +54,8 @@ Based on requirements + current architecture:
 - Save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/hld.md`
 
 ### Step 6: HLD Review Loop
-- After saving `hld.md`, dispatch the **spec-document-reviewer** subagent to review the document
-- Reuse the review prompt template at `skills/brainstorming/spec-document-reviewer-prompt.md`
+- After saving `hld.md`, dispatch the **design-document-reviewer** subagent to review the document
+- Reuse the review prompt template at `skills/brainstorming/design-document-reviewer-prompt.md`
 - The subagent reviews `hld.md` and returns a list of issues (if any)
 - If issues are found, fix them in `hld.md`, re-save, and re-run the reviewer — this is a fix loop
 - **Maximum 5 rounds** of fix-review iterations. If issues persist after 5 rounds, escalate to the user with a summary of remaining issues and ask for guidance
@@ -78,7 +78,7 @@ Use `hld-template.md` in this skill's directory for the output structure.
 
 The review loop ensures HLD quality before user review. The process:
 
-1. Dispatch a **spec-document-reviewer** subagent using the prompt template at `skills/brainstorming/spec-document-reviewer-prompt.md`
+1. Dispatch a **design-document-reviewer** subagent using the prompt template at `skills/brainstorming/design-document-reviewer-prompt.md`
 2. The reviewer evaluates `hld.md` for completeness, consistency, and clarity
 3. If the reviewer identifies issues:
    - Apply fixes to `hld.md`
@@ -104,7 +104,7 @@ After automated review passes, the user must explicitly approve the HLD before m
 
 **REQUIRED SUB-SKILLS:**
 - superpowers:system-design (architecture discovery)
-- spec-document-reviewer (HLD review, prompt template at `skills/brainstorming/spec-document-reviewer-prompt.md`)
+- design-document-reviewer (HLD review, prompt template at `skills/brainstorming/design-document-reviewer-prompt.md`)
 
 **Input:** `requirements.md` from same specs directory
 **Output:** `hld.md` in same specs directory

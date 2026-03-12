@@ -245,7 +245,7 @@ git commit -m "sync(upstream): add Cursor and Gemini CLI platform support"
 ### Task 9: 新增采纳 — Skill 辅助文件
 
 **Files:**
-- Create: `skills/brainstorming/spec-document-reviewer-prompt.md`
+- Create: `skills/brainstorming/design-document-reviewer-prompt.md`
 - Create: `skills/brainstorming/visual-companion.md`
 - Create: `skills/writing-plans/plan-document-reviewer-prompt.md`
 - Create: `skills/using-superpowers/references/codex-tools.md`
@@ -255,7 +255,7 @@ git commit -m "sync(upstream): add Cursor and Gemini CLI platform support"
 
 ```bash
 git checkout upstream/main -- \
-  skills/brainstorming/spec-document-reviewer-prompt.md \
+  skills/brainstorming/design-document-reviewer-prompt.md \
   skills/brainstorming/visual-companion.md \
   skills/writing-plans/plan-document-reviewer-prompt.md \
   skills/using-superpowers/references/codex-tools.md \
@@ -511,7 +511,7 @@ git show upstream/main:skills/brainstorming/SKILL.md
 检查以下关键字全部出现：
 - `Deep research`
 - `visual companion`
-- `spec-document-reviewer`
+- `design-document-reviewer`
 - `REQ-id`
 - `Design for isolation`
 - `Working in existing codebases`
@@ -645,7 +645,7 @@ git commit -m "sync(upstream): merge executing-plans SKILL.md — remove batch m
 
 - [ ] **Step 1: 创建 reviewer prompt 模板**
 
-参照 `skills/brainstorming/spec-document-reviewer-prompt.md` 的结构，创建需求文档审查模板。审查要点侧重业务完整性：
+参照 `skills/brainstorming/design-document-reviewer-prompt.md` 的结构，创建需求文档审查模板。审查要点侧重业务完整性：
 
 - 功能边界是否清晰
 - 用户场景是否覆盖完整
@@ -673,7 +673,7 @@ git commit -m "feat(prd-clarifying): add requirements document reviewer prompt t
 - [ ] **Step 2: 在第 7 步（Generate Design Document）和第 8 步（User Confirmation）之间插入**
 
 新增两个步骤：
-- **Design Review Loop** — dispatch spec-document-reviewer subagent，复用 `skills/brainstorming/spec-document-reviewer-prompt.md`，修复循环最多 5 轮
+- **Design Review Loop** — dispatch design-document-reviewer subagent，复用 `skills/brainstorming/design-document-reviewer-prompt.md`，修复循环最多 5 轮
 - **User Review Gate** — 审查通过后提示用户 review design.md
 
 更新 checklist 编号（总步骤从 8 变为 10）。
@@ -698,7 +698,7 @@ git commit -m "feat(generating-design): add design review loop and user review g
 
 - [ ] **Step 2: 在第 5 步之后新增第 6-7 步**
 
-- **第 6 步：HLD Review Loop** — dispatch spec-document-reviewer subagent 审查 hld.md，修复循环最多 5 轮
+- **第 6 步：HLD Review Loop** — dispatch design-document-reviewer subagent 审查 hld.md，修复循环最多 5 轮
 - **第 7 步：User Review Gate** — 审查通过后提示用户 review hld.md，确认后提示 /generate-design
 
 更新 checklist 编号（总步骤从 5 变为 7）。
@@ -936,7 +936,7 @@ test ! -f hooks/xspec-session-start.sh && echo "old xspec-session-start.sh: remo
 - [ ] **Step 4: 验证 reviewer prompt 文件都存在**
 
 ```bash
-test -f skills/brainstorming/spec-document-reviewer-prompt.md && echo "spec reviewer: OK"
+test -f skills/brainstorming/design-document-reviewer-prompt.md && echo "spec reviewer: OK"
 test -f skills/writing-plans/plan-document-reviewer-prompt.md && echo "plan reviewer: OK"
 test -f skills/prd-clarifying/requirements-document-reviewer-prompt.md && echo "requirements reviewer: OK"
 ```

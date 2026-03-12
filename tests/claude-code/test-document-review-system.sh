@@ -12,7 +12,7 @@ echo "========================================"
 echo ""
 echo "This test verifies the document review system by:"
 echo "  1. Creating a spec with intentional errors"
-echo "  2. Running the spec document reviewer"
+echo "  2. Running the design document reviewer"
 echo "  3. Verifying the reviewer catches the errors"
 echo ""
 
@@ -70,15 +70,15 @@ echo "Created test spec with intentional errors:"
 echo "  - TODO placeholder in Requirements section"
 echo "  - 'specified later' deferral in Architecture section"
 echo ""
-echo "Running spec document reviewer..."
+echo "Running design document reviewer..."
 echo ""
 
 # Run Claude to review the spec
 OUTPUT_FILE="$TEST_PROJECT/claude-output.txt"
 
-PROMPT="You are testing the spec document reviewer.
+PROMPT="You are testing the design document reviewer.
 
-Read the spec-document-reviewer-prompt.md template in skills/brainstorming/ to understand the review format.
+Read the design-document-reviewer-prompt.md template in skills/brainstorming/ to understand the review format.
 
 Then review the spec at $TEST_PROJECT/docs/superpowers/specs/test-feature-design.md using the criteria from that template.
 
@@ -160,7 +160,7 @@ if [ $FAILED -eq 0 ]; then
     echo "STATUS: PASSED"
     echo "All verification tests passed!"
     echo ""
-    echo "The spec document reviewer correctly:"
+    echo "The design document reviewer correctly:"
     echo "  ✓ Found TODO placeholder"
     echo "  ✓ Found 'specified later' deferral"
     echo "  ✓ Produced properly formatted review"

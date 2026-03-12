@@ -84,7 +84,7 @@ test -x hooks/session-start && echo "OK"
 test -x hooks/xspec-session-start && echo "OK"
 
 # 验证 reviewer prompt 文件存在
-ls skills/brainstorming/spec-document-reviewer-prompt.md
+ls skills/brainstorming/design-document-reviewer-prompt.md
 ls skills/writing-plans/plan-document-reviewer-prompt.md
 ls skills/prd-clarifying/requirements-document-reviewer-prompt.md
 ```

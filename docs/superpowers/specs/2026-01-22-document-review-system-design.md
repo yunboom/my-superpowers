@@ -9,11 +9,11 @@ Add two new review stages to the superpowers workflow:
 
 Both follow the iterative loop pattern used by implementation reviews.
 
-## Spec Document Reviewer
+## Design Document Reviewer
 
 **Purpose:** Verify the spec is complete, consistent, and ready for implementation planning.
 
-**Location:** `skills/brainstorming/spec-document-reviewer-prompt.md`
+**Location:** `skills/brainstorming/design-document-reviewer-prompt.md`
 
 **What it checks for:**
 
@@ -128,7 +128,7 @@ Tasks and steps use checkbox syntax:
 ## Files to Change
 
 **New files:**
-- `skills/brainstorming/spec-document-reviewer-prompt.md`
+- `skills/brainstorming/design-document-reviewer-prompt.md`
 - `skills/writing-plans/plan-document-reviewer-prompt.md`
 
 **Modified files:**

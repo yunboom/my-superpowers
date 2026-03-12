@@ -71,11 +71,11 @@
 - Fix: replaced single quotes with escaped double quotes — works across macOS bash, Windows cmd.exe, Windows Git Bash, and Linux, with and without spaces in paths
 - Verified on Windows 11 (NT 10.0.26200.0) with Claude Code 2.1.72 and Git for Windows
 
-**Brainstorming spec review loop skipped** (#677)
+**Brainstorming design review loop skipped** (#677)
 
-- The spec review loop (dispatch spec-document-reviewer subagent, iterate until approved) existed in the prose "After the Design" section but was missing from the checklist and process flow diagram
-- Since agents follow the diagram and checklist more reliably than prose, the spec review step was being skipped entirely
-- Added step 7 (spec review loop) to the checklist and corresponding nodes to the dot graph
+- The design review loop (dispatch design-document-reviewer subagent, iterate until approved) existed in the prose "After the Design" section but was missing from the checklist and process flow diagram
+- Since agents follow the diagram and checklist more reliably than prose, the design review step was being skipped entirely
+- Added step 7 (design review loop) to the checklist and corresponding nodes to the dot graph
 - Tested with `claude --plugin-dir` and `claude-session-driver`: worker now correctly dispatches the reviewer
 
 **Cursor install command** (PR #676)
@@ -153,7 +153,7 @@ Optional browser-based companion for brainstorming sessions. When a topic would 
 
 Automated review loops for spec and plan documents using subagent dispatch:
 
-- `skills/brainstorming/spec-document-reviewer-prompt.md` — Reviewer checks completeness, consistency, architecture, and YAGNI
+- `skills/brainstorming/design-document-reviewer-prompt.md` — Reviewer checks completeness, consistency, architecture, and YAGNI
 - `skills/writing-plans/plan-document-reviewer-prompt.md` — Reviewer checks spec alignment, task decomposition, file structure, and file size
 - Brainstorming dispatches spec reviewer after writing the design doc
 - Writing-plans includes chunk-based plan review loop after each section

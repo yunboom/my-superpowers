@@ -77,7 +77,7 @@
 - `gemini-extension.json` — Gemini CLI 扩展配置
 
 **Skill 辅助文件:**
-- `skills/brainstorming/spec-document-reviewer-prompt.md` — spec 审查 subagent 模板
+- `skills/brainstorming/design-document-reviewer-prompt.md` — spec 审查 subagent 模板
 - `skills/brainstorming/visual-companion.md` — 可视化头脑风暴指南
 - `skills/writing-plans/plan-document-reviewer-prompt.md` — plan 审查 subagent 模板
 - `skills/using-superpowers/references/codex-tools.md` — Codex 工具名映射
@@ -173,7 +173,7 @@
 
 **融入的上游新内容:**
 - Checklist 第 2 步：Offer visual companion
-- Checklist 第 8 步：Spec review loop（dispatch spec-document-reviewer subagent, max 5 iterations）
+- Checklist 第 8 步：Spec review loop（dispatch design-document-reviewer subagent, max 5 iterations）
 - Checklist 第 9 步：User reviews written spec
 - 流程图新节点：Visual questions ahead?、Offer Visual Companion、Spec review loop、Spec review passed?、User reviews spec?
 - "Understanding the idea" 中项目规模评估（大项目拆分子项目）
@@ -242,8 +242,8 @@
 在当前第 8 步（User Confirmation & Prompt Next Step）之前插入 review loop：
 
 - **新增步骤：Design Review Loop**
-  - 生成 design.md 后，dispatch spec-document-reviewer subagent 审查
-  - 复用 `skills/brainstorming/spec-document-reviewer-prompt.md` 模板
+  - 生成 design.md 后，dispatch design-document-reviewer subagent 审查
+  - 复用 `skills/brainstorming/design-document-reviewer-prompt.md` 模板
   - 修复循环，最多 5 轮，超过则上报用户
 - **新增步骤：User Review Gate**
   - 审查通过后提示用户 review 写入的 design.md
@@ -254,7 +254,7 @@
 在当前第 5 步之后新增：
 
 - **新增第 6 步：HLD Review Loop**
-  - 保存 hld.md 后，dispatch spec-document-reviewer subagent 审查
+  - 保存 hld.md 后，dispatch design-document-reviewer subagent 审查
   - 审查对象为 hld.md（高层设计文档）
   - 修复循环，最多 5 轮
 - **新增第 7 步：User Review Gate**

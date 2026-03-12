@@ -54,8 +54,8 @@ description: Use when a complex requirement involves multiple microservices and 
 - 保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/hld.md`
 
 ### 步骤 6：HLD Review Loop
-- 保存 `hld.md` 后，dispatch **spec-document-reviewer** subagent 对文档进行审查
-- 复用 `skills/brainstorming/spec-document-reviewer-prompt.md` 中的 review prompt 模板
+- 保存 `hld.md` 后，dispatch **design-document-reviewer** subagent 对文档进行审查
+- 复用 `skills/brainstorming/design-document-reviewer-prompt.md` 中的 review prompt 模板
 - subagent 审查 `hld.md` 并返回问题列表（如有）
 - 如果发现问题，在 `hld.md` 中修复，重新保存，并重新运行 reviewer —— 这是一个修复循环
 - **最多 5 轮**修复-审查迭代。如果 5 轮后问题仍然存在，将剩余问题汇总上报给用户并请求指导
@@ -78,7 +78,7 @@ description: Use when a complex requirement involves multiple microservices and 
 
 review loop 确保 HLD 在用户审查前的质量。流程如下：
 
-1. 使用 `skills/brainstorming/spec-document-reviewer-prompt.md` 中的 prompt 模板 dispatch **spec-document-reviewer** subagent
+1. 使用 `skills/brainstorming/design-document-reviewer-prompt.md` 中的 prompt 模板 dispatch **design-document-reviewer** subagent
 2. reviewer 评估 `hld.md` 的完整性、一致性和清晰度
 3. 如果 reviewer 发现问题：
    - 在 `hld.md` 中修复
@@ -104,7 +104,7 @@ review loop 确保 HLD 在用户审查前的质量。流程如下：
 
 **必需子技能：**
 - superpowers:system-design（架构发现）
-- spec-document-reviewer（HLD 审查，prompt 模板位于 `skills/brainstorming/spec-document-reviewer-prompt.md`）
+- design-document-reviewer（HLD 审查，prompt 模板位于 `skills/brainstorming/design-document-reviewer-prompt.md`）
 
 **输入：** 同一规格目录下的 `requirements.md`
 **输出：** 同一规格目录下的 `hld.md`

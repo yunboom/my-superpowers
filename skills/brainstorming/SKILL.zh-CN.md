@@ -30,7 +30,7 @@ description: "You MUST use this before any creative work - creating features, bu
 5. **提出 2-3 种方案** — 包含权衡分析和你的推荐，以调研证据为支撑
 6. **展示设计方案** — 各部分按其复杂度进行展开，每个部分完成后获得用户批准
 7. **编写设计文档** — 保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md` 并提交
-8. **Design review loop** — 派遣 spec-document-reviewer subagent，提供精确构建的审查上下文（绝不使用你的会话历史）；修复问题并重新派遣，直到通过审查（最多 5 次迭代，之后交由人工处理）
+8. **Design review loop** — 派遣 design-document-reviewer subagent，提供精确构建的审查上下文（绝不使用你的会话历史）；修复问题并重新派遣，直到通过审查（最多 5 次迭代，之后交由人工处理）
 9. **用户审查已编写的设计文档** — 在继续之前请用户审查设计文档
 10. **过渡到实现** — 调用 writing-plans skill 创建实现计划
 
@@ -139,7 +139,7 @@ digraph brainstorming {
 **Design Review Loop：**
 编写完设计文档后：
 
-1. 派遣 spec-document-reviewer subagent（参见 spec-document-reviewer-prompt.md）
+1. 派遣 design-document-reviewer subagent（参见 design-document-reviewer-prompt.md）
 2. 如果发现问题：修复，重新派遣，重复直到通过审查
 3. 如果循环超过 5 次迭代，交由人工指导
 
