@@ -1,4 +1,7 @@
 .worktrees/
 .private-journal/
 .claude/
-.idea
+.DS_Store
+node_modules/
+inspo
+triage/
