@@ -4,7 +4,7 @@ Use this template when dispatching a design document reviewer subagent.
 
 **Purpose:** Verify the design is complete, consistent, and ready for implementation planning.
 
-**Dispatch after:** Design document is written to docs/superpowers/specs/
+**Dispatch after:** Design document is written to docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md
 
 ```
 Task tool (general-purpose):

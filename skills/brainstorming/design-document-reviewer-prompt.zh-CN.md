@@ -4,7 +4,7 @@
 
 **用途：** 验证设计文档是否完整、一致，并已准备好进入实现计划阶段。
 
-**触发时机：** 设计文档写入 docs/superpowers/specs/ 之后
+**触发时机：** 设计文档写入 docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md 之后
 
 ```
 Task tool (general-purpose):
