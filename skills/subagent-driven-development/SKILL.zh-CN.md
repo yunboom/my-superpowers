@@ -1,11 +1,13 @@
 ---
-name: subagent-driven-development
-description: Use when executing implementation plans with independent tasks in the current session
+name: Sub-agent 驱动开发
+description: 在当前会话中执行包含独立任务的实现计划时使用
 ---
 
 # Sub-agent 驱动开发
 
 通过为每个任务分派新的 sub-agent 来执行计划，每个任务完成后进行两阶段审查：先审查规格合规性，再审查代码质量。
+
+**为什么使用 sub-agent：** 你将任务委派给具有隔离上下文的专用 agent。通过精心设计它们的指令和上下文，你确保它们保持专注并成功完成任务。它们不应继承你当前会话的上下文或历史记录——你精确构建它们所需的一切。这也能为你自身的协调工作保留上下文。
 
 **核心原则：** 每个任务一个新的 sub-agent + 两阶段审查（规格 + 质量）= 高质量、快速迭代
 
@@ -82,6 +84,39 @@ digraph process {
 }
 ```
 
+## 模型选择
+
+使用能够胜任各角色的最低性能模型，以节省成本并提高速度。
+
+**机械性实现任务**（独立函数、明确规格、1-2 个文件）：使用快速、低成本的模型。当计划规格明确时，大多数实现任务都是机械性的。
+
+**集成和判断任务**（多文件协调、模式匹配、调试）：使用标准模型。
+
+**架构、设计和审查任务**：使用最强大的可用模型。
+
+**任务复杂度信号：**
+- 涉及 1-2 个文件且有完整规格 → 低成本模型
+- 涉及多个文件且有集成关注点 → 标准模型
+- 需要设计判断或广泛的代码库理解 → 最强大的模型
+
+## 处理实现者状态
+
+实现者 sub-agent 会报告四种状态之一。请对每种状态做出适当处理：
+
+**DONE：** 继续进行规格合规性审查。
+
+**DONE_WITH_CONCERNS：** 实现者完成了工作但标记了疑虑。在继续之前阅读这些疑虑。如果疑虑涉及正确性或范围，在审查前解决它们。如果是观察性意见（例如"这个文件越来越大了"），记录下来并继续审查。
+
+**NEEDS_CONTEXT：** 实现者需要未提供的信息。提供缺失的上下文并重新分派。
+
+**BLOCKED：** 实现者无法完成任务。评估阻塞原因：
+1. 如果是上下文问题，提供更多上下文并使用相同模型重新分派
+2. 如果任务需要更强的推理能力，使用更强大的模型重新分派
+3. 如果任务太大，将其拆分为更小的部分
+4. 如果计划本身有误，向人类升级
+
+**永远不要**忽略升级请求或在不做任何更改的情况下强制同一模型重试。如果实现者说它卡住了，说明有些东西需要改变。
+
 ## Prompt 模板
 
 - `./implementer-prompt.md` - 分派实现者 sub-agent
@@ -93,7 +128,7 @@ digraph process {
 ```
 You: I'm using Subagent-Driven Development to execute this plan.
 
-[Read plan file once: docs/plans/feature-plan.md]
+[Read plan file once: docs/superpowers/plans/feature-plan.md]
 [Extract all 5 tasks with full text and context]
 [Create TodoWrite with all tasks]
 
@@ -237,7 +272,6 @@ Done!
 
 **Sub-agent 应使用：**
 - **superpowers:test-driven-development** - Sub-agent 对每个任务遵循 TDD
-- **规范 Skills（std）** - 在分派实现者 sub-agent 之前，扫描可用的 skills 列表，查找名称中包含 `std` 的 skill（如 `code-std`、`db-std`、`error-handling-std`）。这些是各类规范/标准 skill，涵盖代码编写规范、数据库规范、错误处理规范等。将相关 std skill 的指令纳入实现者 sub-agent 的 prompt 中，确保实现遵循相应规范。
 
 **替代工作流：**
 - **superpowers:executing-plans** - 用于并行会话而非同会话执行

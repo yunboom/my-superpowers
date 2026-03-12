@@ -20,3 +20,5 @@
 - 2026-02-26: using-xspec skill 增加双工作流路由逻辑，同时描述工作流 A（自由想法）和工作流 B（PRD 驱动），含路由规则表和更新后的决策流程图
 - 2026-03-02: generating-design skill 新增前后端项目类型自动检测，design-template 拆分为 backend/frontend 两个模板，头脑风暴维度按项目类型区分
 - 2026-03-12: 上游同步 v4.3.0 → v5.0.2（visual brainstorming、document review loop、Gemini/Cursor 支持、架构指导、spec/plan review loop 扩展到自定义 skill、brainstorm server 零依赖重写）
+- 2026-03-12: 翻译同步 using-superpowers/SKILL.zh-CN.md，补充 SUBAGENT-STOP、指令优先级、Gemini CLI 访问方式、平台适配章节，frontmatter 中文化
+- 2026-03-12: 翻译同步 subagent-driven-development/SKILL.zh-CN.md，补充"为什么使用 sub-agent"段落、"模型选择"章节、"处理实现者状态"章节，修正示例路径，移除英文版不存在的 std skill 内容，frontmatter 中文化

@@ -1,11 +1,11 @@
 ---
-name: requesting-code-review
-description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements
+name: 请求代码审查
+description: 在完成任务、实现主要功能或合并前使用，以验证工作是否满足需求
 ---
 
 # 请求代码审查
 
-派遣 superpowers:code-reviewer sub-agent 在问题级联之前捕获问题。
+派遣 superpowers:code-reviewer 子代理在问题级联之前捕获它们。审查者会获得精心构建的评估上下文——而非你的会话历史。这让审查者专注于工作成果而非你的思考过程，同时也为你保留自己的上下文以便继续工作。
 
 **核心原则：** 早审查，勤审查。
 
@@ -58,7 +58,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 [派遣 superpowers:code-reviewer sub-agent]
   WHAT_WAS_IMPLEMENTED: Verification and repair functions for conversation index
-  PLAN_OR_REQUIREMENTS: Task 2 from docs/plans/deployment-plan.md
+  PLAN_OR_REQUIREMENTS: Task 2 from docs/superpowers/plans/deployment-plan.md
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
   DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types

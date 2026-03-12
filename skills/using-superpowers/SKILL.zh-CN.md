@@ -1,7 +1,11 @@
 ---
-name: using-superpowers
-description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
+name: 使用超能力
+description: 在开始任何对话时使用——确定如何查找和使用 skill，要求在任何回复（包括澄清问题）之前调用 Skill 工具
 ---
+
+<SUBAGENT-STOP>
+如果你作为子代理被分派执行特定任务，请跳过此 skill。
+</SUBAGENT-STOP>
 
 <EXTREMELY-IMPORTANT>
 如果你认为某个 skill 哪怕只有 1% 的可能性适用于你正在做的事情，你绝对必须调用该 skill。
@@ -11,11 +15,27 @@ description: Use when starting any conversation - establishes how to find and us
 这不可商量。这不是可选的。你不能为此找理由。
 </EXTREMELY-IMPORTANT>
 
+## 指令优先级
+
+Superpowers skill 会覆盖默认系统提示的行为，但**用户指令始终具有最高优先级**：
+
+1. **用户的明确指令**（CLAUDE.md、GEMINI.md、AGENTS.md、直接请求）——最高优先级
+2. **Superpowers skill** ——在冲突时覆盖默认系统行为
+3. **默认系统提示** ——最低优先级
+
+如果 CLAUDE.md、GEMINI.md 或 AGENTS.md 说"不要使用 TDD"，而某个 skill 说"始终使用 TDD"，请遵循用户的指令。用户拥有控制权。
+
 ## 如何访问 Skill
 
 **在 Claude Code 中：** 使用 `Skill` 工具。当你调用一个 skill 时，它的内容会被加载并呈现给你——直接遵循它。不要使用 Read 工具读取 skill 文件。
 
+**在 Gemini CLI 中：** Skill 通过 `activate_skill` 工具激活。Gemini 在会话启动时加载 skill 元数据，并按需激活完整内容。
+
 **在其他环境中：** 查看你的平台文档了解 skill 是如何加载的。
+
+## 平台适配
+
+Skill 使用 Claude Code 的工具名称。非 CC 平台：参见 `references/codex-tools.md`（Codex）了解工具等价物。Gemini CLI 用户通过 GEMINI.md 自动加载工具映射。
 
 # 使用 Skill
 
