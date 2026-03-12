@@ -50,17 +50,62 @@ Based on requirements + current architecture:
 - One-time confirmation (not section-by-section)
 - If user requests changes, revise and re-present
 
-### Step 5: Save and Prompt Next Step
+### Step 5: Save
 - Save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/hld.md`
-- Prompt: "HLD complete. Run `/generate-design` to create detailed design for each involved service."
+
+### Step 6: HLD Review Loop
+- After saving `hld.md`, dispatch the **spec-document-reviewer** subagent to review the document
+- Reuse the review prompt template at `skills/brainstorming/spec-document-reviewer-prompt.md`
+- The subagent reviews `hld.md` and returns a list of issues (if any)
+- If issues are found, fix them in `hld.md`, re-save, and re-run the reviewer — this is a fix loop
+- **Maximum 5 rounds** of fix-review iterations. If issues persist after 5 rounds, escalate to the user with a summary of remaining issues and ask for guidance
+- If the reviewer returns no issues, proceed to the next step
+
+### Step 7: User Review Gate
+- After the review loop passes (no issues), prompt the user to review `hld.md`
+- Present: "HLD has passed automated review. Please review `hld.md` and confirm."
+- **WAIT for explicit user confirmation** before proceeding
+- If the user requests changes, revise `hld.md`, re-save, and re-run the review loop (Step 6)
+- Once the user confirms, prompt: "HLD confirmed. Run `/generate-design` to create detailed design for each involved service."
 
 ## Template
 
 Use `hld-template.md` in this skill's directory for the output structure.
 
+## Detailed Step Notes
+
+### HLD Review Loop (Step 6)
+
+The review loop ensures HLD quality before user review. The process:
+
+1. Dispatch a **spec-document-reviewer** subagent using the prompt template at `skills/brainstorming/spec-document-reviewer-prompt.md`
+2. The reviewer evaluates `hld.md` for completeness, consistency, and clarity
+3. If the reviewer identifies issues:
+   - Apply fixes to `hld.md`
+   - Re-save the file
+   - Re-dispatch the reviewer for another round
+4. Repeat until either:
+   - The reviewer returns **no issues** → proceed to Step 7
+   - **5 rounds** have been exhausted → escalate to the user with a summary of unresolved issues and ask how to proceed
+
+### User Review Gate (Step 7)
+
+After automated review passes, the user must explicitly approve the HLD before moving on:
+
+1. Present the user with a confirmation prompt: "HLD has passed automated review. Please review `hld.md` and confirm."
+2. **Do NOT proceed until the user explicitly confirms**
+3. If the user requests changes:
+   - Apply the requested changes to `hld.md`
+   - Re-save the file
+   - Re-run the HLD Review Loop (Step 6) to validate the changes
+4. Once the user confirms, prompt: "HLD confirmed. Run `/generate-design` to create detailed design for each involved service."
+
 ## Integration
 
-**REQUIRED SUB-SKILL:** superpowers:system-design (architecture discovery)
+**REQUIRED SUB-SKILLS:**
+- superpowers:system-design (architecture discovery)
+- spec-document-reviewer (HLD review, prompt template at `skills/brainstorming/spec-document-reviewer-prompt.md`)
+
 **Input:** `requirements.md` from same specs directory
 **Output:** `hld.md` in same specs directory
 **Next step:** superpowers:generating-design
