@@ -7,7 +7,7 @@ description: "You MUST use this before any creative work - creating features, bu
 
 ## 概述
 
-通过自然的协作对话，帮助将想法转化为完整的设计方案。
+通过自然的协作对话，帮助将想法转化为完整的设计和规格说明。
 
 首先了解当前项目的上下文，然后逐一提问以完善想法。一旦你理解了要构建什么，就展示设计方案并获得用户批准。
 
