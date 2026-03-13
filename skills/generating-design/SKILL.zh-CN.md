@@ -111,8 +111,6 @@ digraph design_flow {
 }
 ```
 
-**必需子技能：** 使用 superpowers:deep-researching 执行所有调研派发。
-
 ### 步骤 5：技术头脑风暴
 
 使用头脑风暴对话模式：每次一个问题，优先多选题。
@@ -187,12 +185,7 @@ digraph review_loop {
 2. **等待用户明确确认**（如"确认" / "approved" / "LGTM"）后才可进入下一步。
 3. 如果用户提出修改意见，执行修改后重新提交用户确认，直到获得明确批准。
 
-### 步骤 9：用户确认
-- 展示完整设计供审阅
-- 如有需要进行修订
-- 获得明确批准
-
-### 步骤 10：提示下一步
+### 步骤 9：提示下一步
 - "Design complete. Run `/write-plan` to create the implementation plan."
 
 ## 集成关系

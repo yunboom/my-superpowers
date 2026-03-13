@@ -55,7 +55,7 @@ description: Use when a complex requirement involves multiple microservices and 
 
 ### 步骤 6：HLD Review Loop
 - 保存 `hld.md` 后，dispatch **hld-document-reviewer** subagent 对文档进行审查
-- 复用 `skills/generating-hld/hld-document-reviewer-prompt.md` 中的 review prompt 模板
+- 使用 `skills/generating-hld/hld-document-reviewer-prompt.md` 中的 review prompt 模板
 - subagent 审查 `hld.md` 并返回问题列表（如有）
 - 如果发现问题，在 `hld.md` 中修复，重新保存，并重新运行 reviewer —— 这是一个修复循环
 - **最多 5 轮**修复-审查迭代。如果 5 轮后问题仍然存在，将剩余问题汇总上报给用户并请求指导
@@ -72,39 +72,10 @@ description: Use when a complex requirement involves multiple microservices and 
 
 使用本技能目录下的 `hld-template.md` 作为输出结构。
 
-## 详细步骤说明
-
-### HLD Review Loop（步骤 6）
-
-review loop 确保 HLD 在用户审查前的质量。流程如下：
-
-1. 使用 `skills/generating-hld/hld-document-reviewer-prompt.md` 中的 prompt 模板 dispatch **hld-document-reviewer** subagent
-2. reviewer 评估 `hld.md` 的架构合理性、service 边界、接口契约和依赖正确性
-3. 如果 reviewer 发现问题：
-   - 在 `hld.md` 中修复
-   - 重新保存文件
-   - 重新 dispatch reviewer 进行新一轮审查
-4. 重复直到以下任一条件满足：
-   - reviewer 返回**无问题** → 进入步骤 7
-   - 已达到 **5 轮**上限 → 将未解决的问题汇总上报给用户，请求指导
-
-### User Review Gate（步骤 7）
-
-自动审查通过后，用户必须明确批准 HLD 才能继续：
-
-1. 向用户展示确认提示："HLD 已通过自动审查，请 review `hld.md` 并确认。"
-2. **在用户明确确认之前不得继续**
-3. 如果用户要求修改：
-   - 在 `hld.md` 中执行修改
-   - 重新保存文件
-   - 重新运行 HLD Review Loop（步骤 6）以验证变更
-4. 用户确认后，提示："HLD confirmed. Run `/generate-design` to create detailed design for each involved service."
-
 ## 集成关系
 
 **必需子技能：**
 - superpowers:system-design（架构发现）
-- hld-document-reviewer（HLD 审查，prompt 模板位于 `skills/generating-hld/hld-document-reviewer-prompt.md`）
 
 **输入：** 同一规格目录下的 `requirements.md`
 **输出：** 同一规格目录下的 `hld.md`

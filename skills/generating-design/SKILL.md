@@ -111,8 +111,6 @@ digraph design_flow {
 }
 ```
 
-**REQUIRED SUB-SKILL:** Use superpowers:deep-researching for all research dispatches.
-
 ### Step 5: Technical Brainstorming
 
 Use brainstorming dialogue patterns: one question at a time, prefer multiple-choice.
@@ -187,12 +185,7 @@ digraph review_loop {
 2. **等待用户明确确认**（如 "确认" / "approved" / "LGTM"）后才可进入下一步。
 3. 如果用户提出修改意见，执行修改后重新提交用户确认，直到获得明确批准。
 
-### Step 9: User Confirmation
-- Present complete design for review
-- Revise if needed
-- Get explicit approval
-
-### Step 10: Prompt Next Step
+### Step 9: Prompt Next Step
 - "Design complete. Run `/write-plan` to create the implementation plan."
 
 ## Integration
