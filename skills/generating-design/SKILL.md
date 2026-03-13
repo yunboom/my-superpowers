@@ -148,13 +148,13 @@ Use brainstorming dialogue patterns: one question at a time, prefer multiple-cho
 
 ### Step 7: Design Review Loop
 
-Generate design.md 后，dispatch detailed-design-document-reviewer subagent 对文档进行自动审查。
+After generating design.md, dispatch a **detailed-design-document-reviewer** subagent for automated review.
 
-1. **Dispatch reviewer subagent** — 使用 `skills/generating-design/design-document-reviewer-prompt.md` 模板，将 `[DESIGN_FILE_PATH]` 替换为 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`，将 `[REQUIREMENTS_FILE_PATH]` 替换为同目录下的 `requirements.md`，通过 Task tool 派遣审查子代理。
-2. **处理审查结果：**
-   - **Status: ✅ Approved** → 进入 Step 8（User Review Gate）。
-   - **Status: ❌ Issues Found** → 根据 Issues 列表自动修复 design.md，修复完成后重新派遣 reviewer subagent 审查。
-3. **循环上限：** 修复循环最多 **5 轮**。若 5 轮后仍有未解决的 Issues，停止自动修复，将剩余问题汇总上报给用户，由用户决定是否继续或手动调整。
+1. **Dispatch reviewer subagent** — use the `skills/generating-design/design-document-reviewer-prompt.md` template, replacing `[DESIGN_FILE_PATH]` with `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md` and `[REQUIREMENTS_FILE_PATH]` with `requirements.md` in the same directory. Dispatch the reviewer via Task tool.
+2. **Handle review results:**
+   - **Status: ✅ Approved** → proceed to Step 8 (User Review Gate).
+   - **Status: ❌ Issues Found** → auto-fix issues in design.md based on the Issues list, then re-dispatch the reviewer subagent.
+3. **Loop limit:** maximum **5 rounds** of fix-review iterations. If issues remain after 5 rounds, stop auto-fixing, summarize remaining issues, and escalate to the user for guidance.
 
 ```dot
 digraph review_loop {
@@ -179,11 +179,11 @@ digraph review_loop {
 
 ### Step 8: User Review Gate
 
-审查通过（或用户确认剩余问题可接受）后，提示用户对 design.md 进行最终人工 review。
+After automated review passes (or after escalating remaining issues to the user), prompt the user for final human review of design.md.
 
-1. 告知用户：design.md 已通过自动审查（或列出已上报的剩余问题），请 review 文档内容。
-2. **等待用户明确确认**（如 "确认" / "approved" / "LGTM"）后才可进入下一步。
-3. 如果用户提出修改意见，执行修改后重新提交用户确认，直到获得明确批准。
+1. Inform the user: design.md has passed automated review (or list any escalated remaining issues). Ask them to review the document.
+2. **WAIT for explicit user confirmation** (e.g., "confirmed" / "approved" / "LGTM") before proceeding.
+3. If the user requests changes, apply the changes and re-submit for user confirmation until explicitly approved.
 
 ### Step 9: Prompt Next Step
 - "Design complete. Run `/write-plan` to create the implementation plan."

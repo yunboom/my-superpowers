@@ -54,19 +54,23 @@ Based on requirements + current architecture:
 - Save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/hld.md`
 
 ### Step 6: HLD Review Loop
-- After saving `hld.md`, dispatch the **hld-document-reviewer** subagent to review the document
-- Use the review prompt template at `skills/generating-hld/hld-document-reviewer-prompt.md`
-- The subagent reviews `hld.md` and returns a list of issues (if any)
-- If issues are found, fix them in `hld.md`, re-save, and re-run the reviewer — this is a fix loop
-- **Maximum 5 rounds** of fix-review iterations. If issues persist after 5 rounds, escalate to the user with a summary of remaining issues and ask for guidance
-- If the reviewer returns no issues, proceed to the next step
+
+After saving `hld.md`, dispatch the **hld-document-reviewer** subagent for automated review.
+
+1. **Dispatch reviewer subagent** — use the `skills/generating-hld/hld-document-reviewer-prompt.md` template, replacing `[HLD_FILE_PATH]` with `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/hld.md`. Dispatch the reviewer via Task tool.
+2. **Handle review results:**
+   - **No issues** → proceed to Step 7 (User Review Gate).
+   - **Issues found** → fix issues in `hld.md` based on the issue list, re-save, and re-dispatch the reviewer subagent.
+3. **Loop limit:** maximum **5 rounds** of fix-review iterations. If issues remain after 5 rounds, stop auto-fixing, summarize remaining issues, and escalate to the user for guidance.
 
 ### Step 7: User Review Gate
-- After the review loop passes (no issues), prompt the user to review `hld.md`
-- Present: "HLD has passed automated review. Please review `hld.md` and confirm."
-- **WAIT for explicit user confirmation** before proceeding
-- If the user requests changes, revise `hld.md`, re-save, and re-run the review loop (Step 6)
-- Once the user confirms, prompt: "HLD confirmed. Run `/generate-design` to create detailed design for each involved service."
+
+After automated review passes (or after escalating remaining issues to the user), prompt the user for final human review of `hld.md`.
+
+1. Present: "HLD has passed automated review. Please review `hld.md` and confirm."
+2. **WAIT for explicit user confirmation** before proceeding.
+3. If the user requests changes, apply changes, re-save, and re-run the HLD Review Loop (Step 6) to validate.
+4. Once the user confirms, prompt: "HLD confirmed. Run `/generate-design` to create detailed design for each involved service."
 
 ## Template
 
