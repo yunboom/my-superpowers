@@ -27,16 +27,14 @@ Task tool (general-purpose):
     | Completeness | TODOs, placeholders, "TBD", incomplete sections |
     | Consistency | Contradictions between sections (e.g., dependency diagram vs interface table mismatch) |
 
-    ## CRITICAL
+    ## Calibration
 
-    Look especially hard for:
-    - Services with vague or overlapping responsibilities
-    - Missing interface definitions between services that have dependencies
-    - Circular dependency chains in the dependency graph
-    - Data entities owned by multiple services or with no clear owner
-    - Risks listed without mitigation strategies
-    - Dependency diagram that doesn't match the interface/event tables
-    - Any TODO markers or placeholder text
+    **Only flag issues that would cause real problems during detailed design.**
+    Overlapping service responsibilities, missing interface contracts, circular
+    dependencies, or data ownership conflicts — those are issues. Minor wording
+    improvements, stylistic preferences, and "some sections less detailed" are not.
+
+    Approve unless there are serious architectural gaps that would lead to a flawed design.
 
     ## Output Format
 

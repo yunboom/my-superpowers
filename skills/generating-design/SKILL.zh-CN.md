@@ -146,44 +146,43 @@ digraph design_flow {
 - 内容用中文输出，技术术语用英文
 - 保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
 
-### 步骤 7：Design Review Loop
+### 步骤 7：Design Self-Review
 
-生成 design.md 后，dispatch detailed-design-document-reviewer subagent 对文档进行自动审查。
+生成 design.md 后，以全新的视角审视它。这是你自己运行的检查清单——不是分派子代理。
 
-1. **Dispatch reviewer subagent** —— 使用 `skills/generating-design/design-document-reviewer-prompt.md` 模板，将 `[DESIGN_FILE_PATH]` 替换为 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`，将 `[REQUIREMENTS_FILE_PATH]` 替换为同目录下的 `requirements.md`，通过 Task tool 派遣审查子代理。
-2. **处理审查结果：**
-   - **Status: ✅ Approved** → 进入步骤 8（User Review Gate）。
-   - **Status: ❌ Issues Found** → 根据 Issues 列表自动修复 design.md，修复完成后重新派遣 reviewer subagent 审查。
-3. **循环上限：** 修复循环最多 **5 轮**。若 5 轮后仍有未解决的 Issues，停止自动修复，将剩余问题汇总上报给用户，由用户决定是否继续或手动调整。
+**1. 需求覆盖度：** 对照 requirements.md 逐项检查——分配给本 service 的所有需求是否都已覆盖？是否有遗漏的功能点？
 
-```dot
-digraph review_loop {
-    "Generate design.md" [shape=box];
-    "Dispatch reviewer subagent" [shape=box];
-    "Review passed?" [shape=diamond];
-    "Auto-fix issues" [shape=box];
-    "Round < 5?" [shape=diamond];
-    "Escalate to user" [shape=box];
-    "User Review Gate" [shape=box];
+**2. 模块设计：** 每个模块的职责是否清晰且单一？是否存在职责重叠或遗漏的模块？
 
-    "Generate design.md" -> "Dispatch reviewer subagent";
-    "Dispatch reviewer subagent" -> "Review passed?";
-    "Review passed?" -> "User Review Gate" [label="✅ Approved"];
-    "Review passed?" -> "Round < 5?" [label="❌ Issues Found"];
-    "Round < 5?" -> "Auto-fix issues" [label="yes"];
-    "Auto-fix issues" -> "Dispatch reviewer subagent";
-    "Round < 5?" -> "Escalate to user" [label="no — 5 rounds reached"];
-    "Escalate to user" -> "User Review Gate";
-}
-```
+**3. 数据模型：** 数据模型是否完整？状态机是否覆盖了所有状态流转？ER 图是否与 DDL 一致？
+
+**4. API 设计：** 接口协议是否完整定义（请求/响应参数）？命名和版本控制是否一致？
+
+**5. 存储设计：** 数据库设计是否遵循规范？缓存策略是否合理？索引是否充分？
+
+**6. 幂等性与并发：** 接口是否幂等？锁策略和事务粒度是否已定义？是否考虑了竞态条件？
+
+**7. 历史兼容性：** 是否评估了与现有数据/功能的向后兼容性？新变更是否会破坏现有功能？
+
+**8. 可靠性：** 监控/告警、错误处理和流量预估是否已覆盖？
+
+**9. 安全与合规：** 敏感数据是否加密？API 认证/权限是否完整？
+
+**10. 性能：** QPS/延迟目标是否明确？是否有对应的压测计划？
+
+**11. 部署与回滚：** 发布计划是否完整？回滚策略是否可行（旧代码能否处理新数据）？
+
+**12. 完整性与一致性：** 是否存在 TODO、占位符、"TBD"？数据模型是否与 DDL 匹配？架构图是否与模块描述一致？
+
+如果发现问题，直接内联修复。无需重新审查——修复后继续。
 
 ### 步骤 8：User Review Gate
 
-审查通过（或用户确认剩余问题可接受）后，提示用户对 design.md 进行最终人工 review。
+self-review 通过后，提示用户对 design.md 进行最终人工 review。
 
-1. 告知用户：design.md 已通过自动审查（或列出已上报的剩余问题），请 review 文档内容。
+1. 告知用户：design.md 已通过 self-review，请 review 文档内容。
 2. **等待用户明确确认**（如"确认" / "approved" / "LGTM"）后才可进入下一步。
-3. 如果用户提出修改意见，执行修改后重新提交用户确认，直到获得明确批准。
+3. 如果用户提出修改意见，执行修改后重新运行 self-review，再提交用户确认，直到获得明确批准。
 
 ### 步骤 9：提示下一步
 - "Design complete. Run `/write-plan` to create the implementation plan."

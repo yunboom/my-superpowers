@@ -53,23 +53,35 @@ description: Use when a complex requirement involves multiple microservices and 
 ### 步骤 5：保存
 - 保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/hld.md`
 
-### 步骤 6：HLD Review Loop
+### 步骤 6：HLD Self-Review
 
-保存 `hld.md` 后，dispatch **hld-document-reviewer** subagent 对文档进行自动审查。
+保存 `hld.md` 后，以全新的视角审视它。这是你自己运行的检查清单——不是分派子代理。
 
-1. **Dispatch reviewer subagent** —— 使用 `skills/generating-hld/hld-document-reviewer-prompt.md` 模板，将 `[HLD_FILE_PATH]` 替换为 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/hld.md`，通过 Task tool 派遣审查子代理。
-2. **处理审查结果：**
-   - **无问题** → 进入步骤 7（User Review Gate）。
-   - **发现问题** → 根据问题列表在 `hld.md` 中修复，重新保存，并重新派遣 reviewer subagent 审查。
-3. **循环上限：** 修复循环最多 **5 轮**。若 5 轮后仍有未解决的问题，停止自动修复，将剩余问题汇总上报给用户并请求指导。
+**1. 系统边界：** 系统边界是否清晰定义？范围内和范围外的 service 是否明确？
+
+**2. Service 职责：** 每个 service 职责是否单一明确？是否有职责重叠或遗漏？
+
+**3. 接口契约：** 同步接口和异步事件是否完整定义？Provider/Consumer 关系是否清晰？
+
+**4. 依赖方向：** 依赖方向是否合理？是否存在循环依赖？
+
+**5. 数据归属：** 数据实体归属是否明确？是否存在多 service 共写同一数据的情况？
+
+**6. 风险识别：** 风险与待定事项是否充分识别？缓解策略是否可行？
+
+**7. 完整性：** 是否存在 TODO、占位符、"TBD" 或未完成的章节？修复它们。
+
+**8. 一致性：** 各章节之间是否存在矛盾——例如依赖图与接口表不一致？
+
+如果发现问题，直接内联修复。无需重新审查——修复后继续。
 
 ### 步骤 7：User Review Gate
 
-审查通过（或用户确认剩余问题可接受）后，提示用户对 `hld.md` 进行最终人工 review。
+self-review 通过后，提示用户对 `hld.md` 进行最终人工 review。
 
-1. 展示："HLD 已通过自动审查，请 review `hld.md` 并确认。"
+1. 展示："HLD 已通过 self-review，请 review `hld.md` 并确认。"
 2. **等待用户明确确认**后才能继续。
-3. 如果用户要求修改，执行修改后重新保存，并重新运行 HLD Review Loop（步骤 6）以验证变更。
+3. 如果用户要求修改，执行修改后重新保存，并重新运行 self-review。
 4. 用户确认后，提示："HLD confirmed. Run `/generate-design` to create detailed design for each involved service."
 
 ## 模板

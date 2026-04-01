@@ -30,7 +30,7 @@ You MUST create a task for each of these items and complete them in order:
 5. **Propose 2-3 approaches** — with trade-offs and your recommendation, backed by research evidence
 6. **Present design** — in sections scaled to their complexity, get user approval after each section
 7. **Write design doc** — save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md` and commit
-8. **Design review loop** — dispatch design-document-reviewer subagent with precisely crafted review context (never your session history); fix issues and re-dispatch until approved (max 5 iterations, then surface to human)
+8. **Design self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
 9. **User reviews written design** — ask user to review the design file before proceeding
 10. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
@@ -47,8 +47,7 @@ digraph brainstorming {
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
     "Write design doc" [shape=box];
-    "Design review loop" [shape=box];
-    "Design review passed?" [shape=diamond];
+    "Design self-review\n(fix inline)" [shape=box];
     "User reviews design?" [shape=diamond];
     "Invoke writing-plans skill" [shape=doublecircle];
 
@@ -62,10 +61,8 @@ digraph brainstorming {
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
     "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Design review loop";
-    "Design review loop" -> "Design review passed?";
-    "Design review passed?" -> "Design review loop" [label="issues found,\nfix and re-dispatch"];
-    "Design review passed?" -> "User reviews design?" [label="approved"];
+    "Write design doc" -> "Design self-review\n(fix inline)";
+    "Design self-review\n(fix inline)" -> "User reviews design?";
     "User reviews design?" -> "Write design doc" [label="changes requested"];
     "User reviews design?" -> "Invoke writing-plans skill" [label="approved"];
 }
@@ -136,19 +133,27 @@ digraph brainstorming {
 - Use elements-of-style:writing-clearly-and-concisely skill if available
 - Commit the design document to git
 
-**Design Review Loop:**
-After writing the design document:
+**Design Self-Review:**
+After writing the design document, look at it with fresh eyes. This is a checklist you run yourself — not a subagent dispatch.
 
-1. Dispatch design-document-reviewer subagent (see design-document-reviewer-prompt.md)
-2. If Issues Found: fix, re-dispatch, repeat until Approved
-3. If loop exceeds 5 iterations, surface to human for guidance
+**1. Completeness:** Any TODOs, placeholders, "TBD", or incomplete sections? Fix them.
+
+**2. Consistency:** Do any sections contradict each other? Do conflicting requirements sneak in?
+
+**3. Clarity:** Could any requirement be interpreted two different ways — ambiguous enough to cause someone to build the wrong thing? Pick one interpretation and make it explicit.
+
+**4. Scope:** Is this focused enough for a single implementation plan, or does it cover multiple independent subsystems that should be separate?
+
+**5. YAGNI:** Any unrequested features or over-engineering? Strip them.
+
+If you find issues, fix them inline. No need to re-review — just fix and move on.
 
 **User Review Gate:**
-After the design review loop passes, ask the user to review the written design before proceeding:
+After the design self-review passes, ask the user to review the written design before proceeding:
 
 > "Design written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
 
-Wait for the user's response. If they request changes, make them and re-run the design review loop. Only proceed once the user approves.
+Wait for the user's response. If they request changes, make them and re-run the design self-review. Only proceed once the user approves.
 
 **Implementation:**
 

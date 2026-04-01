@@ -71,7 +71,7 @@ description: Use when you have a design or requirements for a multi-step task, b
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **REQ:** REQ-{id}
 **Specs:** `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
@@ -247,65 +247,79 @@ git commit -m "REQ-{id} feat: add specific feature"
 ...
 ```
 
+## 禁止占位符
+
+每一步都必须包含工程师所需的实际内容。以下是**计划缺陷**——绝不要写出：
+- "TBD"、"TODO"、"稍后实现"、"补充细节"
+- "添加适当的错误处理" / "添加验证" / "处理边界情况"
+- "为上述内容编写测试"（没有实际测试代码）
+- "类似于 Task N"（要重复代码——工程师可能不按顺序阅读任务）
+- 只描述做什么但不展示如何做的步骤（代码步骤必须有代码块）
+- 引用了未在任何任务中定义的类型、函数或方法
+
 ## 注意事项
 - 始终使用精确的文件路径
-- 计划中提供完整代码（而不是"添加验证"这样的描述）
+- 每一步都提供完整代码——如果某步修改了代码，就展示代码
 - 精确的命令及预期输出
 - 所有代码注释携带 REQ-{id}
 - 所有提交信息以 REQ-{id} 为前缀
-- 使用 @ 语法引用相关 skill
 - DRY、YAGNI、TDD、频繁提交
 - 与 plan.md 一起生成 testing.md
 
-## 计划审查循环
+## 自审
 
-完成计划的每个分块后：
+编写完完整计划后，以全新的视角审视设计文档，对照检查计划。这是你自己运行的清单——不是分派子代理。
 
-1. 分派 plan-document-reviewer subagent（参见 plan-document-reviewer-prompt.md），提供精心构造的审查上下文——绝不传递你的会话历史。这样可以让审查者专注于计划本身，而非你的思考过程。
-   - 提供：分块内容、设计文档路径
-2. 如果 ❌ 发现问题：
-   - 修复该分块中的问题
-   - 重新分派审查者审查该分块
-   - 重复直到 ✅ 审核通过
-3. 如果 ✅ 审核通过：继续下一个分块（如果是最后一个分块则进入执行交接）
+**1. 设计覆盖度：** 浏览设计文档中的每个章节/需求。你能指出实现它的任务吗？列出所有缺口。
 
-**分块边界：** 使用 `## Chunk N: <name>` 标题来界定分块。每个分块应不超过 1000 行且逻辑上自包含。
+**2. 占位符扫描：** 搜索计划中的危险信号——上述"禁止占位符"章节中的任何模式。修复它们。
 
-**审查循环指引：**
-- 编写计划的同一 agent 负责修复（保持上下文连续性）
-- 如果循环超过 5 次迭代，升级给人工介入
-- 审查者是顾问角色——如果你认为反馈不正确，可以解释你的不同意见
+**3. 类型一致性：** 你在后续任务中使用的类型、方法签名和属性名是否与早期任务中定义的一致？Task 3 中叫 `clearLayers()` 但 Task 7 中叫 `clearFullLayers()` 就是 bug。
 
-## 测试审查循环
+如果发现问题，直接内联修复。无需重新审查——修复后继续。如果发现设计需求没有对应任务，添加该任务。
 
-生成 testing.md 后：
+## 测试自审
 
-1. 分派 testing-document-reviewer subagent（参见 testing-document-reviewer-prompt.md），提供精心构造的审查上下文——绝不传递你的会话历史。
-   - 提供：testing.md 内容、设计文档路径
-2. 如果 ❌ 发现问题：
-   - 修复 testing.md 中的问题
-   - 重新分派审查者
-   - 重复直到 ✅ 审核通过
-3. 如果 ✅ 审核通过：进入执行交接
+生成 testing.md 后，以全新的视角审视它。这是你自己运行的检查清单——不是分派子代理。
 
-**审查循环指引：**
-- 编写 testing.md 的同一 agent 负责修复（保持上下文连续性）
-- 如果循环超过 5 次迭代，升级给人工介入
-- 审查者是顾问角色——如果你认为反馈不正确，可以解释你的不同意见
+**1. 需求覆盖度：** 对照 design.md 逐项检查——每个功能点是否都有至少一个测试用例？是否有未测试的功能？
+
+**2. 场景完整性：** 正常流程、错误/异常流程、边界条件和并发场景是否都已覆盖？
+
+**3. 可执行性：** 每个测试步骤是否都可以直接执行？没有"调用 API"、"验证结果"、"检查数据库"之类的占位符——每一步都需要实际的命令或断言。
+
+**4. 环境搭建：** 测试环境搭建是否完整？后端：中间件启动（Docker Compose）、数据初始化脚本、健康检查。前端：开发服务器命令、Mock API/数据桩。全栈：服务依赖链、启动顺序。
+
+**5. 数据管理：** 测试数据的创建和清理策略是否明确？测试用例之间的数据是否隔离？
+
+**6. 预期结果：** 预期结果是否具体且可验证（而非主观描述如"应该很快"）？是否包含状态码、返回值、数据库状态或 UI 元素断言？
+
+**7. 测试独立性：** 测试用例之间是否相互独立？是否存在隐含的执行顺序依赖？
+
+**8. 稳定性：** 是否存在不稳定风险？测试是否依赖固定等待（sleep/waitForTimeout）而非条件等待（waitForResponse、健康检查、元素可见性）？
+
+**9. 类型一致性：** 每个测试用例声明的类型（API / Browser / Integration）是否与其实际步骤格式匹配？
+
+**10. 完整性：** 是否存在 TODO 标记、占位符或未完成的测试用例？
+
+如果发现问题，直接内联修复。无需重新审查——修复后继续。
 
 ## 执行交接
 
-保存计划和 testing.md 后（两个审查循环均已通过）：
+保存计划和 testing.md 后（两个审查循环均已通过），提供执行选择：
 
-**"计划已完成并保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`。testing.md 也已生成。准备好执行了吗？"**
+**"计划已完成并保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/plan.md`。testing.md 也已生成。两种执行方式：**
 
-**执行路径取决于运行环境的能力：**
+**1. Subagent 驱动（推荐）** - 每个任务分派新的 subagent，任务间审查，快速迭代
 
-**如果运行环境支持 subagent（Claude Code 等）：**
-- **必需：** 使用 superpowers:subagent-driven-development
-- 不提供选择——subagent 驱动是标准方式
+**2. 内联执行** - 在当前会话中使用 executing-plans 执行任务，带检查点的批量执行
+
+**选择哪种方式？"**
+
+**如果选择 Subagent 驱动：**
+- **必需子技能：** 使用 superpowers:subagent-driven-development
 - 每个任务分派新的 subagent + 两阶段审查
 
-**如果运行环境不支持 subagent：**
-- 在当前会话中使用 superpowers:executing-plans 执行计划
+**如果选择内联执行：**
+- **必需子技能：** 使用 superpowers:executing-plans
 - 带检查点的批量执行

@@ -30,16 +30,14 @@ Task tool (general-purpose):
     | Type Consistency | Does each test case's declared type (API / Browser / Integration) match its actual step format? API cases use curl/HTTP clients? Browser cases use Playwright/test scripts? |
     | Completeness | Any TODO markers, placeholders, or incomplete test cases? |
 
-    ## CRITICAL
+    ## Calibration
 
-    Look especially hard for:
-    - Design.md functional points with no corresponding test case
-    - Steps that say "verify the result" without specifying HOW to verify
-    - curl commands missing URL, method, headers, or request body
-    - Playwright scripts missing proper waits (using waitForTimeout instead of waitForResponse/waitForSelector)
-    - Missing environment teardown or data cleanup between test cases
-    - Test cases that depend on another test case's side effects (ordering dependency)
-    - Any TODO markers or placeholder text
+    **Only flag issues that would cause real problems during test execution.**
+    Missing test coverage for design features, non-executable test steps, placeholder
+    test descriptions, or flaky wait patterns — those are issues. Minor wording
+    improvements, stylistic preferences, and test ordering suggestions are not.
+
+    Approve unless there are serious gaps that would lead to untested features or failing tests.
 
     ## Output Format
 

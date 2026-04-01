@@ -60,6 +60,10 @@ while [[ $# -gt 0 ]]; do
             echo "  test-subagent-driven-development.sh  Test skill loading and requirements"
             echo ""
             echo "Integration Tests (use --integration):"
+            echo "  test-plan-document-reviewer.sh       Plan reviewer catches flawed plans"
+            echo "  test-testing-document-reviewer.sh    Testing reviewer catches flawed testing docs"
+            echo ""
+            echo "Integration Tests (use --integration):"
             echo "  test-subagent-driven-development-integration.sh  Full workflow execution"
             exit 0
             ;;
@@ -79,6 +83,11 @@ tests=(
 # Integration tests (slow, full execution)
 integration_tests=(
     "test-subagent-driven-development-integration.sh"
+    "test-requirements-document-reviewer.sh"
+    "test-hld-document-reviewer.sh"
+    "test-design-document-reviewer.sh"
+    "test-plan-document-reviewer.sh"
+    "test-testing-document-reviewer.sh"
 )
 
 # Add integration tests if requested

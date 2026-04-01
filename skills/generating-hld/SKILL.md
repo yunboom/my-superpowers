@@ -53,23 +53,35 @@ Based on requirements + current architecture:
 ### Step 5: Save
 - Save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/hld.md`
 
-### Step 6: HLD Review Loop
+### Step 6: HLD Self-Review
 
-After saving `hld.md`, dispatch the **hld-document-reviewer** subagent for automated review.
+After saving `hld.md`, look at it with fresh eyes. This is a checklist you run yourself — not a subagent dispatch.
 
-1. **Dispatch reviewer subagent** — use the `skills/generating-hld/hld-document-reviewer-prompt.md` template, replacing `[HLD_FILE_PATH]` with `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/hld.md`. Dispatch the reviewer via Task tool.
-2. **Handle review results:**
-   - **No issues** → proceed to Step 7 (User Review Gate).
-   - **Issues found** → fix issues in `hld.md` based on the issue list, re-save, and re-dispatch the reviewer subagent.
-3. **Loop limit:** maximum **5 rounds** of fix-review iterations. If issues remain after 5 rounds, stop auto-fixing, summarize remaining issues, and escalate to the user for guidance.
+**1. System boundary:** Is the system boundary clearly defined? Are in-scope vs out-of-scope services explicit?
+
+**2. Service responsibility:** Does each service have a single, clear responsibility? Any overlapping or missing responsibilities?
+
+**3. Interface contracts:** Are sync APIs and async events fully defined? Are Provider/Consumer relationships clear?
+
+**4. Dependency direction:** Are dependency directions reasonable? Any circular dependencies?
+
+**5. Data ownership:** Is data entity ownership explicit? Any multi-service writes to the same data?
+
+**6. Risk identification:** Are risks and open items sufficiently identified? Are mitigation strategies feasible?
+
+**7. Completeness:** Any TODOs, placeholders, "TBD", or incomplete sections? Fix them.
+
+**8. Consistency:** Any contradictions between sections — e.g., dependency diagram doesn't match interface tables?
+
+If you find issues, fix them inline. No need to re-review — just fix and move on.
 
 ### Step 7: User Review Gate
 
-After automated review passes (or after escalating remaining issues to the user), prompt the user for final human review of `hld.md`.
+After self-review passes, prompt the user for final human review of `hld.md`.
 
-1. Present: "HLD has passed automated review. Please review `hld.md` and confirm."
+1. Present: "HLD has passed self-review. Please review `hld.md` and confirm."
 2. **WAIT for explicit user confirmation** before proceeding.
-3. If the user requests changes, apply changes, re-save, and re-run the HLD Review Loop (Step 6) to validate.
+3. If the user requests changes, apply changes, re-save, and re-run the self-review.
 4. Once the user confirms, prompt: "HLD confirmed. Run `/generate-design` to create detailed design for each involved service."
 
 ## Template

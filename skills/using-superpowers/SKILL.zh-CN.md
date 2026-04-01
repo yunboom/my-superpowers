@@ -29,13 +29,15 @@ Superpowers skill 会覆盖默认系统提示的行为，但**用户指令始终
 
 **在 Claude Code 中：** 使用 `Skill` 工具。当你调用一个 skill 时，它的内容会被加载并呈现给你——直接遵循它。不要使用 Read 工具读取 skill 文件。
 
+**在 Copilot CLI 中：** 使用 `skill` 工具。Skill 从已安装的插件中自动发现。`skill` 工具的用法与 Claude Code 的 `Skill` 工具相同。
+
 **在 Gemini CLI 中：** Skill 通过 `activate_skill` 工具激活。Gemini 在会话启动时加载 skill 元数据，并按需激活完整内容。
 
 **在其他环境中：** 查看你的平台文档了解 skill 是如何加载的。
 
 ## 平台适配
 
-Skill 使用 Claude Code 的工具名称。非 CC 平台：参见 `references/codex-tools.md`（Codex）了解工具等价物。Gemini CLI 用户通过 GEMINI.md 自动加载工具映射。
+Skill 使用 Claude Code 的工具名称。非 CC 平台：参见 `references/copilot-tools.md`（Copilot CLI）、`references/codex-tools.md`（Codex）了解工具等价物。Gemini CLI 用户通过 GEMINI.md 自动加载工具映射。
 
 # 使用 Skill
 

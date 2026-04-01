@@ -32,17 +32,14 @@ Task tool (general-purpose):
     | Deployment & Rollback | Is the release plan complete? Is the rollback strategy feasible (can old code handle new data)? |
     | Completeness & Consistency | Any TODOs, placeholders, "TBD"? Do data models match DDL? Do architecture diagrams match module descriptions? |
 
-    ## CRITICAL
+    ## Calibration
 
-    Look especially hard for:
-    - Requirements from requirements.md that are assigned to this service but not addressed in the design
-    - Interfaces without idempotency design where concurrent calls are possible
-    - State machines with missing transitions or unreachable states
-    - Data model changes without backward compatibility assessment
-    - Monitoring gaps — new features without corresponding alerts
-    - Rollback risks — new data formats that old code cannot handle
-    - Any TODO markers or placeholder text
-    - Sections noticeably less detailed than others
+    **Only flag issues that would cause real problems during implementation.**
+    Missing requirement coverage, contradictory designs, incomplete state machines,
+    data model inconsistencies, or rollback risks — those are issues. Minor wording
+    improvements, stylistic preferences, and "sections less detailed than others" are not.
+
+    Approve unless there are serious gaps that would lead to a flawed implementation.
 
     ## Output Format
 

@@ -29,7 +29,7 @@ You MUST create a task for each of these items and complete them in order:
 4. **Create specs directory** — `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
 5. **Requirements brainstorming** — one question at a time through checklist
 6. **Generate requirements.md** — structured output
-7. **Requirements Review Loop** — dispatch reviewer subagent to review requirements.md, fix issues up to 5 rounds
+7. **Requirements Self-Review** — quick inline check for completeness, consistency, and gaps
 8. **User Review Gate** — present requirements.md to user for confirmation
 9. **Prompt next step** — /generate-hld or /generate-design
 
@@ -98,25 +98,36 @@ Use `requirements-template.md` in this skill's directory for the output structur
 
 Write to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`.
 
-## Requirements Review Loop
+## Requirements Self-Review
 
-After generating `requirements.md`, dispatch a **reviewer subagent** to audit the document for completeness and consistency.
+After generating `requirements.md`, look at it with fresh eyes. This is a checklist you run yourself — not a subagent dispatch.
 
-1. Use the review prompt template at `skills/prd-clarifying/requirements-document-reviewer-prompt.md`
-2. The reviewer subagent checks for: missing dimensions, contradictions, vague acceptance criteria, and gaps between PRD and requirements
-3. If the reviewer reports issues, fix them in `requirements.md` and re-run the reviewer
-4. **Maximum 5 rounds** — if issues persist after 5 review-fix cycles, stop the loop and escalate to the user with a summary of unresolved issues
-5. The loop exits when the reviewer returns no issues (clean pass)
+**1. Functional boundary:** Are the functional boundaries clearly defined? Is it clear what is in scope vs out of scope?
+
+**2. User scenarios:** Are all user scenarios covered? Any missing user roles or interaction paths?
+
+**3. Business rules:** Are business rules consistent? Any contradictions between rules?
+
+**4. Exception flows:** Are error/exception flows documented? Are edge cases considered?
+
+**5. Acceptance criteria:** Are acceptance criteria testable and specific? Can they actually be verified — not subjective like "should be fast"?
+
+**6. Implicit assumptions:** Are hidden assumptions surfaced and explicitly stated?
+
+**7. Completeness:** Any TODOs, placeholders, "TBD", or incomplete sections? Fix them.
+
+**8. Clarity:** Any ambiguous descriptions or vague terms without definition?
+
+If you find issues, fix them inline. No need to re-review — just fix and move on.
 
 ## User Review Gate
 
-After the review loop passes (or escalates), present `requirements.md` to the user for final confirmation.
+After self-review passes, present `requirements.md` to the user for final confirmation.
 
 1. Show a summary of what was clarified and any remaining TODOs
-2. If issues were escalated from the review loop, highlight them explicitly
-3. Ask the user: "Please review the requirements document. Reply **confirmed** to proceed, or point out anything that needs adjustment."
-4. If the user requests changes, apply them, then re-enter the Requirements Review Loop
-5. **Do NOT prompt the next step until the user explicitly confirms**
+2. Ask the user: "Please review the requirements document. Reply **confirmed** to proceed, or point out anything that needs adjustment."
+3. If the user requests changes, apply them and re-run the self-review
+4. **Do NOT prompt the next step until the user explicitly confirms**
 
 ## After Confirmation
 

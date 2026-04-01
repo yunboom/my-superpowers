@@ -1,0 +1,11 @@
+Here's a PRD for our new search feature:
+
+https://project.feishu.cn/requirements/detail/98765
+
+## Feature: Customer Search Enhancement
+
+We want to add fuzzy search to the customer list page. Currently users can only search by exact customer ID. We need to support searching by customer name, phone number, and email.
+
+The search results should be paginated and sorted by relevance.
+
+Can you help me analyze this PRD?

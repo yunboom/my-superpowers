@@ -1,0 +1,6 @@
+/prd-clarify
+
+Here's the PRD content:
+
+## Feature: Order Export
+Users need to export order lists to Excel. The export should support filtering by date range and order status.

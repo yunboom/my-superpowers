@@ -67,7 +67,7 @@ git diff <上次同步commit>..upstream/main --name-status | grep -v node_module
 - 融入上游新功能
 
 **Layer 4：扩展新能力到自定义 Skill**
-- 将上游的新模式（如 review loop）扩展到自定义 skill
+- 将上游的新模式（如 self-review、新平台支持）扩展到自定义 skill
 
 ### 5. 术语对齐
 
@@ -76,7 +76,7 @@ git diff <上次同步commit>..upstream/main --name-status | grep -v node_module
 | 上游术语 | 本仓库术语 | 说明 |
 |---------|-----------|------|
 | spec / specification | design / 设计文档 | 概念名称 |
-| spec review loop | design review loop | 审查循环 |
+| spec review loop / self-review | design self-review | 审查机制（v5.0.7 起上游改为 self-review） |
 | spec-document-reviewer | design-document-reviewer | 审查器名称 |
 | spec-document-reviewer-prompt.md | design-document-reviewer-prompt.md | 审查模板文件名 |
 | `[SPEC_FILE_PATH]` | `[DESIGN_FILE_PATH]` | 模板变量 |
@@ -152,3 +152,4 @@ git commit -m "sync(upstream): vX.Y.Z → vA.B.C"
 | 同步日期 | 上游 commit | 上游版本 | 操作分支 | 备注 |
 |---------|------------|---------|---------|------|
 | 2026-03-12 | `363923f` | v5.0.2 | feature/init | 首次同步，从 v4.3.0 同步到 v5.0.2 |
+| 2026-04-01 | `dd23728` | v5.0.7 | feature/init | v5.0.2→v5.0.7：subagent review→inline self-review、Copilot CLI 支持、brainstorm server ESM/Windows 修复、POSIX hook 兼容、execution handoff 用户选择模式 |

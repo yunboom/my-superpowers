@@ -29,7 +29,7 @@ description: Use when receiving a PRD (Product Requirements Document) to conduct
 4. **创建规格目录** —— `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/`
 5. **需求头脑风暴** —— 按检查清单逐一提问
 6. **生成 requirements.md** —— 结构化输出
-7. **Requirements Review Loop** —— dispatch reviewer subagent 审查 requirements.md，最多修复 5 轮
+7. **Requirements Self-Review** —— 快速内联检查完整性、一致性和缺口
 8. **User Review Gate** —— 将 requirements.md 提交用户确认
 9. **提示下一步** —— /generate-hld 或 /generate-design
 
@@ -98,25 +98,36 @@ description: Use when receiving a PRD (Product Requirements Document) to conduct
 
 写入 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/requirements.md`。
 
-## Requirements Review Loop
+## Requirements Self-Review
 
-生成 `requirements.md` 后，dispatch **reviewer subagent** 对文档进行完整性和一致性审查。
+生成 `requirements.md` 后，以全新的视角审视它。这是你自己运行的检查清单——不是分派子代理。
 
-1. 使用 `skills/prd-clarifying/requirements-document-reviewer-prompt.md` 中的 review prompt 模板
-2. reviewer subagent 检查：遗漏的维度、矛盾之处、模糊的验收标准、PRD 与需求文档之间的差距
-3. 如果 reviewer 报告问题，在 `requirements.md` 中修复并重新运行 reviewer
-4. **最多 5 轮** —— 如果 5 轮修复-审查循环后问题仍然存在，停止循环并将未解决的问题汇总上报给用户
-5. 当 reviewer 返回无问题（clean pass）时退出循环
+**1. 功能边界：** 功能边界是否清晰定义？范围内和范围外是否明确？
+
+**2. 用户场景：** 所有用户场景是否都已覆盖？是否遗漏了用户角色或交互路径？
+
+**3. 业务规则：** 业务规则是否一致？规则之间是否存在矛盾？
+
+**4. 异常流程：** 错误/异常流程是否已文档化？边界情况是否已考虑？
+
+**5. 验收标准：** 验收标准是否可测试且具体？能否实际验证——而非主观描述如"应该很快"？
+
+**6. 隐含假设：** 隐藏的假设是否已被发现并明确陈述？
+
+**7. 完整性：** 是否存在 TODO、占位符、"TBD" 或未完成的章节？修复它们。
+
+**8. 清晰度：** 是否有模糊的描述或未定义的模糊术语？
+
+如果发现问题，直接内联修复。无需重新审查——修复后继续。
 
 ## User Review Gate
 
-review loop 通过（或上报）后，将 `requirements.md` 提交用户进行最终确认。
+self-review 通过后，将 `requirements.md` 提交用户进行最终确认。
 
 1. 展示已澄清内容的摘要以及剩余的待办项
-2. 如果有从 review loop 上报的问题，明确高亮展示
-3. 询问用户："请 review 需求文档。回复**确认**继续，或指出需要调整的内容。"
-4. 如果用户要求修改，执行修改后重新进入 Requirements Review Loop
-5. **在用户明确确认之前，不得提示下一步**
+2. 询问用户："请 review 需求文档。回复**确认**继续，或指出需要调整的内容。"
+3. 如果用户要求修改，执行修改后重新运行 self-review
+4. **在用户明确确认之前，不得提示下一步**
 
 ## 确认后
 

@@ -27,15 +27,14 @@ Task tool (general-purpose):
     | Completeness | TODOs, placeholders, "TBD", incomplete sections |
     | Clarity | Ambiguous descriptions, vague terms without definition |
 
-    ## CRITICAL
+    ## Calibration
 
-    Look especially hard for:
-    - Any TODO markers or placeholder text
-    - Scenarios where user behavior is assumed but not specified
-    - Business rules that conflict with each other
-    - Exception flows that are missing (what happens when X fails?)
-    - Acceptance criteria that are subjective ("should be fast") instead of measurable
-    - Implicit assumptions about infrastructure, data format, or user context
+    **Only flag issues that would cause real problems during design or implementation.**
+    Missing dimensions, contradictory business rules, or acceptance criteria so vague
+    they can't be tested — those are issues. Minor wording improvements, stylistic
+    preferences, and "sections less detailed than others" are not.
+
+    Approve unless there are serious gaps that would lead to a flawed design.
 
     ## Output Format
 

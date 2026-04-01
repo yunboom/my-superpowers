@@ -22,3 +22,4 @@
 - 2026-03-12: 上游同步 v4.3.0 → v5.0.2（visual brainstorming、document review loop、Gemini/Cursor 支持、架构指导、spec/plan review loop 扩展到自定义 skill、brainstorm server 零依赖重写）
 - 2026-03-12: 翻译同步 using-superpowers/SKILL.zh-CN.md，补充 SUBAGENT-STOP、指令优先级、Gemini CLI 访问方式、平台适配章节，frontmatter 中文化
 - 2026-03-12: 翻译同步 subagent-driven-development/SKILL.zh-CN.md，补充"为什么使用 sub-agent"段落、"模型选择"章节、"处理实现者状态"章节，修正示例路径，移除英文版不存在的 std skill 内容，frontmatter 中文化
+- 2026-04-01: 上游同步 v5.0.2 → v5.0.7（inline self-review 替代 subagent review loop、Copilot CLI 支持、brainstorm server ESM/Windows 修复、POSIX hook 兼容、execution handoff 用户选择模式、No Placeholders 约束、reviewer prompt 校准标准调整）

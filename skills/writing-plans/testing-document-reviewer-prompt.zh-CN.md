@@ -30,16 +30,13 @@ Task tool (general-purpose):
     | 类型匹配 | 每个用例声明的类型（API / Browser / Integration）与实际步骤格式是否一致？API 用例使用 curl/HTTP 客户端？Browser 用例使用 Playwright/测试脚本？ |
     | 完整性 | 是否存在 TODO 标记、占位符或未完成的测试用例？ |
 
-    ## 重点关注
+    ## 校准标准
 
-    尤其要仔细检查：
-    - design.md 中有功能点但 testing.md 中没有对应测试用例
-    - 标注"验证结果"但未说明如何验证的步骤
-    - curl 命令缺少 URL、Method、Headers 或请求体
-    - Playwright 脚本缺少正确的等待机制（使用 waitForTimeout 而非 waitForResponse/waitForSelector）
-    - 缺少环境清理或用例间的数据清理
-    - 依赖其他用例副作用的测试用例（顺序依赖）
-    - 任何 TODO 标记或占位符文本
+    **仅标记会在测试执行阶段造成实际问题的问题。**
+    缺失的设计功能测试覆盖、不可执行的测试步骤、占位测试描述、
+    或不稳定的等待模式——这些是问题。措辞微调、风格偏好、以及测试排序建议不是问题。
+
+    除非存在会导致功能未测试或测试失败的严重缺口，否则应予以通过。
 
     ## 输出格式
 

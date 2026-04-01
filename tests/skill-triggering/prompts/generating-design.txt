@@ -1,0 +1,1 @@
+The requirements are done, requirements.md is saved. Now I need to create a detailed technical design for the backend service. Please run /generate-design.

@@ -146,44 +146,43 @@ Use brainstorming dialogue patterns: one question at a time, prefer multiple-cho
 - Output content in Chinese, technical terms in English
 - Save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
 
-### Step 7: Design Review Loop
+### Step 7: Design Self-Review
 
-After generating design.md, dispatch a **detailed-design-document-reviewer** subagent for automated review.
+After generating design.md, look at it with fresh eyes. This is a checklist you run yourself — not a subagent dispatch.
 
-1. **Dispatch reviewer subagent** — use the `skills/generating-design/design-document-reviewer-prompt.md` template, replacing `[DESIGN_FILE_PATH]` with `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md` and `[REQUIREMENTS_FILE_PATH]` with `requirements.md` in the same directory. Dispatch the reviewer via Task tool.
-2. **Handle review results:**
-   - **Status: ✅ Approved** → proceed to Step 8 (User Review Gate).
-   - **Status: ❌ Issues Found** → auto-fix issues in design.md based on the Issues list, then re-dispatch the reviewer subagent.
-3. **Loop limit:** maximum **5 rounds** of fix-review iterations. If issues remain after 5 rounds, stop auto-fixing, summarize remaining issues, and escalate to the user for guidance.
+**1. Requirements coverage:** Cross-check against requirements.md — are all requirements assigned to THIS service's domain covered? Any missing functional points?
 
-```dot
-digraph review_loop {
-    "Generate design.md" [shape=box];
-    "Dispatch reviewer subagent" [shape=box];
-    "Review passed?" [shape=diamond];
-    "Auto-fix issues" [shape=box];
-    "Round < 5?" [shape=diamond];
-    "Escalate to user" [shape=box];
-    "User Review Gate" [shape=box];
+**2. Module design:** Is each module's responsibility clear and single-purpose? Any overlapping or missing modules?
 
-    "Generate design.md" -> "Dispatch reviewer subagent";
-    "Dispatch reviewer subagent" -> "Review passed?";
-    "Review passed?" -> "User Review Gate" [label="✅ Approved"];
-    "Review passed?" -> "Round < 5?" [label="❌ Issues Found"];
-    "Round < 5?" -> "Auto-fix issues" [label="yes"];
-    "Auto-fix issues" -> "Dispatch reviewer subagent";
-    "Round < 5?" -> "Escalate to user" [label="no — 5 rounds reached"];
-    "Escalate to user" -> "User Review Gate";
-}
-```
+**3. Data model:** Are data models complete? Do state machines cover all state transitions? Are ER diagrams consistent with DDL?
+
+**4. API design:** Are interface protocols fully defined (request/response params)? Naming and versioning consistent?
+
+**5. Storage design:** Does DB design follow conventions? Are cache strategies reasonable? Are indexes sufficient?
+
+**6. Idempotency & concurrency:** Are interfaces idempotent? Are locking strategies and transaction granularity defined? Race conditions considered?
+
+**7. Historical compatibility:** Is backward compatibility with existing data/features evaluated? Will new changes break existing functionality?
+
+**8. Reliability:** Are monitoring/alerting, error handling, and traffic estimation covered?
+
+**9. Security & compliance:** Is sensitive data encrypted? Are API auth/permissions complete?
+
+**10. Performance:** Are QPS/latency targets explicit? Is there a corresponding load test plan?
+
+**11. Deployment & rollback:** Is the release plan complete? Is the rollback strategy feasible (can old code handle new data)?
+
+**12. Completeness & consistency:** Any TODOs, placeholders, "TBD"? Do data models match DDL? Do architecture diagrams match module descriptions?
+
+If you find issues, fix them inline. No need to re-review — just fix and move on.
 
 ### Step 8: User Review Gate
 
-After automated review passes (or after escalating remaining issues to the user), prompt the user for final human review of design.md.
+After self-review passes, prompt the user for final human review of design.md.
 
-1. Inform the user: design.md has passed automated review (or list any escalated remaining issues). Ask them to review the document.
+1. Inform the user: design.md has passed self-review. Ask them to review the document.
 2. **WAIT for explicit user confirmation** (e.g., "confirmed" / "approved" / "LGTM") before proceeding.
-3. If the user requests changes, apply the changes and re-submit for user confirmation until explicitly approved.
+3. If the user requests changes, apply the changes, re-run self-review, and re-submit for user confirmation until explicitly approved.
 
 ### Step 9: Prompt Next Step
 - "Design complete. Run `/write-plan` to create the implementation plan."

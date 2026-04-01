@@ -30,7 +30,7 @@ description: "You MUST use this before any creative work - creating features, bu
 5. **提出 2-3 种方案** — 包含权衡分析和你的推荐，以调研证据为支撑
 6. **展示设计方案** — 各部分按其复杂度进行展开，每个部分完成后获得用户批准
 7. **编写设计文档** — 保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md` 并提交
-8. **Design review loop** — 派遣 design-document-reviewer subagent，提供精确构建的审查上下文（绝不使用你的会话历史）；修复问题并重新派遣，直到通过审查（最多 5 次迭代，之后交由人工处理）
+8. **Design self-review** — 快速内联检查占位符、矛盾、歧义、范围（详见下方）
 9. **用户审查已编写的设计文档** — 在继续之前请用户审查设计文档
 10. **过渡到实现** — 调用 writing-plans skill 创建实现计划
 
@@ -47,8 +47,7 @@ digraph brainstorming {
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
     "Write design doc" [shape=box];
-    "Design review loop" [shape=box];
-    "Design review passed?" [shape=diamond];
+    "Design self-review\n(fix inline)" [shape=box];
     "User reviews design?" [shape=diamond];
     "Invoke writing-plans skill" [shape=doublecircle];
 
@@ -62,10 +61,8 @@ digraph brainstorming {
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
     "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Design review loop";
-    "Design review loop" -> "Design review passed?";
-    "Design review passed?" -> "Design review loop" [label="issues found,\nfix and re-dispatch"];
-    "Design review passed?" -> "User reviews design?" [label="approved"];
+    "Write design doc" -> "Design self-review\n(fix inline)";
+    "Design self-review\n(fix inline)" -> "User reviews design?";
     "User reviews design?" -> "Write design doc" [label="changes requested"];
     "User reviews design?" -> "Invoke writing-plans skill" [label="approved"];
 }
@@ -136,19 +133,27 @@ digraph brainstorming {
 - 如果可用，使用 elements-of-style:writing-clearly-and-concisely skill
 - 将设计文档提交到 git
 
-**Design Review Loop：**
-编写完设计文档后：
+**Design Self-Review：**
+编写完设计文档后，以全新的视角审视它。这是你自己运行的检查清单——不是分派子代理。
 
-1. 派遣 design-document-reviewer subagent（参见 design-document-reviewer-prompt.md）
-2. 如果发现问题：修复，重新派遣，重复直到通过审查
-3. 如果循环超过 5 次迭代，交由人工指导
+**1. 完整性：** 是否存在 TODO、占位符、"TBD" 或未完成的章节？修复它们。
+
+**2. 一致性：** 各章节之间是否有矛盾？是否混入了冲突的需求？
+
+**3. 清晰度：** 是否有需求可以被两种方式理解——模糊到可能导致构建错误内容？选择一种解读并明确表达。
+
+**4. 范围：** 是否聚焦到足以作为单个实现计划，还是覆盖了多个应该分开的独立子系统？
+
+**5. YAGNI：** 是否有未被要求的功能或过度设计？去掉它们。
+
+如果发现问题，直接内联修复。无需重新审查——修复后继续。
 
 **User Review Gate：**
-Design review loop 通过后，在继续之前请用户审查已编写的设计文档：
+Design self-review 通过后，在继续之前请用户审查已编写的设计文档：
 
 > "设计文档已编写并提交到 `<path>`。请审查并告知是否需要在我们开始编写实现计划之前做任何修改。"
 
-等待用户回复。如果用户要求修改，完成修改后重新运行 design review loop。只有在用户批准后才能继续。
+等待用户回复。如果用户要求修改，完成修改后重新运行 design self-review。只有在用户批准后才能继续。
 
 **实现：**
 
