@@ -141,9 +141,12 @@ Use brainstorming dialogue patterns: one question at a time, prefer multiple-cho
 - Testing strategy (unit tests, E2E tests, visual regression)
 
 ### Step 6: Generate Design Document
-- **For backend projects:** use `design-template-backend.md` in this skill's directory
-- **For frontend projects:** use `design-template-frontend.md` in this skill's directory
-- Output content in Chinese, technical terms in English
+
+**OPTIONAL EXTENSION:** Use `trd-template` to obtain the design template.
+- **If the extension exists:** Invoke it via the Skill tool and use the returned template.
+- **If the extension does not exist:** Fall back to the templates in this skill's directory:
+  - **For backend projects:** use `design-template-backend.md` in this skill's directory
+  - **For frontend projects:** use `design-template-frontend.md` in this skill's directory
 - Save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
 
 ### Step 7: Design Self-Review

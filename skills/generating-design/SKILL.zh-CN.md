@@ -141,9 +141,12 @@ digraph design_flow {
 - 测试策略（单元测试、E2E 测试、视觉回归测试）
 
 ### 步骤 6：生成设计文档
-- **后端项目：** 使用本技能目录下的 `design-template-backend.md`
-- **前端项目：** 使用本技能目录下的 `design-template-frontend.md`
-- 内容用中文输出，技术术语用英文
+
+**OPTIONAL EXTENSION:** Use `trd-template` 获取设计模板。
+- **如果该扩展存在：** 通过 Skill 工具调用该 skill，使用返回的模板。
+- **如果该扩展不存在：** 回退到本技能目录下的模板：
+  - **后端项目：** 使用本技能目录下的 `design-template-backend.md`
+  - **前端项目：** 使用本技能目录下的 `design-template-frontend.md`
 - 保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
 
 ### 步骤 7：Design Self-Review
