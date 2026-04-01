@@ -142,12 +142,15 @@ digraph design_flow {
 
 ### 步骤 6：生成设计文档
 
-**OPTIONAL EXTENSION:** Use `trd-template` 获取设计模板。
-- **如果该扩展存在：** 通过 Skill 工具调用该 skill，使用返回的模板。
-- **如果该扩展不存在：** 回退到本技能目录下的模板：
-  - **后端项目：** 使用本技能目录下的 `design-template-backend.md`
-  - **前端项目：** 使用本技能目录下的 `design-template-frontend.md`
-- 保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
+**根据步骤 3 检测到的项目类型加载设计模板：**
+
+如果项目类型为**后端**：
+- 必需子技能：使用 `trd-backend-template`
+
+如果项目类型为**前端**：
+- 必需子技能：使用 `trd-frontend-template`
+
+保存到 `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
 
 ### 步骤 7：Design Self-Review
 
@@ -193,6 +196,8 @@ self-review 通过后，提示用户对 design.md 进行最终人工 review。
 ## 集成关系
 
 **必需子技能：** superpowers:deep-researching（调研派发）
+**必需子技能：** trd-backend-template（后端设计模板）—— 项目类型为后端时使用
+**必需子技能：** trd-frontend-template（前端设计模板）—— 项目类型为前端时使用
 **前置要求：** superpowers:brainstorming（对话模式）
 **输入：** 同一规格目录下的 `requirements.md` + `hld.md`（可选）
 **输出：** 同一规格目录下的 `design.md`

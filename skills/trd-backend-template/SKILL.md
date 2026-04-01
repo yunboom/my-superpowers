@@ -1,3 +1,14 @@
+---
+name: trd-backend-template
+description: Returns the backend TRD (Technical Requirements Document) design template. Use when generating a detailed design document for a backend project.
+---
+
+# Backend TRD Template
+
+Return the following template for use in backend project design documents.
+
+---
+
 # 技术⽅案模板
 
 # xxx技术⽅案

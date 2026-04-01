@@ -142,12 +142,15 @@ Use brainstorming dialogue patterns: one question at a time, prefer multiple-cho
 
 ### Step 6: Generate Design Document
 
-**OPTIONAL EXTENSION:** Use `trd-template` to obtain the design template.
-- **If the extension exists:** Invoke it via the Skill tool and use the returned template.
-- **If the extension does not exist:** Fall back to the templates in this skill's directory:
-  - **For backend projects:** use `design-template-backend.md` in this skill's directory
-  - **For frontend projects:** use `design-template-frontend.md` in this skill's directory
-- Save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
+**Load design template based on project type detected in Step 3:**
+
+If project type is **backend**:
+- REQUIRED SUB-SKILL: use `trd-backend-template`
+
+If project type is **frontend**:
+- REQUIRED SUB-SKILL: use `trd-frontend-template`
+
+Save to `docs/specs/yyyy-MM-dd-REQ-{id}/{topic}/design.md`
 
 ### Step 7: Design Self-Review
 
@@ -193,6 +196,8 @@ After self-review passes, prompt the user for final human review of design.md.
 ## Integration
 
 **REQUIRED SUB-SKILL:** superpowers:deep-researching (research dispatch)
+**REQUIRED SUB-SKILL:** trd-backend-template (backend design template) — used when project type is backend
+**REQUIRED SUB-SKILL:** trd-frontend-template (frontend design template) — used when project type is frontend
 **REQUIRED BACKGROUND:** superpowers:brainstorming (dialogue patterns)
 **Input:** `requirements.md` + `hld.md` (optional) from same specs directory
 **Output:** `design.md` in same specs directory

@@ -1,3 +1,14 @@
+---
+name: trd-frontend-template
+description: Returns the frontend TRD (Technical Requirements Document) design template. Use when generating a detailed design document for a frontend project.
+---
+
+# Frontend TRD Template
+
+Return the following template for use in frontend project design documents.
+
+---
+
 # [需求名称] 技术需求文档（TRD）
 
 ## 1. 需求概述
