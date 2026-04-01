@@ -181,6 +181,22 @@ update\insert\delete
 
 todo//各团队梳理⾃⼰模块的影响范围checklist。
 
+## 4.1 业务场景影响
+
+描述本次变更对现有业务场景/用户流程的影响，需覆盖以下维度：
+
+• **正向场景（新增/增强）**：本次变更新增或优化了哪些业务能力，用户/商家将获得哪些新体验。
+
+• **存量数据兼容**：现有数据在变更上线后是否能正常流转，涉及状态迁移、历史订单/账单处理的需说明兼容策略。
+
+• **异常/边界场景**：变更对降级、熔断、退款、退款重试等异常链路的影响，以及是否引入新的失败路径。
+
+• **跨业务域联动**：变更是否触发其他业务域（如风控、结算、通知、积分）的联动逻辑，需逐一说明触发条件与预期行为。
+
+<table><tr><td rowspan=1 colspan=1>业务场景</td><td rowspan=1 colspan=1>影响类型</td><td rowspan=1 colspan=1>影响说明</td><td rowspan=1 colspan=1>兼容策略</td></tr><tr><td rowspan=1 colspan=1>xxx场景（如：用户下单）</td><td rowspan=1 colspan=1>新增 / 变更 / 无影响</td><td rowspan=1 colspan=1>描述具体影响点</td><td rowspan=1 colspan=1>描述如何保证存量数据/用户不受损</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr></table>
+
+## 4.2 代码模块影响
+
 <table><tr><td rowspan=1 colspan=2>影响模块</td><td rowspan=1 colspan=1>说明</td></tr><tr><td rowspan=3 colspan=1>xxx模块</td><td rowspan=1 colspan=1>xxx功能</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr></table>
 
 # 五.上线部署
